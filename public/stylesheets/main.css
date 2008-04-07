@@ -1,0 +1,43 @@
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	}
+
+#home {
+	text-align: center;
+	}
+
+#total {
+	font-size: 90%;
+	font-weight: bold;
+	}
+
+#results {
+	font-size: 90%;
+	text-align: left;
+	}
+
+	#results p {
+		margin: 0;
+		}
+
+	#results td {
+		padding: .5em;
+		}
+
+form {
+	display: inline;
+	}
+
+#home form {
+	display: block;
+	}
+
+img {
+	vertical-align: middle;
+	border: 0;
+	}
+
+#next_prev {
+	text-align: center;
+	margin: 1em;
+	}

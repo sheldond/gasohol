@@ -1,0 +1,8 @@
+<tr>
+  <td><%= result.num %></td>
+  <td><%= result.date.nil? ? '' : result.date.strftime("%d/%m/%Y") %></td>
+  <td>
+    <%= link_to un(result.title), result.url %>
+    <p><%= un result.abstract %></p>
+  </td>
+</tr>

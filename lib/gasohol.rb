@@ -31,7 +31,7 @@ end
 
 class Result
     
-  attr_accessor :url, :title, :abstract, :date, :xml, :num
+  attr_accessor :url, :title, :abstract, :date, :xml, :num, :mime, :level
   
   def initialize(xml_string)
     @xml = xml_string
@@ -39,11 +39,20 @@ class Result
   end
   
   def to_s
-    puts "url => " + @url + ", title => " + @title + ", abstract => " + @abstract + ", date => " + @date.to_s
+    puts "num => " + @num.to_s
+    puts "mime => " + @mime
+    puts "level => " + @level.to_s
+    puts "url => " + @url
+    puts "title => " + @title
+    puts "abstract => " + @abstract
+    puts "date => " + @date.to_s
   end
   
   private
   def parse
+    @num = @xml.attributes['n'].to_i
+    @mime = @xml.attributes['mime'] || 'text/html'
+    @level = @xml.attributes['l'].to_i > 0 ? @xml.attributes['l'].to_i : 1
     @url = @xml.at(:u).inner_html
     @title = @xml.at(:t).inner_html
     @abstract = @xml.at(:s).inner_html
@@ -52,4 +61,8 @@ class Result
   
 end
 
-puts Google.new('test', :num => 15, :start => 1).results
+print 'Search for: '
+search = gets.chomp
+results = Google.new(search, :num => 15, :start => 1)
+
+puts results.total_results.to_s + ' results'

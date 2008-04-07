@@ -1,0 +1,13 @@
+<%= link_to(image_tag('/images/active_logo_small.png'), :controller => 'search') %> <%= render :partial => 'search', :locals => { :query => @response.query } %>
+
+<p id="total">
+  Displaying results <%= @response.results.first.num %> - <%= @response.results.last.num %> of <%= @response.total_results %> results found</p>
+
+<table cellspacing="0" id="results">
+  <%= render :partial => 'result', :collection => @response.results %>
+</table>
+
+<div id="next_prev">
+  <%= link_to('&laquo; Prev', :q => params[:q], :start => @response.prev) if @response.prev %>
+  <%= link_to('Next &raquo;', :q => params[:q], :start => @response.next) if @response.next %>
+</div>
