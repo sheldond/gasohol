@@ -4,5 +4,9 @@ module ApplicationHelper
   def un(text) 
     CGI::unescapeHTML(text)
   end
+  
+  def urlize(text)
+    text.downcase.gsub(/[^0-9a-z_]/,'_').gsub(/_+/,'_')
+  end
 
 end

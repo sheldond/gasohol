@@ -1,11 +1,120 @@
 class SearchController < ApplicationController
+  
+  DO_RELATED_SEARCH = true
+  DEFAULT_QUERY = 'active'
+  RESULTS_PER_PAGE = 25
+  SPORTS = ['Baseball','Basketball','Cycling','Fitness &amp; Nutrition','Football','Golf','Mind &amp; Body','Outdoors','Running','Soccer','Softball','Tennis','Travel','Triathlon','Women','Others']
+  CATEGORIES = ['Activities','Articles','eteamz Sites','Facilities','Organizations','People','Products','Videos']
+  TYPES = ['Camp','Class','Conference','Event','Membership','Program','Tee Time','Tournament']
+  
+  @@google = Google.new(:num => RESULTS_PER_PAGE)
+  @@twitter = Twitter.new
+  @@flickr = Flickr.new
+  @@youtube = YouTube.new
+  
+  before_filter :format_query
+  layout false
 
   def index
-    
+    @time = {}
+    @time[:google] = Time.now
+    @google = do_google
+    # if there were any sort params, sort the results by them
+    @google[:results] = case params[:sort]
+    when 'name'
+      @google[:results].sort_by do |result|
+        result[:title]
+      end
+    when 'date'
+      @google[:results].sort_by do |result|
+        result[:meta][:start_date]
+      end
+    when 'location'
+      @google[:results].sort_by do |result|
+        result[:meta][:state]
+      end
+    when 'rating'
+      @google[:results].sort_by do |result|
+        result[:rating]
+      end.reverse
+    else
+      @google[:results]
+    end
+    @time[:google] = Time.now - @time[:google]
+    @time[:twitter] = Time.now
+      @tweets = do_twitter              # @tweets = {:results => []}              # if we need to disable tweets
+    @time[:twitter] = Time.now - @time[:twitter]
+    @time[:flickr] = Time.now
+      @flickr = do_flickr
+    @time[:flickr] = Time.now - @time[:flickr]
+    @time[:youtube] = Time.now
+      @youtube = do_youtube
+    @time[:youtube] = Time.now - @time[:youtube]
+    render :layout => 'application'
+  end
+  
+  def google
+    @google = do_google
+    standard_response(@google)
+  end
+  
+  def twitter
+    @result = do_twitter
+    standard_response(@result)
+  end
+  
+  def flickr
+    @result = do_flickr
+    standard_response(@result)
+  end
+  
+  def youtube
+    @result = do_youtube
+    standard_response(@result)
+  end
+  
+  def location
+    @result = []
+    begin
+      @result = Zip.find_within_radius(params[:zip],params[:radius])
+    rescue => e
+      RAILS_DEFAULT_LOGGER.error("\nERROR IN LOCATION\n"+e.class.to_s+"\n"+e.message)
+    end
+    standard_response(@result)
+  end
+  
+  private
+  def standard_response(output)
+   respond_to do |format|
+      format.html
+      format.xml { render :xml => output.to_xml }
+      format.json { render :text => output.to_json }
+    end
+  end
+  
+  def do_google
+    @@google.search(@query, @options)
+  end
+  
+  def do_twitter
+    @@twitter.search(@query, @options)
+  end
+  
+  def do_flickr
+    @@flickr.search(@query, @options)
+  end
+  
+  def do_youtube
+    @@youtube.search(@query, @options)
   end
 
-  def search
-    @response = Google.new(params[:q], :num => params[:num], :start => params[:start])
+  def format_query
+    @query = params[:q] || DEFAULT_QUERY
+    @options = {}
+    # put any other URL params into a hash as long as they're not the controller, action or query term
+    params.each do |key,value|
+      @options.merge!({ key.to_sym => value.to_s }) if key != 'controller' && key != 'action' && key != 'q' && key != 'format'
+    end
   end
 
 end

@@ -1,0 +1,143 @@
+<div id="search_refine">
+  
+  <ul id="search_tabs">
+    <li id="keyword_tab" class="tab_title"><a href="#" onclick="switchSearch('keyword'); return false;">All</a></li>
+    <li id="activity_tab" class="tab_title"><a href="#" onclick="switchSearch('activity'); return false;">Events Only</a></li>
+  </ul>
+  
+	<div id="keyword_search" class="tab">
+	  <form id="search_form" action="/search" method="get">
+	    <% if params[:category] and params[:category].downcase != 'any' %>
+  		  <input type="hidden" name="category" value="<%= params[:category] %>" />
+  		<% end %>
+  		<% if params[:sport] and params[:sport].downcase != 'any' %>
+  		  <input type="hidden" name="sport" value="<%= params[:sport] %>" />
+  		<% end %>
+  		<input type="text" name="q" id="q1" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
+  		<input type="image" name="commit" id="commit" src="/images/button_search.png" class="submit" />
+  	</form>
+  	
+  	<h3>Categories</h3>
+    <ul>
+      <% if params[:category] %>
+        <%= link_to '‹ All Categories', all_search_params(:category), :class => 'small' %>
+        <ul>
+          <li class="selected"><%= params[:category].titlecase.gsub(/\+/,' ') %></li>
+        </ul>
+      <% else %>
+        <% SearchController::CATEGORIES.each do |category| %>
+          <li><%= link_to category, all_search_params(:category).merge(:category => CGI::escape(category).downcase) %></li>
+        <% end %>
+      <% end %>
+    </ul>
+
+    <h3>Sports</h3>
+    <% if params[:sport] %>
+      <%= link_to '‹ All Sports', all_search_params(:sport), :class => 'small' %>
+      <ul>
+        <li class="selected"><%= params[:sport].titlecase.gsub(/\+/,' ') %></li>
+      </ul>
+    <% else %>
+      <ul>
+        <% SearchController::SPORTS.each do |sport| %>
+          <li><%= link_to sport, all_search_params(:sport).merge(:sport => CGI::escape(sport).downcase) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    
+	</div>
+	
+	<div id="activity_search" class="tab" style="display:none">
+  	<form id="search_form">
+  	  
+  	  <input type="hidden" name="category" value="activities" />
+  	  <input type="hidden" name="p" value="1" />
+
+			<label for="keywords">Keywords</label>
+			<input type="text" name="q" id="q2" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
+
+			<label for="start_date">Date Range</label>
+			<div id="date_picker">
+				<input id="start_date" name="start_date" type="text"value="<%= params[:start_date] %>" onkeypress="return handleEnter(this.form, event);" />
+				<input type="image" src="/images/calendar.png" onclick="return false;" class="button" />
+				<span>to</span>
+				<input id="end_date" name="end_date" type="text" value="<%= params[:end_date] %>" onkeypress="return handleEnter(this.form, event);" />
+				<input type="image" src="/images/calendar.png" onclick="return false;" class="button" />
+			</div>
+
+			<label for="location">Location</label>
+			<input type="text" name="location" id="location" value="<%= params[:location] %>" class="default" onkeypress="return handleEnter(this.form, event);" />
+
+			<label for="radius">Radius</label>
+			<select name="radius" id="radius">
+			  <option value="any">Anywhere</option>
+				<option value="10">within 10 miles</option>
+				<option value="25">within 25 miles</option>
+				<option value="50">within 50 miles</option>
+				<option value="100">within 100 miles</option>
+				<option value="250">within 250 miles</option>
+				<option value="1000">within 1000 miles</option>
+			</select>
+
+			<label for="sport">Sport/Activity</label>
+			<select name="sport" id="sport">
+			  <!--
+			  <option value="any">Any</option>
+		    <% SearchController::SPORTS.each do |sport| %>
+			    <% if params[:sport] == sport %>
+			      <option value="<%= sport %>" selected="selected"><%= sport %></option>
+			    <% else %>
+			      <option value="<%= sport %>"><%= sport %></option>
+			    <% end %>
+			  <% end %>
+		  -->
+			</select>
+
+			<div id="type_container">
+				<label for="type">Type</label>
+				<select name="type" id="type">
+				  <option value="any">Any</option>
+				  <!--
+				  <% SearchController::TYPES.each do |type| %>
+				    <% if params[:type] == type %>
+				      <option value="<%= type %>" selected="selected"><%= type %></option>
+				    <% else %>
+				      <option value="<%= type %>"><%= type %></option>
+				    <% end %>
+				  <% end %>
+				  			-->
+				</select>
+			</div>
+
+			<div id="custom_container" style="display:none">
+				<label for="custom" id="custom_label"></label>
+				<select name="custom" id="custom"></select>
+			</div>
+
+			<div id="results_container" style="display:none;">
+				<input type="checkbox" name="results" id="results" />
+				<label for="results">Include Results/Rankings from previous events?</label>
+			</div>
+			
+			<input type="image" name="commit2" id="commit2" src="/images/button_search.png" class="submit" />
+
+		</form>
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  // this can run as soon as the search options on the left exist on the page
+  // if we tie this to an onLoad event then it waits until flickr, youtube and twitter
+  // respond, and in the meantime the search is just sitting there on the left in
+  // a crappy state
+  
+  // which search to show
+  url.p ? switchSearch('activity') : switchSearch('keyword');
+  // initialize search dropdowns
+  var s = new Search(assets);
+  // was there already a radius, sport or type in the query string?
+  url.radius ? selectOption('radius',url.radius) : null;
+  url.sport ? selectOption('sport',url.sport) : null;
+  url.type ? selectOption('type',url.type) : null;
+</script>

@@ -1,0 +1,12 @@
+<% @result.each do |result| %>
+<ul>
+  <li><strong>City:</strong> <%= result.city %></li>
+  <li><strong>State:</strong> <%= result.state %></li>
+  <li><strong>Zip:</strong> <%= result.zip %></li>
+  <li><strong>Area code:</strong> <%= result.area_code %></li>
+  <li><strong>Time zone:</strong> <%= result.time_zone %></li>
+  <li><strong>Daylight Savings Time:</strong> <%= result.dst %></li>
+  <li><strong>Latitude:</strong> <%= result.latitude %></li>
+  <li><strong>Longitude:</strong> <%= result.longitude %></li>
+</ul>
+<% end %>

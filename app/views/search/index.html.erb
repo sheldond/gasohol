@@ -1,4 +1,59 @@
-<div id="home">
-  <h1><img src="/images/active_logo.png" alt="Active" /></h1>
-  <%= render :partial => 'search', :locals => { :query => '' } %>
+<%= render :partial => 'search_refine' %>
+
+<div id="main">
+  
+  <% unless @google[:results].blank? %>
+    <div id="breadcrumb">
+    	<h2>
+    	  <%= build_breadcrumbs(params)%>
+    	</h2>
+  	
+    	<div id="result_count">
+        <%= @google[:results].first[:num] %>-<%= @google[:results].last[:num] %> of <%= number_with_delimiter(@google[:google][:total_results]) %> results
+      </div>
+    </div>
+
+    <div id="results">
+      <% unless @google[:featured].empty? %>
+        <div id="featured">
+          <h3>Featured Events</h3>
+          <%= render :partial => 'featured', :collection => @google[:featured] %>
+        </div>
+      <% end %>
+      
+      <% if params[:p] == '1' %>
+        <div id="sort">
+          <strong>Sort:</strong>
+          <ul>
+            <li <%= 'class="selected"' unless params[:sort] %>><a href="#" onclick="sort('relevant'); return false;">Most Relevant</a></li>
+            <li <%= 'class="selected"' if params[:sort] == 'date' %>><a href="#" onclick="sort('date'); return false;">Date (Soonest)</a></li>
+            <li <%= 'class="selected"' if params[:sort] == 'name' %>><a href="#" onclick="sort('name'); return false;">Name (A-Z)</a></li>
+            <li <%= 'class="selected"' if params[:sort] == 'location' %>><a href="#" onclick="sort('location'); return false;">Location</a><li>
+            <li <%= 'class="selected"' if params[:sort] == 'rating' %>><a href="#" onclick="sort('rating'); return false;">Rating (Best)</a></li>
+          </ul>
+        </div>
+      <% end %>
+  
+      <%= render :partial => 'result', :collection => @google[:results] %>
+
+      <div id="paging">
+        <%= render :partial => 'paging', :locals => { :from => @google[:results].first[:num], 
+                                                      :to => @google[:results].last[:num], 
+                                                      :total => @google[:google][:total_results],
+                                                      :results_per_page => SearchController::RESULTS_PER_PAGE,
+                                                      :query => @google[:google][:query] } %>
+      </div>
+      
+      <%= render :partial => 'debug', :locals => { :time => @time, :google => @google } %>
+    </div>
+      
+  <% else %>
+    <div id="results">
+      <div class="no_results">No results found.</div>
+      <%= render :partial => 'debug', :locals => { :time => @time, :google => @google } %>
+    </div>
+  <% end %>
+
+  <%= render :partial => 'context', :locals => { :tweets => @tweets[:results], :photos => @flickr[:results], :videos => @youtube[:results] } %>
+
 </div>

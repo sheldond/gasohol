@@ -1,0 +1,48 @@
+
+
+Processing SearchController#index (for 172.16.19.100 at 2008-09-25 09:07:43) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"index", "controller"=>"search"}
+Rendering template within layouts/application
+Rendering search/index
+Completed in 5.71937 (0 reqs/sec) | Rendering: 0.07503 (1%) | DB: 0.00000 (0%) | 200 OK [http://ui/]
+
+
+Processing SearchController#index (for 172.16.19.100 at 2008-09-25 09:07:55) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"category"=>"activities", "action"=>"index", "controller"=>"search"}
+Rendering template within layouts/application
+Rendering search/index
+Completed in 1.61666 (0 reqs/sec) | Rendering: 0.03723 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/?category=activities]
+
+
+Processing SearchController#index (for 172.16.19.100 at 2008-09-25 09:08:02) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"category"=>"articles", "action"=>"index", "controller"=>"search"}
+Rendering template within layouts/application
+Rendering search/index
+Completed in 2.67975 (0 reqs/sec) | Rendering: 0.03814 (1%) | DB: 0.00000 (0%) | 200 OK [http://ui/?category=articles]
+
+
+Processing SearchController#index (for 172.16.19.100 at 2008-09-25 09:08:10) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"category"=>"videos", "action"=>"index", "controller"=>"search"}
+Rendering template within layouts/application
+Rendering search/index
+Completed in 1.73863 (0 reqs/sec) | Rendering: 0.03712 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/?category=videos]
+
+
+Processing SearchController#index (for 172.16.19.100 at 2008-09-25 09:08:17) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"index", "controller"=>"search", "sport"=>"running"}
+Rendering template within layouts/application
+Rendering search/index
+Completed in 1.68466 (0 reqs/sec) | Rendering: 0.11841 (7%) | DB: 0.00000 (0%) | 200 OK [http://ui/?sport=running]
+
+
+Processing SearchController#index (for 172.16.19.100 at 2008-09-25 09:08:22) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"index", "controller"=>"search", "sport"=>"baseball"}
+Rendering template within layouts/application
+Rendering search/index
+Completed in 1.58380 (0 reqs/sec) | Rendering: 0.03806 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/?sport=baseball]

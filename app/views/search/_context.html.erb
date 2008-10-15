@@ -1,0 +1,31 @@
+<div id="context">
+  <% unless photos.empty? %>
+    <h4>Photos</h4>
+    <span class="subtitle">via <%= link_to 'Flickr', 'http://flickr.com' %></span>
+    <ul id="photos">
+      <% photos.each do |photo| %>
+        <li><%= link_to(image_tag(photo[:thumbnail], :alt => photo[:title]), photo[:url], :title => photo[:title]) %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  
+  <% unless videos.empty? %>
+    <h4>Video</h4>
+    <span class="subtitle">via <%= link_to 'YouTube', 'http://youtube.com' %></span>
+    <ul id="video">
+      <% videos.each do |video| %>
+        <li><%= link_to(image_tag(video[:thumbnail], :alt => video[:title]), video[:url], :title => video[:title]) %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  
+  <% unless tweets.empty? %>
+    <h4>What the web is saying</h4>
+    <span class="subtitle">via <%= link_to 'Twitter', 'http://twitter.com' %></span>
+    <ul id="tweets">
+      <% tweets.each do |tweet| %>
+        <li><%= tweet['text'] %> - <%= link_to(tweet['from_user'],'http://twitter.com/'+tweet['from_user']) %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

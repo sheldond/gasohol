@@ -1,0 +1,11 @@
+<div id="debug" style="margin: 1em 0 0;">
+  <ul style="margin: 0 1em;">
+    <% if time %>
+      <% time.each do |key,value| %>
+        <li style="list-style-type:disc"><%= key %> response time: <%= (value.to_f * 1000).round %> milliseconds</li>
+      <% end %>
+    <% end %>
+    <li style="list-style-type:disc">Google Query String: '<%= google[:google][:google_query] %>'</li>
+    <li style="list-style-type:disc; width: 400px;">Google Search URL: '<%= link_to google[:google][:full_query_path], google[:google][:full_query_path], :target => '_blank' %>'<li>
+  </ul>
+</div>
