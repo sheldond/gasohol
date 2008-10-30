@@ -1,0 +1,32 @@
+<% if params[:id] == 'amg' %>
+  <div class="ads">
+    <iframe height="90" frameborder="no" width="728" scrolling="no" marginheight="0" marginwidth="0" border="0" src="http://ads.active.com/html.ng/tile=926623&amp;site=network2&amp;channel=football&amp;subchannel=nosubchannel&amp;tanproduct=footballpower&amp;b2borb2c=b2c&amp;feature=content&amp;subfeature1=nosubfeature1&amp;subfeature2=nosubfeature2&amp;subfeature3=nosubfeature3&amp;sz=728x90&amp;position=leader_top&amp;ord=396793?" id="leader_top"><a target="_top" href="http://ads.active.com/click.ng/Params.richmedia=yes&tile=926623&site=network2&channel=football&subchannel=nosubchannel&tanproduct=footballpower&b2borb2c=b2c&feature=content&subfeature1=nosubfeature1&subfeature2=nosubfeature2&subfeature3=nosubfeature3&sz=728x90&position=leader_top&ord=396793?" target="_blank"><img src="http://ads.active.com/image.ng/Params.richmedia=yes&tile=926623&site=network2&channel=football&subchannel=nosubchannel&tanproduct=footballpower&b2borb2c=b2c&feature=content&subfeature1=nosubfeature1&subfeature2=nosubfeature2&subfeature3=nosubfeature3&sz=728x90&position=leader_top&ord=396793?" width="728" height="90" /></a></iframe>
+    <iframe height="90" frameborder="no" width="250" scrolling="no" marginheight="0" marginwidth="0" border="0" src="http://ads.active.com/html.ng/tile=378794&amp;site=network2&amp;channel=triathlon&amp;subchannel=nosubchannel&amp;tanproduct=activecom&amp;b2borb2c=b2c&amp;feature=content&amp;subfeature1=channel_home&amp;subfeature2=nosubfeature2&amp;subfeature3=nosubfeature3&amp;sz=250x90&amp;position=house_top&amp;eventid=&amp;eventlisting=&amp;country=&amp;state=&amp;typeid=&amp;gender=M&amp;age=&amp;skill=&amp;ord=307909?" id="house_top"></iframe>
+  </div>
+<% end %>
+
+<form id="home_search" method="get" action="/search">
+  <div id="search_list"><a href="http://active.com" title="Go to Active's homepage">active.com</a>, <a href="http://flickr.com" title="Go to flickr's homepage">flickr</a>, <a href="http://video.search.yahoo.com" title="Go to Yahoo's video search">Yahoo! Video</a>, <a href="http://search.twitter.com" title="Search twitter">Twitter</a>...</div>
+  <input type="text" name="q" id="q1" value="" onkeypress="return handleEnter(this.form, event);" />
+	<input type="image" name="commit" id="commit" src="/images/button_search_big.png" class="submit" />
+	<div id="more_link"><a href="#" onclick="$('activity_search').toggle(); moreOptions(); return false;">More Options</a></div>
+	<div id="activity_search" style="display:none;">
+	  <%= render :partial => 'event_search' %>
+  </div>
+  <script type="text/javascript">
+    // UGLY HACK COMING UP
+    // remove the keywords and submit button from the event search
+    $('keywords_container').remove();
+    $('commit2').remove();
+    // make the moreOptions call now to set the values in activity_search's hidden form fields
+    moreOptions();
+  </script>
+</form>
+
+<% if params[:id] == 'amg' %>
+  <div class="ads">
+    <iframe height="250" frameborder="no" width="300" scrolling="no" marginheight="0" marginwidth="0" border="0" src="http://ads.active.com/html.ng/tile=532339&amp;site=network2&amp;channel=nochannel&amp;subchannel=nosubchannel&amp;tanproduct=activecom&amp;b2borb2c=b2c&amp;feature=content&amp;subfeature1=activecom_home&amp;subfeature2=nosubfeature2&amp;subfeature3=nosubfeature3&amp;sz=300x250&amp;position=med_rec_top&amp;eventlisting=&amp;country=&amp;state=&amp;typeid=&amp;gender=&amp;age=&amp;skill=&amp;ord=188272?" id="med_rec_top"></iframe>  
+    <iframe height="250" frameborder="no" width="300" scrolling="no" marginheight="0" marginwidth="0" border="0" src="http://ads.active.com/html.ng/tile=320930&amp;site=network2&amp;channel=running&amp;subchannel=nosubchannel&amp;tanproduct=activecom&amp;b2borb2c=b2c&amp;feature=content&amp;subfeature1=channel_home&amp;subfeature2=nosubfeature2&amp;subfeature3=nosubfeature3&amp;sz=300x250&amp;position=med_rec_top&amp;eventid=&amp;eventlisting=&amp;country=&amp;state=&amp;typeid=&amp;gender=ng&amp;age=&amp;skill=&amp;ord=410764?" id="med_rec_top"/></iframe>
+    <iframe height="250" frameborder="no" width="300" scrolling="no" marginheight="0" marginwidth="0" border="0" src="http://ads.active.com/html.ng/tile=378794&amp;site=network2&amp;channel=triathlon&amp;subchannel=nosubchannel&amp;tanproduct=activecom&amp;b2borb2c=b2c&amp;feature=content&amp;subfeature1=channel_home&amp;subfeature2=nosubfeature2&amp;subfeature3=nosubfeature3&amp;sz=300x250&amp;position=med_rec_top&amp;eventid=&amp;eventlisting=&amp;country=&amp;state=&amp;typeid=&amp;gender=M&amp;age=&amp;skill=&amp;ord=195876?" id="med_rec_top"></iframe>
+  </div>
+<% end %>

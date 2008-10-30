@@ -10,10 +10,14 @@ class SearchController < ApplicationController
   @@google = Google.new(:num => RESULTS_PER_PAGE)
   @@twitter = Twitter.new
   @@flickr = Flickr.new
-  @@youtube = YouTube.new
+  @@yahoo = Yahoo.new
   
   before_filter :format_query
   layout false
+  
+  def home
+    render :layout => 'application'
+  end
 
   def index
     @time = {}
@@ -47,9 +51,9 @@ class SearchController < ApplicationController
     @time[:flickr] = Time.now
       @flickr = do_flickr
     @time[:flickr] = Time.now - @time[:flickr]
-    @time[:youtube] = Time.now
-      @youtube = do_youtube
-    @time[:youtube] = Time.now - @time[:youtube]
+    @time[:yahoo] = Time.now
+      @yahoo = do_yahoo
+    @time[:yahoo] = Time.now - @time[:yahoo]
     render :layout => 'application'
   end
   
@@ -68,8 +72,8 @@ class SearchController < ApplicationController
     standard_response(@result)
   end
   
-  def youtube
-    @result = do_youtube
+  def yahoo
+    @result = do_yahoo
     standard_response(@result)
   end
   
@@ -104,14 +108,14 @@ class SearchController < ApplicationController
     @@flickr.search(@query, @options)
   end
   
-  def do_youtube
-    @@youtube.search(@query, @options)
+  def do_yahoo
+    @@yahoo.search(@query, @options)
   end
 
   def format_query
     @query = params[:q] || DEFAULT_QUERY
     @options = {}
-    # put any other URL params into a hash as long as they're not the controller, action or query term
+    # put any other URL params into a hash as long as they're not the rails defaults (controller, action) or the query itself (that goes in @query)
     params.each do |key,value|
       @options.merge!({ key.to_sym => value.to_s }) if key != 'controller' && key != 'action' && key != 'q' && key != 'format'
     end

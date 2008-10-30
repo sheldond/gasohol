@@ -1,0 +1,38 @@
+<form id="search_form" action="/search" method="get">
+  <% if params[:category] and params[:category].downcase != 'any' %>
+	  <input type="hidden" name="category" value="<%= params[:category] %>" />
+	<% end %>
+	<% if params[:sport] and params[:sport].downcase != 'any' %>
+	  <input type="hidden" name="sport" value="<%= params[:sport] %>" />
+	<% end %>
+	<input type="text" name="q" id="q1" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
+	<input type="image" name="commit" id="commit" src="/images/button_search.png" class="submit" />
+</form>
+
+<h3>Categories</h3>
+<ul>
+  <% if params[:category] and params[:category] != '' and params[:category].downcase != 'any' %>
+    <%= link_to '‹ All Categories', all_search_params(:category), :class => 'small' %>
+    <ul>
+      <li class="selected"><%= params[:category].titlecase.gsub(/\+/,' ') %></li>
+    </ul>
+  <% else %>
+    <% SearchController::CATEGORIES.each do |category| %>
+      <li><%= link_to category, all_search_params(:category).merge(:category => CGI::escape(category).downcase) %></li>
+    <% end %>
+  <% end %>
+</ul>
+
+<h3>Sports</h3>
+<% if params[:sport] and params[:sport].downcase != 'any' %>
+  <%= link_to '‹ All Sports', all_search_params(:sport), :class => 'small' %>
+  <ul>
+    <li class="selected"><%= params[:sport].titlecase.gsub(/\+/,' ') %></li>
+  </ul>
+<% else %>
+  <ul>
+    <% SearchController::SPORTS.each do |sport| %>
+      <li><%= link_to sport, all_search_params(:sport).merge(:sport => CGI::escape(sport).downcase) %></li>
+    <% end %>
+  </ul>
+<% end %>

@@ -11,7 +11,7 @@
   
   <% unless videos.empty? %>
     <h4>Video</h4>
-    <span class="subtitle">via <%= link_to 'YouTube', 'http://youtube.com' %></span>
+    <span class="subtitle">via <%= link_to 'Yahoo', 'http://video.search.yahoo.com' %></span>
     <ul id="video">
       <% videos.each do |video| %>
         <li><%= link_to(image_tag(video[:thumbnail], :alt => video[:title]), video[:url], :title => video[:title]) %></li>

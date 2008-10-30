@@ -64,6 +64,47 @@ strong {
 	width: 100%;
 }
 
+.ads {
+	text-align: center;
+}
+
+	.ads iframe {
+		display: inline;
+	}
+
+#home_search {
+	text-align: left;
+	margin: 100px auto;
+	width: 32em;
+}
+
+	#home_search #search_list {
+		margin: 0 0 .5em;
+		font-weight: bold;
+	}
+
+	#home_search input#q1 {
+		width: 20em;
+		padding: .1em;
+		font-size: 116%;
+		vertical-align: top;
+	}
+	
+	#home_search input#commit {
+		vertical-align: top;
+	}
+	
+	#home_search div#more_link {
+		font-size: 85%;
+		margin: .5em 0;
+	}
+	
+	#home_search div.column {
+		display: block;
+		float: left;
+		margin: 0 2em 0 0;
+	}
+
 #search_refine {
 	position: fixed;
 	width: 200px;
@@ -213,7 +254,13 @@ strong {
 		
 		#video img {
 			margin: 0 10px 10px 0;
+			width: 125px;
 		}
+		
+			#video li {
+				display: inline;
+				float: none;
+			}
 		
 		#tweets {
 			font-size: 93%;
@@ -351,12 +398,17 @@ strong {
 			float: none;
 			clear: both;
 			margin: .2em 0 0;
+			font-size: 93%;
 		}
 		
 			.result ul.meta li {
 				display: inline;
 				margin: 0 1em 0 0;
 			}
+			
+		.result .related_links img {
+			vertical-align: middle;
+		}
 		
 		.result .related_links {
 			display: block;

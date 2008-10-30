@@ -63,6 +63,17 @@ function selectOption(obj, value) {
 	}
 }
 
+// clicking the "more options" link on the homepage will affect whether this is an event-only search or not
+function moreOptions() {
+	if($('activity_search').visible()) {
+		$('category').value = 'activities';
+  	$('p').value = '1';
+  } else {
+		$('category').value = '';
+  	$('p').value = '';
+	}
+}
+
 // asset sports and types
 var assets = [
  	{	text:'Any',
