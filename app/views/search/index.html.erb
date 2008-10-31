@@ -33,14 +33,37 @@
           </ul>
         </div>
       <% end %>
-  
-      <%= render :partial => 'result', :collection => @google[:results] %>
-
+      
+      <!-- output actual records...got a little more complicated by inserting the plug for the events only search -->
+      <%# render :partial => 'result', :collection => @google[:results] %>
+      
+      <% 0.upto 3 do |i| %>
+        <%= render :partial => 'result', :locals => { :result => @google[:results][i] } %>
+      <% end %>
+      
+      <% if params[:p] == '1' %>
+      <!--
+        <div class="result" id="looking_for_events">
+          <h3>Looking for more than just events?</h3>
+          <p>&laquo; Try the <a href="#" onclick="switchSearch('keyword'); return false;">All</a> search</p>
+        </div>
+      -->
+      <% else %>
+        <div class="result" id="looking_for_events">
+          <h3>Just looking for activities and events?</h3>
+          <p>&laquo; Try the <a href="#" onclick="switchSearch('activity'); return false;">Events Only</a> search</p>
+        </div>
+      <% end %>
+      
+      <% 4.upto(@google[:results].length-1) do |i| %>
+        <%= render :partial => 'result', :locals => { :result => @google[:results][i] } %>
+      <% end %>
+      
       <div id="paging">
         <%= render :partial => 'paging', :locals => { :from => @google[:results].first[:num], 
                                                       :to => @google[:results].last[:num], 
                                                       :total => @google[:google][:total_results],
-                                                      :results_per_page => SearchController::RESULTS_PER_PAGE,
+                                                      :results_per_page => GASOHOL_CONFIG['google']['results'],
                                                       :query => @google[:google][:query] } %>
       </div>
       

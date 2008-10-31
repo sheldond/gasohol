@@ -1,0 +1,23 @@
+google:
+  url: http://203.36.98.91/search
+  results: 25
+  collection: active_collection
+  client: active_frontend
+  
+flickr:
+  url: http://api.flickr.com/services/rest
+  key: 4998fab76787cf39383c563b32ce4b8f
+  results: 6
+  
+twitter:
+  url: http://summize.com/search.json
+  results: 15
+  
+yahoo:
+  url: http://search.yahooapis.com/VideoSearchService/V1/videoSearch
+  results: 6
+  key: SslWrfnV34Hza9jMJk98j87wBJ65IxayPSZxv.oQBvp.Tu5HKZgqUsee1JY5CjYi
+  
+youtube:
+  url: http://gdata.youtube.com/feeds/api/videos
+  results: 6

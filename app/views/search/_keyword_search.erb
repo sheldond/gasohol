@@ -5,7 +5,7 @@
 	<% if params[:sport] and params[:sport].downcase != 'any' %>
 	  <input type="hidden" name="sport" value="<%= params[:sport] %>" />
 	<% end %>
-	<input type="text" name="q" id="q1" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
+	<input type="text" name="q" id="q1" value="<%= params[:q].gsub(/"/,'&quot;') %>" onkeypress="return handleEnter(this.form, event);" />
 	<input type="image" name="commit" id="commit" src="/images/button_search.png" class="submit" />
 </form>
 

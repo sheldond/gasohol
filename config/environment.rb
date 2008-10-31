@@ -57,3 +57,9 @@ Rails::Initializer.run do |config|
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
 end
+
+# turns debugging on in the logs
+GASOHOL_DEBUGGING = false
+
+# load up the config file
+GASOHOL_CONFIG = File.open(RAILS_ROOT+'/config/gasohol.yml') { |file| YAML::load(file) }

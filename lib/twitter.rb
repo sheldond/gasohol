@@ -1,6 +1,6 @@
 class Twitter
   
-  URL = 'http://summize.com/search.json'
+  URL = GASOHOL_CONFIG['twitter']['url']
   DEFAULTS = {}
   DEFAULT_OUTPUT = { :results => [], :twitter => {} }
   ALLOWED_PARAMS = DEFAULTS
@@ -14,7 +14,7 @@ class Twitter
     options = @@options.merge(options)
     begin
       json = Net::HTTP.get(URI.parse(query_path(query, options)))
-      RAILS_DEFAULT_LOGGER.info("\n\nTWITTER RESPONSE\n\n"+json.to_s)   # log the response
+      RAILS_DEFAULT_LOGGER.info("\n\nTWITTER RESPONSE\n\n"+json.to_s)  if GASOHOL_DEBUGGING  # log the response
       tweets = ActiveSupport::JSON.decode(json)['results']
       output[:results] = tweets.collect do |tweet|
         query.split(' ').each do |word|

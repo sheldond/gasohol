@@ -1,7 +1,7 @@
 class Flickr
 
-  URL = 'http://api.flickr.com/services/rest'
-  DEFAULTS = { :api_key => '4998fab76787cf39383c563b32ce4b8f', :method => 'flickr.photos.search', :sort => 'relevance', :format => 'json', :per_page => 6, :nojsoncallback => 1 }
+  URL = GASOHOL_CONFIG['flickr']['url']
+  DEFAULTS = { :api_key => GASOHOL_CONFIG['flickr']['key'], :method => 'flickr.photos.search', :sort => 'relevance', :format => 'json', :per_page => 6, :nojsoncallback => 1 }
   DEFAULT_OUTPUT = { :results => [], :flickr => { } }
   ALLOWED_PARAMS = DEFAULTS
   
@@ -14,7 +14,7 @@ class Flickr
     options = @@options.merge(options)
     begin
       json = Net::HTTP.get(URI.parse(query_path(query,options)))
-      RAILS_DEFAULT_LOGGER.info("\n\nFLICKR RESPONSE\n\n"+json.to_s)   # log the response
+      RAILS_DEFAULT_LOGGER.info("\n\nFLICKR RESPONSE\n\n"+json.to_s) if GASOHOL_DEBUGGING  # log the response
       flickr_photos = ActiveSupport::JSON.decode(json)['photos']['photo']
       output[:results] = flickr_photos.collect do |photo|
         { :thumbnail => "http://farm#{photo['farm']}.static.flickr.com/#{photo['server']}/#{photo['id']}_#{photo['secret']}_s.jpg",

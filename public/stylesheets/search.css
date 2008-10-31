@@ -336,16 +336,24 @@ strong {
 				font-weight: bold;
 			}
 		
-	.result .title a {
-		font-size: 116%;
-	}
-		
-		
 	.result {
 		margin: 0;
 		padding: .7em .5em;
 		overflow: hidden;
 	}
+	
+		div#looking_for_events {
+			background-color: #eeeeee;
+			color: #666666;
+		}
+		
+			div#looking_for_events:hover {
+				background-image: none;
+			}
+			
+			div#looking_for_events h3 {
+				font-weight: bold;
+			}
 		
 		.result.sub {
 			margin-left: 2em;
@@ -359,6 +367,11 @@ strong {
 			float: left;
 			margin: 0 0 .2em;
 		}
+		
+			.result h3 {
+				font-size: 116%;
+				display: inline;
+			}
 		
 			.result .save {
 				display: none;

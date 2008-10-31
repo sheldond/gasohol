@@ -4,8 +4,14 @@ require 'chronic'
 
 class Google
 
-  URL = 'http://203.36.98.91/search'
-  DEFAULTS = {:num => 10, :start => 0, :filter => 'p', :collection => 'active_collection', :client => 'active_frontend', :output => 'xml_no_dtd', :getfields => '*'}
+  URL = GASOHOL_CONFIG['google']['url']
+  DEFAULTS = {  :num => GASOHOL_CONFIG['google']['results'], 
+                :start => 0, 
+                :filter => 'p', 
+                :collection => GASOHOL_CONFIG['google']['collection'], 
+                :client => GASOHOL_CONFIG['google']['client'], 
+                :output => 'xml_no_dtd', 
+                :getfields => '*'}
   ALLOWED_PARAMS = DEFAULTS.keys + [:inurl]
   ACTIVE_TO_GOOGLE_PARAMS = { :category => 'category', :sport => 'channel' }    # translate our URL parameters into ones that google understands
   DEFAULT_OUTPUT = { :results => [], :featured => [], :google => { :query => '', :params => {}, :total_results => 0, :next => 0, :prev => 0, :google_query => '', :full_query_path => '' } }
@@ -62,7 +68,7 @@ class Google
               'wv' => 'west virginia',
               'wy' => 'wyoming' }
   
-  def initialize(options)
+  def initialize(options={})
     @@options = DEFAULTS.merge(options)
   end
   

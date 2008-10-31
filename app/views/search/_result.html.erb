@@ -3,7 +3,7 @@
     <div class="text">
       <div class="title">
         <%# link_to(image_tag('/images/icons/magnifier.png'), result.url, :class => 'snap_shots', :onclick => 'return false;') %>
-        <%= link_to un(result[:title].split('|').first.strip), result[:url] %>
+        <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
         <%= output_rating(result[:rating]) %>
       </div>
       <%= link_to(image_tag('/images/icons/add.png'), '#', :class => 'save', :title => 'Save to my Calendar') %>
@@ -27,6 +27,7 @@
         <strong>Related:</strong>
         <ul>
           <li id="result_<%= result[:num] %>_links_registrants"></li>
+          <li id="result_<%= result[:num] %>_links_watching"></li>
           <li id="result_<%= result[:num] %>_links_discussions"></li>
         </ul>
         <img src="/images/indicator.gif" alt="Loading..." id="result_<%= result[:num] %>_indicator" />
@@ -38,14 +39,15 @@
                               onSuccess:function(r) {
                                 total = r.responseText.evalJSON().google.total_results
                                 if(total > 0) {
-                                    $('result_<%= result[:num] %>_links_discussions').insert({bottom:'<a href="/search?q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&inurl=community.active.com">'+total+' discussions</a>'});
+                                    $('result_<%= result[:num] %>_links_discussions').insert({bottom:'<a href="/search?q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&inurl=community.active.com">'+total+' discussion'+(total != 1 ? 's' : '')+'</a>'});
                                   }
                                 $('result_<%= result[:num] %>_indicator').remove();
                                 }
                             });
         
           // generate a random number of registrants
-          $('result_<%= result[:num] %>_links_registrants').update('<a href="#">'+Math.round(Math.random()*100)+' registrants</a>');
+          $('result_<%= result[:num] %>_links_registrants').update('<a href="#">'+Math.round(Math.random()*80)+' registrants</a>');
+          $('result_<%= result[:num] %>_links_watching').update('<a href="#">'+Math.round(Math.random()*40)+' watching</a>');
         </script>
       <% end %>
     <% end %>

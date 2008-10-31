@@ -1,7 +1,7 @@
 class YouTube
   
-  URL = 'http://gdata.youtube.com/feeds/api/videos'
-  DEFAULTS = { 'max-results' => 4, :alt => 'json' }
+  URL = GASOHOL_CONFIG['youtube']['url']
+  DEFAULTS = { 'max-results' => GASOHOL_CONFIG['youtube']['results'], :alt => 'json' }
   DEFAULT_OUTPUT = { :results => [], :youtube => {} }
   ALLOWED_PARAMS = DEFAULTS
   
@@ -14,7 +14,7 @@ class YouTube
     options = @@options.merge(options)
     begin
       json = Net::HTTP.get(URI.parse(query_path(query,options)))
-      RAILS_DEFAULT_LOGGER.info("\n\nYOUTUBE RESPONSE\n"+json.to_s)   # log the response
+      RAILS_DEFAULT_LOGGER.info("\n\nYOUTUBE RESPONSE\n"+json.to_s) if GASOHOL_DEBUGGING  # log the response
       videos = ActiveSupport::JSON.decode(json)['feed']['entry']
       unless videos.blank?
         output[:results] = videos.collect do |video|

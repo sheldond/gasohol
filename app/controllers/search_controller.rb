@@ -2,12 +2,13 @@ class SearchController < ApplicationController
   
   DO_RELATED_SEARCH = true
   DEFAULT_QUERY = 'active'
-  RESULTS_PER_PAGE = 25
+  # RESULTS_PER_PAGE = 25
   SPORTS = ['Baseball','Basketball','Cycling','Fitness &amp; Nutrition','Football','Golf','Mind &amp; Body','Outdoors','Running','Soccer','Softball','Tennis','Travel','Triathlon','Women','Others']
   CATEGORIES = ['Activities','Articles','eteamz Sites','Facilities','Organizations','People','Products','Videos']
   TYPES = ['Camp','Class','Conference','Event','Membership','Program','Tee Time','Tournament']
   
-  @@google = Google.new(:num => RESULTS_PER_PAGE)
+  #@@google = Google.new(:num => RESULTS_PER_PAGE)
+  @@google = Google.new
   @@twitter = Twitter.new
   @@flickr = Flickr.new
   @@yahoo = Yahoo.new
