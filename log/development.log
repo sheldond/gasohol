@@ -7669,3 +7669,1454 @@ Rendered search/_paging (0.00083)
 Rendered search/_debug (0.00044)
 Rendered search/_context (0.00241)
 Completed in 2.37301 (0 reqs/sec) | Rendering: 0.06735 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?q=%22Honolulu+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#home (for 172.16.19.223 at 2008-10-31 11:26:57) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"home", "controller"=>"search"}
+Rendering template within layouts/application
+Rendering search/home
+Rendered search/_event_search (0.00097)
+Completed in 0.01233 (81 reqs/sec) | Rendering: 0.00806 (65%) | DB: 0.00000 (0%) | 200 OK [http://ui/]
+
+
+Processing SearchController#home (for 172.16.19.223 at 2008-10-31 11:26:57) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"home", "controller"=>"search"}
+Rendering template within layouts/application
+Rendering search/home
+Rendered search/_event_search (0.00092)
+Completed in 0.00786 (127 reqs/sec) | Rendering: 0.00360 (45%) | DB: 0.00000 (0%) | 200 OK [http://ui/]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:27:11) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"any", "end_date"=>"", "start_date"=>"", "category"=>"activities", "type"=>"Any", "action"=>"index", "p"=>"1", "q"=>"running", "controller"=>"search", "sport"=>"Any", "location"=>"California"}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01059)
+Rendered search/_event_search (0.00095)
+Rendered search/_search_refine (0.01245)
+Rendered search/_result (0.00166)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00144)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00149)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00150)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00144)
+Rendered search/_paging (0.00080)
+Rendered search/_debug (0.00043)
+Rendered search/_context (0.00242)
+Completed in 3.28607 (0 reqs/sec) | Rendering: 0.06354 (1%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?q=running&category=activities&p=1&start_date=&end_date=&location=California&radius=any&sport=Any&type=Any]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:14) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2008 Temecula Turkey Trot 5K &amp; 10K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40191 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222008+Temecula+Turkey+Trot+5K+%26amp%3B+10K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:15) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Oakland\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40099 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Oakland%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:15) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Daly City\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40073 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Daly+City%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:16) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Santa Clara\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.38903 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Santa+Clara%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:16) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Huntington Beach\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39225 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Huntington+Beach%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:17) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - San Jose\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39524 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+San+Jose%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:17) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Chula Vista\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39686 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Chula+Vista%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:18) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Virtual Run for World Run Day 2008 - Fresno area\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40019 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Virtual+Run+for+World+Run+Day+2008+-+Fresno+area%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:18) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Virtual Run for World Run Day 2008 - Sunnyvale\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40274 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Virtual+Run+for+World+Run+Day+2008+-+Sunnyvale%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:19) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Virtual Run for World Run Day 2008 - Fremont area\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.48240 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Virtual+Run+for+World+Run+Day+2008+-+Fremont+area%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:19) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Virtual Run for World Run Day 2008 - Oakland area\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.38760 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Virtual+Run+for+World+Run+Day+2008+-+Oakland+area%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:20) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Virtual Run for World Run Day 2008 - Huntington Beach area ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39103 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Virtual+Run+for+World+Run+Day+2008+-+Huntington+Beach+area+...%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:20) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Virtual Run for World Run Day 2008 - Daly City area\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39154 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Virtual+Run+for+World+Run+Day+2008+-+Daly+City+area%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:20) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Virtual Run for World Run Day 2008 - Chula Vista area\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.41182 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Virtual+Run+for+World+Run+Day+2008+-+Chula+Vista+area%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:21) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day Dedication Run - San Diego, CA\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40618 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+Dedication+Run+-+San+Diego%2C+CA%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:21) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Marina Green 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39373 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Marina+Green+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:22) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"GOTRSD Spring 2009 Volunteer Application\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.41202 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22GOTRSD+Spring+2009+Volunteer+Application%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:22) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Two Cities Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.43091 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Two+Cities+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:23) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Sawyer Camp 5K/10K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40349 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Sawyer+Camp+5K%2F10K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:23) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Avia OC Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39434 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Avia+OC+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:24) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Big Cat Challenge 2008\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40142 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Big+Cat+Challenge+2008%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:24) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"6th Annual Learning for Life 15K Run/5K Walk Beach Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40171 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%226th+Annual+Learning+for+Life+15K+Run%2F5K+Walk+Beach+Run%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:25) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"XTERRA Malibu Creek Challenge Trail Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40411 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22XTERRA+Malibu+Creek+Challenge+Trail+Run%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:25) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Catalina Eco Marathon - 2008\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39957 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Catalina+Eco+Marathon+-+2008%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:26) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"San Jose Galloway Training Program\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40134 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22San+Jose+Galloway+Training+Program%22&inurl=community.active.com]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:27:26) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"any", "end_date"=>"", "start_date"=>"", "category"=>"activities", "type"=>"Any", "action"=>"index", "p"=>"1", "q"=>"running", "controller"=>"search", "sport"=>"Any", "location"=>"California"}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01073)
+Rendered search/_event_search (0.00100)
+Rendered search/_search_refine (0.01269)
+Rendered search/_result (0.00168)
+Rendered search/_result (0.00156)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00150)
+Rendered search/_result (0.00155)
+Rendered search/_result (0.00150)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00150)
+Rendered search/_result (0.00153)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00157)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00154)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00150)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00150)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00153)
+Rendered search/_result (0.00149)
+Rendered search/_result (0.00149)
+Rendered search/_result (0.00150)
+Rendered search/_paging (0.00083)
+Rendered search/_debug (0.00043)
+Rendered search/_context (0.00238)
+Completed in 2.98979 (0 reqs/sec) | Rendering: 0.06508 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?q=running&category=activities&p=1&start_date=&end_date=&location=California&radius=any&sport=Any&type=Any]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:27:40) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"25", "end_date"=>"", "start_date"=>"", "category"=>"activities", "type"=>"Any", "action"=>"index", "p"=>"1", "q"=>"running", "controller"=>"search", "sport"=>"Any", "location"=>"San Diego"}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01071)
+Rendered search/_event_search (0.00097)
+Rendered search/_search_refine (0.01261)
+Rendered search/_result (0.00167)
+Rendered search/_result (0.00149)
+Rendered search/_result (0.00161)
+Rendered search/_result (0.00162)
+Rendered search/_result (0.00159)
+Rendered search/_result (0.00150)
+Rendered search/_result (0.00156)
+Rendered search/_result (0.00149)
+Rendered search/_result (0.00157)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00154)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00155)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00144)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00156)
+Rendered search/_paging (0.00085)
+Rendered search/_debug (0.00043)
+Rendered search/_context (0.00230)
+Completed in 3.05523 (0 reqs/sec) | Rendering: 0.06497 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?category=activities&p=1&q=running&start_date=&end_date=&location=San+Diego&radius=25&sport=Any&type=Any]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:43) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"San Diego Track Club Marathon Training Program\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40856 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22San+Diego+Track+Club+Marathon+Training+Program%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:44) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"GOTRSD Spring 2009 Volunteer Application\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39117 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22GOTRSD+Spring+2009+Volunteer+Application%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:44) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day Dedication Run - San Diego, CA\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39404 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+Dedication+Run+-+San+Diego%2C+CA%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:44) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Coastwise Mile - La Jolla/San Diego, CA\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39905 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Coastwise+Mile+-+La+Jolla%2FSan+Diego%2C+CA%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:45) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"San Diego Velodrome Adult Track Classes - Starting October 1\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40210 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22San+Diego+Velodrome+Adult+Track+Classes+-+Starting+October+1%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:45) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2nd Annual Red Shoe Shuffle 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40131 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222nd+Annual+Red+Shoe+Shuffle+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:46) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"San Diego 100 Mile Endurance Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.53757 (1 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22San+Diego+100+Mile+Endurance+Run%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:47) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Girls Hometown Sluggers\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39592 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Girls+Hometown+Sluggers%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:47) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Komen San Diego Race for a Cure 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.43175 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Komen+San+Diego+Race+for+a+Cure+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:47) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"UCSD Tritonman\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39165 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22UCSD+Tritonman%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:48) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2009 San Diego Resolution Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39386 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222009+San+Diego+Resolution+Run%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:48) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"22nd Annual Light the Night Against Crime 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.42021 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2222nd+Annual+Light+the+Night+Against+Crime+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:49) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Fitness Rewards - Copper\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40028 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Fitness+Rewards+-+Copper%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:49) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Fitness Rewards - Gold\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40186 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Fitness+Rewards+-+Gold%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:50) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Fitness Rewards - Silver\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39129 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Fitness+Rewards+-+Silver%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:50) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Triathlete Magazine Subscription\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.38850 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Triathlete+Magazine+Subscription%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:51) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Mission Bay Triathlon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.44964 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Mission+Bay+Triathlon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:51) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Xterra Wetsuits Solana Beach Triathlon and Duathlon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39318 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Xterra+Wetsuits+Solana+Beach+Triathlon+and+Duathlon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:52) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Holiday Bowl 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40894 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Holiday+Bowl+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:52) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Newport To San Diego Race\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39405 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Newport+To+San+Diego+Race%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:53) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"ActiveAdvantage Membership\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.43364 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22ActiveAdvantage+Membership%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:53) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"22nd Annual July 4th Scripps Ranch Bike Rides\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39887 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2222nd+Annual+July+4th+Scripps+Ranch+Bike+Rides%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:54) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"ActiveAdvantage Teams Membership\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.46910 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22ActiveAdvantage+Teams+Membership%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:54) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2007/2008 Triathlon Training Program\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.42304 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222007%2F2008+Triathlon+Training+Program%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:27:55) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"San Diego Velodrome Adult Track Classes - Starting August 13\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.42081 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22San+Diego+Velodrome+Adult+Track+Classes+-+Starting+August+13%22&inurl=community.active.com]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:27:55) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"25", "end_date"=>"", "start_date"=>"", "category"=>"activities", "type"=>"Any", "action"=>"index", "p"=>"1", "q"=>"running", "controller"=>"search", "sport"=>"Any", "location"=>"San Diego"}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01084)
+Rendered search/_event_search (0.00097)
+Rendered search/_search_refine (0.01282)
+Rendered search/_result (0.00171)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00164)
+Rendered search/_result (0.00165)
+Rendered search/_result (0.00166)
+Rendered search/_result (0.00158)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00162)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00161)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00149)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00154)
+Rendered search/_result (0.00149)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00150)
+Rendered search/_result (0.00160)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00158)
+Rendered search/_paging (0.00083)
+Rendered search/_debug (0.00043)
+Rendered search/_context (0.00235)
+Completed in 2.90747 (0 reqs/sec) | Rendering: 0.06681 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?category=activities&p=1&q=running&start_date=&end_date=&location=San+Diego&radius=25&sport=Any&type=Any]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:28:36) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"index", "start"=>"25", "q"=>"running", "controller"=>"search"}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01125)
+Rendered search/_event_search (0.00097)
+Rendered search/_search_refine (0.01311)
+Rendered search/_result (0.00158)
+Rendered search/_result (0.00141)
+Rendered search/_result (0.00140)
+Rendered search/_result (0.00139)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00137)
+Rendered search/_result (0.00138)
+Rendered search/_result (0.00134)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00139)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00132)
+Rendered search/_result (0.00134)
+Rendered search/_result (0.00133)
+Rendered search/_result (0.00137)
+Rendered search/_result (0.00142)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00134)
+Rendered search/_result (0.00135)
+Rendered search/_result (0.00141)
+Rendered search/_result (0.00134)
+Rendered search/_result (0.00138)
+Rendered search/_result (0.00134)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00138)
+Rendered search/_paging (0.00116)
+Rendered search/_debug (0.00042)
+Rendered search/_context (0.00228)
+Completed in 3.03261 (0 reqs/sec) | Rendering: 0.06121 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?q=running&start=25]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:28:39) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"index", "start"=>"25", "q"=>"running", "controller"=>"search"}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01115)
+Rendered search/_event_search (0.00095)
+Rendered search/_search_refine (0.01300)
+Rendered search/_result (0.00160)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00142)
+Rendered search/_result (0.00141)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00141)
+Rendered search/_result (0.00141)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00139)
+Rendered search/_result (0.00138)
+Rendered search/_result (0.00137)
+Rendered search/_result (0.00133)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00138)
+Rendered search/_result (0.00139)
+Rendered search/_result (0.00141)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00137)
+Rendered search/_result (0.00141)
+Rendered search/_result (0.00141)
+Rendered search/_result (0.00137)
+Rendered search/_result (0.00135)
+Rendered search/_result (0.00134)
+Rendered search/_result (0.00140)
+Rendered search/_result (0.00141)
+Rendered search/_paging (0.00119)
+Rendered search/_debug (0.00042)
+Rendered search/_context (0.00226)
+Completed in 1.91667 (0 reqs/sec) | Rendering: 0.06173 (3%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?q=running&start=25]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:29:04) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"any", "end_date"=>"", "start_date"=>"", "category"=>"activities", "type"=>"Any", "action"=>"index", "commit2.x"=>"25", "p"=>"1", "commit2.y"=>"5", "q"=>"running", "controller"=>"search", "sport"=>"Any", "location"=>""}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01104)
+Rendered search/_event_search (0.00096)
+Rendered search/_search_refine (0.01289)
+Rendered search/_result (0.00166)
+Rendered search/_result (0.00176)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00144)
+Rendered search/_result (0.00149)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00144)
+Rendered search/_result (0.00156)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00147)
+Rendered search/_paging (0.00081)
+Rendered search/_debug (0.00042)
+Rendered search/_context (0.00233)
+Completed in 3.26641 (0 reqs/sec) | Rendering: 0.06443 (1%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?category=activities&p=1&q=running&start_date=&end_date=&location=&radius=any&sport=Any&type=Any&commit2.x=25&commit2.y=5]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:08) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"X-Treme Running Camp, 2008\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.48499 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22X-Treme+Running+Camp%2C+2008%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:08) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Running from an Angel Marathon, 1/2, 10K, 5K, &amp; 50 Mile Run ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39993 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Running+from+an+Angel+Marathon%2C+1%2F2%2C+10K%2C+5K%2C+%26amp%3B+50+Mile+Run+...%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:09) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"5k Running the Trail for Education/Blackwater Heritage Trail ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39014 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%225k+Running+the+Trail+for+Education%2FBlackwater+Heritage+Trail+...%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:09) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Honolulu Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.42052 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Honolulu+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:10) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Manchester Road Race\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.49717 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Manchester+Road+Race%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:10) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Honolulu\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39348 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Honolulu%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:11) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Edison\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40230 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Edison%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:11) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2008 Green and Lean 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39977 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222008+Green+and+Lean+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:11) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2008 Temecula Turkey Trot 5K &amp; 10K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.46948 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222008+Temecula+Turkey+Trot+5K+%26amp%3B+10K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:12) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Rock &#39;n&#39; Roll San Antonio Marathon &amp; 1/2 Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39121 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Rock+%26%2339%3Bn%26%2339%3B+Roll+San+Antonio+Marathon+%26amp%3B+1%2F2+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:12) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Duxbury\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.38957 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Duxbury%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:13) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Tulsa\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40099 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Tulsa%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:13) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Oakland\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39194 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Oakland%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:14) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Indianapolis\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40165 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Indianapolis%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:14) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Friends of Kailua High 5k/10 Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39971 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Friends+of+Kailua+High+5k%2F10+Run%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:15) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Daly City\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39146 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Daly+City%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:15) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Santa Clara\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39193 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Santa+Clara%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:16) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"10th Annual World Run Day - Huntington Beach\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39483 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2210th+Annual+World+Run+Day+-+Huntington+Beach%22&inurl=community.active.com]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:29:16) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"any", "end_date"=>"", "start_date"=>"", "category"=>"activities", "type"=>"Any", "action"=>"index", "commit2.x"=>"25", "p"=>"1", "commit2.y"=>"5", "q"=>"running", "controller"=>"search", "sport"=>"Any", "location"=>""}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01101)
+Rendered search/_event_search (0.00096)
+Rendered search/_search_refine (0.01285)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00178)
+Rendered search/_result (0.00160)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00143)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00144)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00154)
+Rendered search/_result (0.00160)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00149)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00147)
+Rendered search/_result (0.00144)
+Rendered search/_result (0.00143)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00149)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00144)
+Rendered search/_result (0.00143)
+Rendered search/_result (0.00146)
+Rendered search/_result (0.00150)
+Rendered search/_result (0.00148)
+Rendered search/_paging (0.00081)
+Rendered search/_debug (0.00042)
+Rendered search/_context (0.00227)
+Completed in 2.57135 (0 reqs/sec) | Rendering: 0.06385 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?category=activities&p=1&q=running&start_date=&end_date=&location=&radius=any&sport=Any&type=Any&commit2.x=25&commit2.y=5]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:29:19) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"any", "end_date"=>"", "start_date"=>"", "category"=>"activities", "type"=>"Any", "action"=>"index", "p"=>"1", "q"=>"marathon", "controller"=>"search", "sport"=>"Any", "location"=>""}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01058)
+Rendered search/_event_search (0.00095)
+Rendered search/_search_refine (0.01242)
+Rendered search/_featured (0.00035)
+Rendered search/_result (0.00164)
+Rendered search/_result (0.00153)
+Rendered search/_result (0.00181)
+Rendered search/_result (0.00170)
+Rendered search/_result (0.00172)
+Rendered search/_result (0.00154)
+Rendered search/_result (0.00157)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00155)
+Rendered search/_result (0.00153)
+Rendered search/_result (0.00179)
+Rendered search/_result (0.00158)
+Rendered search/_result (0.00162)
+Rendered search/_result (0.00157)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00172)
+Rendered search/_result (0.00171)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00164)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00173)
+Rendered search/_result (0.00166)
+Rendered search/_result (0.00152)
+Rendered search/_paging (0.00082)
+Rendered search/_debug (0.00043)
+Rendered search/_context (0.00233)
+Completed in 2.52802 (0 reqs/sec) | Rendering: 0.06731 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?category=activities&p=1&q=marathon&start_date=&end_date=&location=&radius=any&sport=Any&type=Any]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:22) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Two Cities Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.42861 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Two+Cities+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:22) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Honolulu Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.42252 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Honolulu+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:23) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Rock &#39;n&#39; Roll San Antonio Marathon &amp; 1/2 Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39501 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Rock+%26%2339%3Bn%26%2339%3B+Roll+San+Antonio+Marathon+%26amp%3B+1%2F2+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:23) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Austin Marathon &amp; Half Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.47967 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Austin+Marathon+%26amp%3B+Half+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:24) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Carlsbad Marathon &amp; Half Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39729 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Carlsbad+Marathon+%26amp%3B+Half+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:24) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"San Diego Track Club Marathon Training Program\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40235 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22San+Diego+Track+Club+Marathon+Training+Program%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:25) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Long Beach International City Bank Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.41946 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Long+Beach+International+City+Bank+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:25) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Avia OC Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.46148 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Avia+OC+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:26) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Catalina Eco Marathon - 2008\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39836 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Catalina+Eco+Marathon+-+2008%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:26) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Tecumseh Trail Marathon &amp; Yellowwood Lake Fun Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39061 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Tecumseh+Trail+Marathon+%26amp%3B+Yellowwood+Lake+Fun+Run%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:26) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2008 Amica Insurance Seattle Marathon, Half Marathon, 5K, and Kids ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39016 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222008+Amica+Insurance+Seattle+Marathon%2C+Half+Marathon%2C+5K%2C+and+Kids+...%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:27) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"The Sedona Marathon Event\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40140 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22The+Sedona+Marathon+Event%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:27) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Big Bear Marathon, Half, 5K, Bike Tour\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39944 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Big+Bear+Marathon%2C+Half%2C+5K%2C+Bike+Tour%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:28) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Harbor Half Marathon &amp; Relay 2008\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40067 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Harbor+Half+Marathon+%26amp%3B+Relay+2008%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:28) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"RWT&#39;s Bizz Johnson Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40485 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22RWT%26%2339%3Bs+Bizz+Johnson+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:29) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Running from an Angel Marathon, 1/2, 10K, 5K, &amp; 50 Mile Run ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39755 (2 reqs/sec) | Rendering: 0.00010 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Running+from+an+Angel+Marathon%2C+1%2F2%2C+10K%2C+5K%2C+%26amp%3B+50+Mile+Run+...%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:29) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Sony Ericsson City of Oaks Marathon &amp; Rex Healthcare Half Marathon ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39187 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Sony+Ericsson+City+of+Oaks+Marathon+%26amp%3B+Rex+Healthcare+Half+Marathon+...%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:30) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Pensacola Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.41407 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Pensacola+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:30) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Make Cures Happen Rock &#39;n&#39; Roll San Antonio Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39709 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Make+Cures+Happen+Rock+%26%2339%3Bn%26%2339%3B+Roll+San+Antonio+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:31) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Rose Bowl Half Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.42324 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Rose+Bowl+Half+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:31) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Fort Lauderdale A1A Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.42095 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Fort+Lauderdale+A1A+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:32) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Camp Pendleton Heartbreak Ridge Half Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.41966 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Camp+Pendleton+Heartbreak+Ridge+Half+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:32) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"11th Annual Death Valley Borax Marathon, Half Marathon &amp; 10K ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40285 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%2211th+Annual+Death+Valley+Borax+Marathon%2C+Half+Marathon+%26amp%3B+10K+...%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:29:33) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Mississippi Blues Marathon and Half-Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.47210 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Mississippi+Blues+Marathon+and+Half-Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:29:33) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"any", "end_date"=>"", "start_date"=>"", "category"=>"activities", "type"=>"Any", "action"=>"index", "p"=>"1", "q"=>"marathon", "controller"=>"search", "sport"=>"Any", "location"=>""}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01055)
+Rendered search/_event_search (0.00100)
+Rendered search/_search_refine (0.01244)
+Rendered search/_featured (0.00036)
+Rendered search/_result (0.00164)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00180)
+Rendered search/_result (0.00172)
+Rendered search/_result (0.00176)
+Rendered search/_result (0.00153)
+Rendered search/_result (0.00153)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00153)
+Rendered search/_result (0.00155)
+Rendered search/_result (0.00175)
+Rendered search/_result (0.00159)
+Rendered search/_result (0.00158)
+Rendered search/_result (0.00158)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00175)
+Rendered search/_result (0.00169)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00165)
+Rendered search/_result (0.00153)
+Rendered search/_result (0.00154)
+Rendered search/_result (0.00145)
+Rendered search/_result (0.00171)
+Rendered search/_result (0.00161)
+Rendered search/_result (0.00147)
+Rendered search/_paging (0.00085)
+Rendered search/_debug (0.00044)
+Rendered search/_context (0.00230)
+Completed in 2.56430 (0 reqs/sec) | Rendering: 0.06700 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?category=activities&p=1&q=marathon&start_date=&end_date=&location=&radius=any&sport=Any&type=Any]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:29:36) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"index", "q"=>"\"Two Cities Marathon\"", "controller"=>"search", "inurl"=>"community.active.com"}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01183)
+Rendered search/_event_search (0.00096)
+Rendered search/_search_refine (0.01375)
+Rendered search/_featured (0.00036)
+Rendered search/_result (0.00129)
+Rendered search/_result (0.00119)
+Rendered search/_result (0.00118)
+Rendered search/_result (0.00119)
+Rendered search/_result (0.00118)
+Rendered search/_result (0.00117)
+Rendered search/_result (0.00129)
+Rendered search/_result (0.00119)
+Rendered search/_result (0.00112)
+Rendered search/_paging (0.00078)
+Rendered search/_debug (0.00042)
+Rendered search/_context (0.00036)
+Completed in 1.86362 (0 reqs/sec) | Rendering: 0.03273 (1%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?q=%22Two+Cities+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:29:38) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"index", "q"=>"\"Two Cities Marathon\"", "controller"=>"search", "inurl"=>"community.active.com"}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01209)
+Rendered search/_event_search (0.00104)
+Rendered search/_search_refine (0.01417)
+Rendered search/_featured (0.00038)
+Rendered search/_result (0.00131)
+Rendered search/_result (0.00125)
+Rendered search/_result (0.00123)
+Rendered search/_result (0.00125)
+Rendered search/_result (0.00124)
+Rendered search/_result (0.00126)
+Rendered search/_result (0.00132)
+Rendered search/_result (0.00122)
+Rendered search/_result (0.00120)
+Rendered search/_paging (0.00081)
+Rendered search/_debug (0.00044)
+Rendered search/_context (0.00038)
+Completed in 1.46638 (0 reqs/sec) | Rendering: 0.03410 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?q=%22Two+Cities+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:10) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Two Cities Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.43303 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Two+Cities+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:10) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Honolulu Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.43264 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Honolulu+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:11) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Rock &#39;n&#39; Roll San Antonio Marathon &amp; 1/2 Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39759 (2 reqs/sec) | Rendering: 0.00014 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Rock+%26%2339%3Bn%26%2339%3B+Roll+San+Antonio+Marathon+%26amp%3B+1%2F2+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:11) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Austin Marathon &amp; Half Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40016 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Austin+Marathon+%26amp%3B+Half+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:12) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Carlsbad Marathon &amp; Half Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40086 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Carlsbad+Marathon+%26amp%3B+Half+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:12) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"San Diego Track Club Marathon Training Program\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40192 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22San+Diego+Track+Club+Marathon+Training+Program%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:13) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Long Beach International City Bank Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.42686 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Long+Beach+International+City+Bank+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:13) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Avia OC Marathon\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39836 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Avia+OC+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:14) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Catalina Eco Marathon - 2008\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39117 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Catalina+Eco+Marathon+-+2008%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:14) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Tecumseh Trail Marathon &amp; Yellowwood Lake Fun Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39436 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Tecumseh+Trail+Marathon+%26amp%3B+Yellowwood+Lake+Fun+Run%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.223 at 2008-10-31 11:32:15) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2008 Amica Insurance Seattle Marathon, Half Marathon, 5K, and Kids ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40145 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222008+Amica+Insurance+Seattle+Marathon%2C+Half+Marathon%2C+5K%2C+and+Kids+...%22&inurl=community.active.com]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:32:15) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"any", "end_date"=>"", "start_date"=>"", "category"=>"activities", "type"=>"Any", "action"=>"index", "p"=>"1", "q"=>"marathon", "controller"=>"search", "sport"=>"Any", "location"=>""}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01049)
+Rendered search/_event_search (0.00097)
+Rendered search/_search_refine (0.01232)
+Rendered search/_featured (0.00035)
+Rendered search/_result (0.00168)
+Rendered search/_result (0.00155)
+Rendered search/_result (0.00178)
+Rendered search/_result (0.00172)
+Rendered search/_result (0.00172)
+Rendered search/_result (0.00155)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00153)
+Rendered search/_result (0.00153)
+Rendered search/_result (0.00155)
+Rendered search/_result (0.00174)
+Rendered search/_result (0.00158)
+Rendered search/_result (0.00159)
+Rendered search/_result (0.00156)
+Rendered search/_result (0.00161)
+Rendered search/_result (0.00175)
+Rendered search/_result (0.00175)
+Rendered search/_result (0.00150)
+Rendered search/_result (0.00166)
+Rendered search/_result (0.00151)
+Rendered search/_result (0.00157)
+Rendered search/_result (0.00148)
+Rendered search/_result (0.00175)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00148)
+Rendered search/_paging (0.00082)
+Rendered search/_debug (0.00042)
+Rendered search/_context (0.00234)
+Completed in 2.96304 (0 reqs/sec) | Rendering: 0.06711 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?category=activities&p=1&q=marathon&start_date=&end_date=&location=&radius=any&sport=Any&type=Any]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:32:18) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"index", "q"=>"\"Honolulu Marathon\"", "controller"=>"search", "inurl"=>"community.active.com"}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01177)
+Rendered search/_event_search (0.00097)
+Rendered search/_search_refine (0.01362)
+Rendered search/_featured (0.00035)
+Rendered search/_result (0.00127)
+Rendered search/_result (0.00128)
+Rendered search/_result (0.00119)
+Rendered search/_result (0.08340)
+Rendered search/_result (0.00126)
+Rendered search/_result (0.00125)
+Rendered search/_result (0.00126)
+Rendered search/_result (0.00119)
+Rendered search/_result (0.00130)
+Rendered search/_result (0.00119)
+Rendered search/_result (0.00120)
+Rendered search/_result (0.00119)
+Rendered search/_result (0.00113)
+Rendered search/_result (0.00122)
+Rendered search/_result (0.00120)
+Rendered search/_result (0.00122)
+Rendered search/_result (0.00121)
+Rendered search/_result (0.00119)
+Rendered search/_result (0.00114)
+Rendered search/_result (0.00126)
+Rendered search/_result (0.00128)
+Rendered search/_result (0.00127)
+Rendered search/_result (0.00123)
+Rendered search/_result (0.00124)
+Rendered search/_result (0.00124)
+Rendered search/_paging (0.00084)
+Rendered search/_debug (0.00044)
+Rendered search/_context (0.00240)
+Completed in 2.15971 (0 reqs/sec) | Rendering: 0.14302 (6%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?q=%22Honolulu+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#index (for 172.16.19.223 at 2008-10-31 11:32:21) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"action"=>"index", "q"=>"\"Honolulu Marathon\"", "controller"=>"search", "inurl"=>"community.active.com"}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01223)
+Rendered search/_event_search (0.00097)
+Rendered search/_search_refine (0.01420)
+Rendered search/_featured (0.00037)
+Rendered search/_result (0.00134)
+Rendered search/_result (0.00129)
+Rendered search/_result (0.00128)
+Rendered search/_result (0.00126)
+Rendered search/_result (0.00126)
+Rendered search/_result (0.00126)
+Rendered search/_result (0.00125)
+Rendered search/_result (0.00125)
+Rendered search/_result (0.00130)
+Rendered search/_result (0.00121)
+Rendered search/_result (0.00121)
+Rendered search/_result (0.00123)
+Rendered search/_result (0.00116)
+Rendered search/_result (0.00122)
+Rendered search/_result (0.00117)
+Rendered search/_result (0.00122)
+Rendered search/_result (0.00120)
+Rendered search/_result (0.00120)
+Rendered search/_result (0.00115)
+Rendered search/_result (0.00125)
+Rendered search/_result (0.00122)
+Rendered search/_result (0.00123)
+Rendered search/_result (0.00121)
+Rendered search/_result (0.00121)
+Rendered search/_result (0.00123)
+Rendered search/_paging (0.00082)
+Rendered search/_debug (0.00043)
+Rendered search/_context (0.00235)
+Completed in 2.51493 (0 reqs/sec) | Rendering: 0.06043 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?q=%22Honolulu+Marathon%22&inurl=community.active.com]
+
+
+Processing SearchController#home (for 172.16.19.79 at 2008-10-31 11:40:32) [GET]
+  Session ID: d789ec0f92ccdcf50853cfea16c610ff
+  Parameters: {"action"=>"home", "controller"=>"search"}
+Rendering template within layouts/application
+Rendering search/home
+Rendered search/_event_search (0.00092)
+Completed in 0.00795 (125 reqs/sec) | Rendering: 0.00363 (45%) | DB: 0.00000 (0%) | 200 OK [http://ui/]
+
+
+Processing SearchController#index (for 172.16.19.79 at 2008-10-31 11:40:36) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"any", "end_date"=>"", "start_date"=>"", "category"=>"", "type"=>"Any", "action"=>"index", "p"=>"", "q"=>"5k", "controller"=>"search", "sport"=>"Any", "location"=>""}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01454)
+Rendered search/_event_search (0.00095)
+Rendered search/_search_refine (0.01638)
+Rendered search/_result (0.00138)
+Rendered search/_result (0.00127)
+Rendered search/_result (0.00127)
+Rendered search/_result (0.00127)
+Rendered search/_result (0.00126)
+Rendered search/_result (0.00125)
+Rendered search/_result (0.00139)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00138)
+Rendered search/_result (0.00138)
+Rendered search/_result (0.00133)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00134)
+Rendered search/_result (0.00138)
+Rendered search/_result (0.00134)
+Rendered search/_result (0.00140)
+Rendered search/_result (0.00138)
+Rendered search/_result (0.00142)
+Rendered search/_result (0.00156)
+Rendered search/_result (0.00165)
+Rendered search/_result (0.00152)
+Rendered search/_result (0.00144)
+Rendered search/_result (0.00136)
+Rendered search/_result (0.00133)
+Rendered search/_result (0.00132)
+Rendered search/_paging (0.00081)
+Rendered search/_debug (0.00042)
+Rendered search/_context (0.00244)
+Completed in 2.68423 (0 reqs/sec) | Rendering: 0.06427 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?q=5k&category=&p=&start_date=&end_date=&location=&radius=any&sport=Any&type=Any]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:39) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2008 Green and Lean 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39753 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222008+Green+and+Lean+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:39) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Kat Runs Antarctica: Race Report: Run Around The Square 5K AKA A ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.41166 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Kat+Runs+Antarctica%3A+Race+Report%3A+Run+Around+The+Square+5K+AKA+A+...%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:40) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Second Annual DAPA 5K: Fans of Than\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.41344 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Second+Annual+DAPA+5K%3A+Fans+of+Than%22&inurl=community.active.com]
+
+
+Processing SearchController#index (for 172.16.19.79 at 2008-10-31 11:40:49) [GET]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"radius"=>"any", "end_date"=>"", "start_date"=>"", "category"=>"activities", "type"=>"Any", "action"=>"index", "commit2.x"=>"31", "p"=>"1", "commit2.y"=>"9", "q"=>"5k", "controller"=>"search", "sport"=>"Any", "location"=>""}
+Rendering template within layouts/application
+Rendering search/index
+Rendered search/_keyword_search (0.01133)
+Rendered search/_event_search (0.00096)
+Rendered search/_search_refine (0.01329)
+Rendered search/_result (0.00170)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00166)
+Rendered search/_result (0.00161)
+Rendered search/_result (0.00158)
+Rendered search/_result (0.00169)
+Rendered search/_result (0.00161)
+Rendered search/_result (0.00173)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00165)
+Rendered search/_result (0.00175)
+Rendered search/_result (0.00161)
+Rendered search/_result (0.00161)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00161)
+Rendered search/_result (0.00164)
+Rendered search/_result (0.00157)
+Rendered search/_result (0.00161)
+Rendered search/_result (0.00170)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00163)
+Rendered search/_result (0.00174)
+Rendered search/_result (0.00167)
+Rendered search/_result (0.00158)
+Rendered search/_result (0.00158)
+Rendered search/_paging (0.00084)
+Rendered search/_debug (0.00045)
+Rendered search/_context (0.00234)
+Completed in 2.72682 (0 reqs/sec) | Rendering: 0.06951 (2%) | DB: 0.00000 (0%) | 200 OK [http://ui/search?category=activities&p=1&q=5k&start_date=&end_date=&location=&radius=any&sport=Any&type=Any&commit2.x=31&commit2.y=9]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:52) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2008 Green and Lean 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39187 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222008+Green+and+Lean+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:52) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"4th ANNUAL NEW YEARS DAY 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40153 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%224th+ANNUAL+NEW+YEARS+DAY+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:53) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"BA 5k\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39850 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22BA+5k%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:53) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Mango Days 5K 2009\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39864 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Mango+Days+5K+2009%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:54) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"SkirtChaser 5k - Austin\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40097 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22SkirtChaser+5k+-+Austin%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:54) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2008 Temecula Turkey Trot 5K &amp; 10K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39140 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222008+Temecula+Turkey+Trot+5K+%26amp%3B+10K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:55) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Friends of Kailua High 5k/10 Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40047 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Friends+of+Kailua+High+5k%2F10+Run%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:55) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Outrun The FBI 5K Run/Walk &amp; 1-mile fun walk\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39659 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Outrun+The+FBI+5K+Run%2FWalk+%26amp%3B+1-mile+fun+walk%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:56) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Dogfish Dash 5k/10k\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40999 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Dogfish+Dash+5k%2F10k%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:56) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Cheshire Canal Canter 5K and Kids Half-Miler\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40114 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Cheshire+Canal+Canter+5K+and+Kids+Half-Miler%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:57) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"October Beer Fest on November 1st 5K &amp; Ringshoes Tournament ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40194 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22October+Beer+Fest+on+November+1st+5K+%26amp%3B+Ringshoes+Tournament+...%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:57) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"St Judes Ranch for Children Jingle Bell 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40266 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22St+Judes+Ranch+for+Children+Jingle+Bell+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:58) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Making Strides Against Breast Cancer 5K Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39872 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Making+Strides+Against+Breast+Cancer+5K+Run%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:58) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Marina Green 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40056 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Marina+Green+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:59) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Boo Bash Dash 5k/10k\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40213 (2 reqs/sec) | Rendering: 0.00008 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Boo+Bash+Dash+5k%2F10k%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:40:59) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Sawyer Camp 5K/10K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39422 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Sawyer+Camp+5K%2F10K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:41:00) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"3rd Annual New Balance Reindeer Romp 5K\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40848 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%223rd+Annual+New+Balance+Reindeer+Romp+5K%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:41:00) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Seaford Hot Chocolate 5K Run/Walk\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39082 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Seaford+Hot+Chocolate+5K+Run%2FWalk%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:41:00) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Jordan&#39;s Journey 5K run/walk/roll\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40976 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Jordan%26%2339%3Bs+Journey+5K+run%2Fwalk%2Froll%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:41:01) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"6th Annual Learning for Life 15K Run/5K Walk Beach Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.47151 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%226th+Annual+Learning+for+Life+15K+Run%2F5K+Walk+Beach+Run%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:41:01) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Jingle Bell 5K Race/Fitness Walk\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40186 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Jingle+Bell+5K+Race%2FFitness+Walk%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:41:02) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Purpose for a Pooch, DHA&#39;s 5k for K9&#39;s\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.38978 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Purpose+for+a+Pooch%2C+DHA%26%2339%3Bs+5k+for+K9%26%2339%3Bs%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:41:02) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2008 Amica Insurance Seattle Marathon, Half Marathon, 5K, and Kids ...\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39307 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222008+Amica+Insurance+Seattle+Marathon%2C+Half+Marathon%2C+5K%2C+and+Kids+...%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:41:03) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"2nd Annual NBD 5K Run For Life Benefitting SIDS\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.40308 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%222nd+Annual+NBD+5K+Run+For+Life+Benefitting+SIDS%22&inurl=community.active.com]
+
+
+Processing SearchController#google (for 172.16.19.79 at 2008-10-31 11:41:03) [POST]
+  Session ID: BAh7BiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%0ASGFzaHsABjoKQHVzZWR7AA%3D%3D--d8517467ffd17baa212c0f02c107234eda90b5d5
+  Parameters: {"format"=>"json", "action"=>"google", "q"=>"\"Kirkwood 5K and 10K Trail Run\"", "filter"=>"s", "num"=>"1", "controller"=>"search", "inurl"=>"community.active.com"}
+Completed in 0.39261 (2 reqs/sec) | Rendering: 0.00009 (0%) | DB: 0.00000 (0%) | 200 OK [http://ui/search/google.json?num=1&filter=s&q=%22Kirkwood+5K+and+10K+Trail+Run%22&inurl=community.active.com]
