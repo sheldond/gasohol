@@ -34,7 +34,7 @@
       </div>
       <% if SearchController::DO_RELATED_SEARCH %>
         <script type="text/javascript">
-          new Ajax.Request( 'http://ui:3003/search/google.json?num=1&filter=s&q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&inurl=community.active.com',
+          new Ajax.Request( '/search/google.json?num=1&filter=s&q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&inurl=community.active.com',
                             { evalscripts:true,
                               onSuccess:function(r) {
                                 total = r.responseText.evalJSON().google.total_results
