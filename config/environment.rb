@@ -58,7 +58,7 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
 end
 
-# turns debugging on in the logs
+# turns debugging on in the logs (writes out the full reponse from each API call, fills up the logs FAST)
 GASOHOL_DEBUGGING = false
 
 # load up the config file
