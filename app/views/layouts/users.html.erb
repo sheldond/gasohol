@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>	
+	<title>Active.com - Search</title>
+	
+	<%= stylesheet_link_tag 'reset','fonts' %>
+	<%= javascript_include_tag 'prototype','effects','search','application' %>
+
+	<!-- <script type="text/javascript" src="http://shots.snap.com/ss/71d97129ad64f93ab8cfea8b021c4ee5/snap_shots.js"></script> -->
+
+</head>
+
+<body>
+
+  <div id="body">
+    <div id="notice"><%= flash[:notice] %></div>
+    <%= yield %>
+  </div>
+
+</body>
+</html>

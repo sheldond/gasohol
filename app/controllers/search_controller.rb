@@ -1,5 +1,7 @@
 class SearchController < ApplicationController
   
+  before_filter :login_required
+  
   DO_RELATED_SEARCH = true
   DEFAULT_QUERY = 'active'
   # RESULTS_PER_PAGE = 25
@@ -21,6 +23,8 @@ class SearchController < ApplicationController
   end
 
   def index
+    params[:q] ||= ''
+    
     @time = {}
     @time[:google] = Time.now
     @google = do_google

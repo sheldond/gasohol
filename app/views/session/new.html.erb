@@ -1,0 +1,9 @@
+<form action="/session/create" method="post">
+  <label>Login</label>
+  <input type="text" name="login" id="login" value="<%= params[:login] %>" />
+  
+  <label>Password</label>
+  <input type="password" name="password" id="password" value="<%= params[:password] %>" />
+  
+  <input type="submit" value="Login" name="commit" id="commit" />
+</form>

@@ -2,9 +2,33 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  helper :all # include all helpers, all the time
+  before_filter :load_user
+  helper :all
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery # :secret => 'f48b1e284a40a73fdb0599a88b686b6d'
+  
+  private
+  def load_user
+    if logged_in?
+      @user = User.find(session[:user])
+    end
+  end
+  
+  def login_required
+    if !logged_in?
+      session[:return_to] = request.request_uri
+      redirect_to login_path
+    end
+  end
+  
+  def logged_in?
+    !session[:user].nil?
+  end
+  
+  def redirect_back
+    redirect_to(session[:return_to] || root_path)
+    session[:return_to] = nil
+  end
 end

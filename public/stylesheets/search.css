@@ -201,6 +201,7 @@ strong {
 	padding: 0 0 20px 230px;
 	background: transparent url('/images/search_refine_bg.png') left top repeat-y;
 	overflow: hidden;
+	min-height: 50em;
 }
 
 	#results {

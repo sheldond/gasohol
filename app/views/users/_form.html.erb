@@ -1,0 +1,29 @@
+<% form_for(@user) do |f| %>
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :login %>
+    <%= f.text_field :login %>
+  </p>
+  <p>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= f.label 'Confirm your password' %>
+    <%= f.password_field :password_confirmation  %>
+  </p>
+  <p>
+    <%= f.label 'Accept invitation' %>
+    <%= f.check_box :can_log_in  %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
