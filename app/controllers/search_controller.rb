@@ -3,6 +3,7 @@ class SearchController < ApplicationController
   before_filter :login_required
   
   DO_RELATED_SEARCH = true
+  SHOW_TIMESTAMPS = false   # show timestamps for API calls at the bottom of the page (can show anyway by adding debug=true to URL)
   DEFAULT_QUERY = 'active'
   # RESULTS_PER_PAGE = 25
   SPORTS = ['Baseball','Basketball','Cycling','Fitness &amp; Nutrition','Football','Golf','Mind &amp; Body','Outdoors','Running','Soccer','Softball','Tennis','Travel','Triathlon','Women','Others']
@@ -37,10 +38,10 @@ class SearchController < ApplicationController
       @google[:results].sort_by do |result|
         result[:meta][:start_date]
       end
-    when 'location'
-      @google[:results].sort_by do |result|
-        result[:meta][:state]
-      end
+    #when 'location'
+    #  @google[:results].sort_by do |result|
+    #    result[:meta][:state]
+    #  end
     when 'rating'
       @google[:results].sort_by do |result|
         result[:rating]

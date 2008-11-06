@@ -21,22 +21,9 @@
         </div>
       <% end %>
       
-      <% if params[:p] == '1' %>
-        <div id="sort">
-          <strong>Sort:</strong>
-          <ul>
-            <li <%= 'class="selected"' unless params[:sort] %>><a href="#" onclick="sort('relevant'); return false;">Most Relevant</a></li>
-            <li <%= 'class="selected"' if params[:sort] == 'date' %>><a href="#" onclick="sort('date'); return false;">Date (Soonest)</a></li>
-            <li <%= 'class="selected"' if params[:sort] == 'name' %>><a href="#" onclick="sort('name'); return false;">Name (A-Z)</a></li>
-            <li <%= 'class="selected"' if params[:sort] == 'location' %>><a href="#" onclick="sort('location'); return false;">Location</a><li>
-            <li <%= 'class="selected"' if params[:sort] == 'rating' %>><a href="#" onclick="sort('rating'); return false;">Rating (Best)</a></li>
-          </ul>
-        </div>
-      <% end %>
+      <%= render :partial => 'sort' %>
       
-      <!-- output actual records...got a little more complicated by inserting the plug for the events only search -->
-      <%# render :partial => 'result', :collection => @google[:results] %>
-      
+      <%# output actual records...got a little more complicated by inserting the plug for the events only search %>
       <% 0.upto 3 do |i| %>
         <%= render :partial => 'result', :locals => { :result => @google[:results][i] } %>
       <% end %>
@@ -67,13 +54,17 @@
                                                       :query => @google[:google][:query] } %>
       </div>
       
-      <%= render :partial => 'debug', :locals => { :time => @time, :google => @google } %>
+      <% if SearchController::SHOW_TIMESTAMPS or params[:debug] %>
+        <%= render :partial => 'debug', :locals => { :time => @time, :google => @google } %>
+      <% end %>
     </div>
       
   <% else %>
     <div id="results">
       <div class="no_results">No results found.</div>
-      <%= render :partial => 'debug', :locals => { :time => @time, :google => @google } %>
+      <% if SearchController::SHOW_TIMESTAMPS or params[:debug] %>
+        <%= render :partial => 'debug', :locals => { :time => @time, :google => @google } %>
+      <% end %>
     </div>
   <% end %>
 

@@ -20,9 +20,11 @@ class Result
         end
       end
       output[:featured] = false
-      if rand(3) < 2
-        output[:rating] = rand(5)
-      end
+      
+      # remove rating for now
+      # if rand(3) < 2
+      #   output[:rating] = rand(5)
+      # end
       return output
     end
   end

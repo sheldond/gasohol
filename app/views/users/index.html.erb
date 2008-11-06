@@ -25,7 +25,7 @@
     <td><%= user.can_log_in %></td>
     <td><%= user.is_banned %></td>
     <td><%= user.is_admin? %></td>
-    <td><%= link_to 'Send Invite', "mailto:#{user.email}?subject=Invitation+to+the+new+Active.com+beta+search&body=You+can+now+access+our+beta+search!%0A%0Ahttp://labs.active.com/login%0A%0ALet+me+know+if+you+have+any+questions+or+feedback!%0A%0AThanks,%0AJeremy+Thomas" %></td>
+    <td><%= link_to 'Send Invite', "mailto:#{user.email}?subject=Invitation%20to%20the%20new%20Active.com%20beta%20search&body=You%20can%20now%20access%20our%20beta%20search!%0A%0Ahttp://#{request.env['HTTP_HOST']}/login%0A%0ALet%20me%20know%20if%20you%20have%20any%20questions%20or%20feedback!%0A%0AThanks,%0AJeremy%20Thomas" %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
