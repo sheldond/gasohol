@@ -16,11 +16,15 @@
     <div id="active">
       <%= link_to(image_tag("/images/active_header_left.png", :id => "active_left"), root_path) %>
       <!-- <img src="/images/active_header_right.png" id="active_right" /> -->
+      <ul id="logged_in_options">
+        <li><%= link_to 'Logout', logout_path %></li>
+        <li><%= link_to('Admin', users_path) if is_admin? %></li>
+      </ul>
     </div>
   </div>
 
   <div id="body">
-    <div id="notice"><%= flash[:notice] %></div>
+    <% if flash[:notice] %><div id="notice"><%= flash[:notice] %></div><% end %>
     <%= yield %>
   </div>
   

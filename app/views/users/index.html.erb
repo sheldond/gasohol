@@ -1,12 +1,31 @@
-<h1>Listing users</h1>
-
-<table>
+<table id="list">
   <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Login</th>
+    <th>Password</th>
+    <th>Created</th>
+    <th>Last Login</th>
+    <th>Last Login IP</th>
+    <th>Can log in?</th>
+    <th>Banned?</th>
+    <th>Admin?</th>
+    <th colspan="3">&nbsp;</th>
   </tr>
 
 <% for user in @users %>
   <tr>
-    <td><%= link_to 'Show', user %></td>
+    <td><%= user.name %></td>
+    <td><%= user.email %></td>
+    <td><%= user.login %></td>
+    <td><%= user.password %></td>
+    <td><%= user.created_at.to_s(:long) %></td>
+    <td><%= user.last_login_at.to_s(:long) if user.last_login_at %></td>
+    <td><%= user.last_login_ip if user.last_login_ip %></td>
+    <td><%= user.can_log_in %></td>
+    <td><%= user.is_banned %></td>
+    <td><%= user.is_admin? %></td>
+    <td><%= link_to 'Send Invite', "mailto:#{user.email}?subject=Invitation+to+the+new+Active.com+beta+search&body=You+can+now+access+our+beta+search!%0A%0Ahttp://labs.active.com/login%0A%0ALet+me+know+if+you+have+any+questions+or+feedback!%0A%0AThanks,%0AJeremy+Thomas" %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

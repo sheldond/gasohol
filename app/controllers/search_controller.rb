@@ -9,7 +9,6 @@ class SearchController < ApplicationController
   CATEGORIES = ['Activities','Articles','eteamz Sites','Facilities','Organizations','People','Products','Videos']
   TYPES = ['Camp','Class','Conference','Event','Membership','Program','Tee Time','Tournament']
   
-  #@@google = Google.new(:num => RESULTS_PER_PAGE)
   @@google = Google.new
   @@twitter = Twitter.new
   @@flickr = Flickr.new
@@ -87,7 +86,7 @@ class SearchController < ApplicationController
     begin
       @result = Zip.find_within_radius(params[:zip],params[:radius])
     rescue => e
-      RAILS_DEFAULT_LOGGER.error("\nERROR IN LOCATION\n"+e.class.to_s+"\n"+e.message)
+      RAILS_DEFAULT_LOGGER.error("\nERROR IN LOCATION\n"+e.class.to_s+"\n"+e.message) if GASOHOL_DEBUGGING
     end
     standard_response(@result)
   end

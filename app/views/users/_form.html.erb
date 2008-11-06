@@ -1,29 +1,44 @@
 <% form_for(@user) do |f| %>
+  <%= error_messages_for :user %>
   <p>
     <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, :maxlength => 256, :size => nil %>
   </p>
   <p>
     <%= f.label :email %>
-    <%= f.text_field :email %>
+    <%= f.text_field :email, :maxlength => 256, :size => nil %>
+    <span class="example">Where to send your invite (no spam, promise)</span>
   </p>
   <p>
     <%= f.label :login %>
-    <%= f.text_field :login %>
+    <%= f.text_field :login, :maxlength => 256, :size => nil %>
+    <span class="example">Anything you like, email address or otherwise</span>
   </p>
   <p>
     <%= f.label :password %>
-    <%= f.password_field :password %>
+    <%= f.password_field :password, :maxlength => 256, :size => nil %>
   </p>
+  <% unless is_admin? %>
+    <p>
+      <%= f.label 'Confirm your password' %>
+      <%= f.password_field :password_confirmation, :maxlength => 256, :size => nil  %>
+    </p>
+  <% end %>
+  <% if is_admin? %>
+    <p>
+      <%= f.label 'Can log in' %>
+      <%= f.check_box :can_log_in  %>
+    </p>
+    <p>
+      <%= f.label 'Banned' %>
+      <%= f.check_box :is_banned  %>
+    </p>
+    <p>
+      <%= f.label 'Admin' %>
+      <%= f.check_box :is_admin  %>
+    </p>
+  <% end %>
   <p>
-    <%= f.label 'Confirm your password' %>
-    <%= f.password_field :password_confirmation  %>
-  </p>
-  <p>
-    <%= f.label 'Accept invitation' %>
-    <%= f.check_box :can_log_in  %>
-  </p>
-  <p>
-    <%= f.submit "Create" %>
+    <button value="commit" class="a1" type="submit"><span><%= button_label %></span></button>
   </p>
 <% end %>

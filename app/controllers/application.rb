@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   private
   def load_user
     if logged_in?
-      @user = User.find(session[:user])
+      @current_user = User.find(session[:user])
     end
   end
   
@@ -23,8 +23,18 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def admin_required
+    unless is_admin?
+      redirect_to root_path
+    end
+  end
+  
   def logged_in?
     !session[:user].nil?
+  end
+  
+  def is_admin?
+    logged_in? and @current_user.is_admin ? true : false
   end
   
   def redirect_back

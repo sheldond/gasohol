@@ -9,19 +9,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080618144801) do
+ActiveRecord::Schema.define(:version => 20080618144802) do
 
   create_table "users", :force => true do |t|
-    t.string   "name",          :default => "NULL"
-    t.string   "login",         :default => "NULL"
-    t.string   "password",      :default => "NULL"
-    t.string   "email",         :default => "NULL"
+    t.string   "name",          :default => "'''NULL'''"
+    t.string   "login",         :default => "'''NULL'''"
+    t.string   "password",      :default => "'''NULL'''"
+    t.string   "email",         :default => "'''NULL'''"
     t.datetime "last_login_at"
-    t.string   "last_login_ip", :default => "NULL"
+    t.string   "last_login_ip", :default => "'''NULL'''"
     t.boolean  "can_log_in",    :default => false
-    t.boolean  "banned",        :default => false
+    t.boolean  "is_banned",     :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_admin",      :default => false
   end
 
   create_table "zips", :force => true do |t|
