@@ -1,4 +1,4 @@
-<% unless result[:title].blank? %>
+<% unless result.nil? or result[:title].blank? %>
   <div id="result_<%= result[:num] %>" class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
     <div class="text">
       <div class="title">
