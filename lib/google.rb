@@ -15,6 +15,8 @@ class Google
   ALLOWED_PARAMS = DEFAULTS.keys + [:inurl]
   ACTIVE_TO_GOOGLE_PARAMS = { :category => 'category', :sport => 'channel' }    # translate our URL parameters into ones that google understands
   DEFAULT_OUTPUT = { :results => [], :featured => [], :google => { :query => '', :params => {}, :total_results => 0, :next => 0, :prev => 0, :google_query => '', :full_query_path => '' } }
+  DEFAULT_RESULT = { :num => 0, :mime => '', :level => 1, :url => '', :title => '', :abstract => '', :date => '', :meta => {}, :featured => false, :rating => 0 }
+  DEFAULT_FEATURED_RESULT = { :url => '', :title => '', :featured => true }
   STATES = {  'al' => 'alabama',
               'ak' => 'alaska',
               'ar' => 'arkansas',
@@ -97,19 +99,42 @@ class Google
   
       # if there was at least one result, parse the xml
       if output[:google][:total_results] > 0
-        # get sponsored links
+        #
+        # get featured results (called 'sponsored links' on the results page, displayed at the top)
+        #
         output[:featured] = xml.search(:gm).collect do |xml_result|
-          Feature.parse(xml_result)
+          result = DEFAULT_FEATURED_RESULT.dup
+          result[:url] = xml.at(:gl) ? xml.at(:gl).inner_html : ''
+          result[:title] = xml.at(:gd) ? xml.at(:gd).inner_html : ''
+          result
         end
+        #
         # get regular results
-        output[:results] = xml.search(:r).collect do |xml_result|
-          Marshal::load(Marshal.dump(Result.parse(xml_result)))
+        #
+        output[:results] = xml.search(:r).collect do |xml|
+          result = DEFAULT_RESULT.dup
+          result[:num] = xml.attributes['n'].to_i
+          result[:mime] = xml.attributes['mime'] || 'text/html'
+          result[:level] = xml.attributes['l'].to_i > 0 ? xml.attributes['l'].to_i : 1
+          result[:url] = xml.at(:u) ? xml.at(:u).inner_html : ''
+          result[:title] = xml.at(:t) ? xml.at(:t).inner_html : ''
+          result[:abstract] = xml.at(:s) ? xml.at(:s).inner_html.gsub(/&lt;br&gt;/i,'').gsub(/\.\.\./,'') : ''
+          result[:date] = xml.at(:fs) ? Chronic.parse(xml.at(:fs)[:value]) : ''
+          xml.search(:mt).each do |meta|
+            if meta.attributes['n'].match(/date/i)
+              result[:meta].merge!({ meta.attributes['n'].underscore.to_sym => Chronic.parse(meta.attributes['v']) })
+            else
+              result[:meta].merge!({ meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s })
+            end
+          end
+          result[:featured] = false
+          result
         end
       end
       
     rescue => e
       # error with results
-      RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)   # log the response
+      RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
     end
     
     return output
