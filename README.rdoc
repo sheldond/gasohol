@@ -1,0 +1,3 @@
+== Gasohol
+
+Gasohol is a prototype search interface that talks to a Google Appliance Server as well various open APIs like flickr, Yahoo Video Search and Twitter. It is very specific to Active.com right now, but branding and styles can be easily changed.
