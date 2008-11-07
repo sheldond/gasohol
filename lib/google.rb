@@ -103,7 +103,7 @@ class Google
         # get featured results (called 'sponsored links' on the results page, displayed at the top)
         #
         output[:featured] = xml.search(:gm).collect do |xml_result|
-          result = DEFAULT_FEATURED_RESULT.dup
+          result = Marshal.load(Marshal.dump(DEFAULT_FEATURED_RESULT))
           result[:url] = xml.at(:gl) ? xml.at(:gl).inner_html : ''
           result[:title] = xml.at(:gd) ? xml.at(:gd).inner_html : ''
           result
@@ -112,7 +112,7 @@ class Google
         # get regular results
         #
         output[:results] = xml.search(:r).collect do |xml|
-          result = DEFAULT_RESULT.dup
+          result = Marshal.load(Marshal.dump(DEFAULT_RESULT))
           result[:num] = xml.attributes['n'].to_i
           result[:mime] = xml.attributes['mime'] || 'text/html'
           result[:level] = xml.attributes['l'].to_i > 0 ? xml.attributes['l'].to_i : 1
