@@ -118,7 +118,7 @@ strong {
 	position: fixed;
 	width: 200px;
 	margin-top: -40px;
-	padding: 60px 10px 10px;
+	padding: 60px 10px 10px 50px;
 	background: transparent url('/images/search_refine_active_logo.png') top center no-repeat;
 }
 
@@ -207,14 +207,14 @@ strong {
 		}
 
 #main {
-	padding: 0 0 20px 230px;
+	padding: 0 0 20px 270px;
 	background: transparent url('/images/search_refine_bg.png') left top repeat-y;
 	overflow: hidden;
 	min-height: 50em;
 }
 
 	#results {
-		width: 61%;
+		width: 59%;
 		float: left;
 	}
 	
