@@ -27,7 +27,7 @@ class SearchController < ApplicationController
     threads = []
     
     @time = {}
-    
+    @time[:all] = Time.now
     threads << Thread.new do
       @time[:google] = Time.now
       @google = do_google
@@ -78,6 +78,7 @@ class SearchController < ApplicationController
     
     # wait for all the threads to finish
     threads.each { |t| t.join }
+    @time[:all] = Time.now - @time[:all]
     
     render :layout => 'application'
   end
