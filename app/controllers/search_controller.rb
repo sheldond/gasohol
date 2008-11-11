@@ -24,41 +24,61 @@ class SearchController < ApplicationController
 
   def index
     params[:q] ||= ''
+    threads = []
     
     @time = {}
-    @time[:google] = Time.now
-    @google = do_google
-    # if there were any sort params, sort the results by them
-    @google[:results] = case params[:sort]
-    when 'name'
-      @google[:results].sort_by do |result|
-        result[:title]
+    
+    threads << Thread.new do
+      @time[:google] = Time.now
+      @google = do_google
+      # if there were any sort params, sort the results by them
+      @google[:results] = case params[:sort]
+      when 'name'
+        @google[:results].sort_by do |result|
+          result[:title]
+        end
+      when 'date'
+        @google[:results].sort_by do |result|
+          result[:meta][:start_date]
+        end
+      #when 'location'
+      #  @google[:results].sort_by do |result|
+      #    result[:meta][:state]
+      #  end
+      when 'rating'
+        @google[:results].sort_by do |result|
+          result[:rating]
+        end.reverse
+      else
+        @google[:results]
       end
-    when 'date'
-      @google[:results].sort_by do |result|
-        result[:meta][:start_date]
-      end
-    #when 'location'
-    #  @google[:results].sort_by do |result|
-    #    result[:meta][:state]
-    #  end
-    when 'rating'
-      @google[:results].sort_by do |result|
-        result[:rating]
-      end.reverse
-    else
-      @google[:results]
+      @time[:google] = Time.now - @time[:google]
     end
-    @time[:google] = Time.now - @time[:google]
-    @time[:twitter] = Time.now
+    
+    # twitter
+    threads << Thread.new do
+      @time[:twitter] = Time.now
       @tweets = do_twitter              # @tweets = {:results => []}              # if we need to disable tweets
-    @time[:twitter] = Time.now - @time[:twitter]
-    @time[:flickr] = Time.now
+      @time[:twitter] = Time.now - @time[:twitter]
+    end
+    
+    # flickr
+    threads << Thread.new do
+      @time[:flickr] = Time.now
       @flickr = do_flickr
-    @time[:flickr] = Time.now - @time[:flickr]
-    @time[:yahoo] = Time.now
+      @time[:flickr] = Time.now - @time[:flickr]
+    end
+    
+    # yahoo video
+    threads << Thread.new do
+      @time[:yahoo] = Time.now
       @yahoo = do_yahoo
-    @time[:yahoo] = Time.now - @time[:yahoo]
+      @time[:yahoo] = Time.now - @time[:yahoo]
+    end
+    
+    # wait for all the threads to finish
+    threads.each { |t| t.join }
+    
     render :layout => 'application'
   end
   
