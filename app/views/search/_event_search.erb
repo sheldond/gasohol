@@ -1,81 +1,83 @@
-<input type="hidden" name="category" id="category" value="activities" />
-<input type="hidden" name="p" id="p" value="1" />
+<form id="search_form2" name="search_form2" method="get" action="/search">
+  <input type="hidden" name="category" id="category" value="activities" />
+  <input type="hidden" name="p" id="p" value="1" />
 
-<div id="keywords_container">
-	<label for="keywords">Keywords</label>
-	<input type="text" name="q" id="q2" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
-</div>
+  <div id="keywords_container">
+  	<label for="keywords">Keywords</label>
+  	<input type="text" name="q" id="q2" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
+  </div>
 
-<div class="column">
-	<label for="start_date">Date Range</label>
-	<div id="date_picker">
-		<input id="start_date" name="start_date" type="text"value="<%= params[:start_date] %>" onkeypress="return handleEnter(this.form, event);" />
-		<input type="image" src="/images/calendar.png" onclick="return false;" class="button" />
-		<span>to</span>
-		<input id="end_date" name="end_date" type="text" value="<%= params[:end_date] %>" onkeypress="return handleEnter(this.form, event);" />
-		<input type="image" src="/images/calendar.png" onclick="return false;" class="button" />
-	</div>
+  <div class="column">
+  	<label for="start_date">Date Range</label>
+  	<div id="date_picker">
+  		<input id="start_date" name="start_date" type="text"value="<%= params[:start_date] %>" onkeypress="return handleEnter(this.form, event);" />
+  		<input type="image" src="/images/calendar.png" onclick="return false;" class="button" />
+  		<span>to</span>
+  		<input id="end_date" name="end_date" type="text" value="<%= params[:end_date] %>" onkeypress="return handleEnter(this.form, event);" />
+  		<input type="image" src="/images/calendar.png" onclick="return false;" class="button" />
+  	</div>
 
-	<label for="location">Location</label>
-	<input type="text" name="location" id="location" value="<%= params[:location] %>" class="default" onkeypress="return handleEnter(this.form, event);" />
+  	<label for="location">Location</label>
+  	<input type="text" name="location" id="location" value="<%= params[:location] %>" class="default" onkeypress="return handleEnter(this.form, event);" />
 
-	<label for="radius">Radius</label>
-	<select name="radius" id="radius">
-	  <option value="any">Anywhere</option>
-		<option value="10">within 10 miles</option>
-		<option value="25">within 25 miles</option>
-		<option value="50">within 50 miles</option>
-		<option value="100">within 100 miles</option>
-		<option value="250">within 250 miles</option>
-		<option value="1000">within 1000 miles</option>
-	</select>
-</div>
+  	<label for="radius">Radius</label>
+  	<select name="radius" id="radius">
+  	  <option value="any">Anywhere</option>
+  		<option value="10">within 10 miles</option>
+  		<option value="25">within 25 miles</option>
+  		<option value="50">within 50 miles</option>
+  		<option value="100">within 100 miles</option>
+  		<option value="250">within 250 miles</option>
+  		<option value="1000">within 1000 miles</option>
+  	</select>
+  </div>
 
-<div class="column">
-	<label for="sport">Sport/Activity</label>
-	<select name="sport" id="sport">
-	  <!--
-	  <option value="any">Any</option>
-    <% SearchController::SPORTS.each do |sport| %>
-	    <% if params[:sport] == sport %>
-	      <option value="<%= sport %>" selected="selected"><%= sport %></option>
-	    <% else %>
-	      <option value="<%= sport %>"><%= sport %></option>
-	    <% end %>
-	  <% end %>
-  -->
-	</select>
+  <div class="column">
+  	<label for="sport">Sport/Activity</label>
+  	<select name="sport" id="sport">
+  	  <!--
+  	  <option value="any">Any</option>
+      <% SearchController::SPORTS.each do |sport| %>
+  	    <% if params[:sport] == sport %>
+  	      <option value="<%= sport %>" selected="selected"><%= sport %></option>
+  	    <% else %>
+  	      <option value="<%= sport %>"><%= sport %></option>
+  	    <% end %>
+  	  <% end %>
+    -->
+  	</select>
 
-	<div id="type_container">
-		<label for="type">Type</label>
-		<select name="type" id="type">
-		  <option value="any">Any</option>
-		  <!--
-		  <% SearchController::TYPES.each do |type| %>
-		    <% if params[:type] == type %>
-		      <option value="<%= type %>" selected="selected"><%= type %></option>
-		    <% else %>
-		      <option value="<%= type %>"><%= type %></option>
-		    <% end %>
-		  <% end %>
-		  			-->
-		</select>
-	</div>
+  	<div id="type_container">
+  		<label for="type">Type</label>
+  		<select name="type" id="type">
+  		  <option value="any">Any</option>
+  		  <!--
+  		  <% SearchController::TYPES.each do |type| %>
+  		    <% if params[:type] == type %>
+  		      <option value="<%= type %>" selected="selected"><%= type %></option>
+  		    <% else %>
+  		      <option value="<%= type %>"><%= type %></option>
+  		    <% end %>
+  		  <% end %>
+  		  			-->
+  		</select>
+  	</div>
 
-	<div id="custom_container" style="display:none">
-		<label for="custom" id="custom_label"></label>
-		<select name="custom" id="custom"></select>
-	</div>
+  	<div id="custom_container" style="display:none">
+  		<label for="custom" id="custom_label"></label>
+  		<select name="custom" id="custom"></select>
+  	</div>
 
-	<div id="results_container" style="display:none;">
-		<input type="checkbox" name="results" id="results" />
-		<label for="results">Include Results/Rankings from previous events?</label>
-	</div>
-</div>
+  	<div id="results_container" style="display:none;">
+  		<input type="checkbox" name="results" id="results" />
+  		<label for="results">Include Results/Rankings from previous events?</label>
+  	</div>
+  </div>
 
-<input type="image" name="commit2" id="commit2" src="/images/button_search.png" class="submit" />
+  <a href="#" onclick="search_form2.submit(); return false;"><img src="/images/button_search.png" class="submit" /></a>
 
-<script type="text/javascript">
-  // initialize search dropdowns
-  var s = new Search(assets);
-</script>
+  <script type="text/javascript">
+    // initialize search dropdowns
+    var s = new Search(assets);
+  </script>
+</form>

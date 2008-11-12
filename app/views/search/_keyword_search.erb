@@ -1,4 +1,4 @@
-<form id="search_form" action="/search" method="get">
+<form id="search_form1" name="search_form1" action="/search" method="get">
   <% if params[:category] and params[:category].downcase != 'any' %>
 	  <input type="hidden" name="category" value="<%= params[:category] %>" />
 	<% end %>
@@ -6,7 +6,7 @@
 	  <input type="hidden" name="sport" value="<%= params[:sport] %>" />
 	<% end %>
 	<input type="text" name="q" id="q1" value="<%= params[:q].gsub(/"/,'&quot;') %>" onkeypress="return handleEnter(this.form, event);" />
-	<input type="image" name="commit" id="commit" src="/images/button_search.png" class="submit" />
+	<a href="#" onclick="search_form1.submit(); return false;"><img src="/images/button_search.png" class="submit" /></a>
 </form>
 
 <h3>Categories</h3>

@@ -6,23 +6,21 @@ module SearchHelper
     total_pages = total / results_per_page
     
     count_from = 1
-    total_pages > 7 ? count_to = 7 : count_to = total_pages
+    count_to = total_pages > 7 ? 7 : total_pages
 
-    output = ''
-    count_from.upto(count_to) do |page|
+    # create a range with the from and to numbers, go through each and set as page
+    links = (count_from..count_to).collect do |page|
       this_start = results_per_page * (page - 1)
-      output += '<a href="search?q=' + query + '&start=' + this_start.to_s + '"'
-      if from.to_i-1 == this_start
-        output += 'class="current"'
+      if from.to_i-1 == this_start        # current page?
+        link_to(page.to_s, params.merge({:start => (this_start)}), { :class => 'current' })
+      else
+        link_to(page.to_s, params.merge({:start => (this_start)}))
       end
-      output += '>' + page.to_s + '</a> '
     end
     
-    if total_pages > 7
-      output += '...'
-    end
-    
-    return output
+    # turn into a standard list of links and add some dots if there are more than 7 pages
+    output = links.join(' ')
+    output += '...' if total_pages > 7
     
   end
   
