@@ -6,7 +6,7 @@
 	  <input type="hidden" name="sport" value="<%= params[:sport] %>" />
 	<% end %>
 	<input type="text" name="q" id="q1" value="<%= params[:q].gsub(/"/,'&quot;') %>" onkeypress="return handleEnter(this.form, event);" />
-	<a href="#" onclick="search_form1.submit(); return false;"><img src="/images/button_search.png" class="submit" /></a>
+	<a id="commit1" href="#" onclick="search_form1.submit(); return false;"><img src="/images/button_search.png" class="submit" /></a>
 </form>
 
 <h3>Categories</h3>
