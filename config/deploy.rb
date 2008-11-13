@@ -52,7 +52,7 @@ set :ec2onrails_config, {
   # connections on the public network interface (you should block the MySQL
   # port with the firewall anyway). 
   # If you don't care about setting the mysql root password then remove this.
-  :mysql_root_password => "bosco",
+  # :mysql_root_password => "bosco",
   
   # Any extra Ubuntu packages to install if desired
   # If you don't want to install extra packages then remove this.
