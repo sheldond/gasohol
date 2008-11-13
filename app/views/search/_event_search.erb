@@ -34,32 +34,12 @@
 
   <div class="column">
   	<label for="sport">Sport/Activity</label>
-  	<select name="sport" id="sport">
-  	  <!--
-  	  <option value="any">Any</option>
-      <% SearchController::SPORTS.each do |sport| %>
-  	    <% if params[:sport] == sport %>
-  	      <option value="<%= sport %>" selected="selected"><%= sport %></option>
-  	    <% else %>
-  	      <option value="<%= sport %>"><%= sport %></option>
-  	    <% end %>
-  	  <% end %>
-    -->
-  	</select>
+  	<select name="sport" id="sport"></select>
 
   	<div id="type_container">
   		<label for="type">Type</label>
   		<select name="type" id="type">
   		  <option value="any">Any</option>
-  		  <!--
-  		  <% SearchController::TYPES.each do |type| %>
-  		    <% if params[:type] == type %>
-  		      <option value="<%= type %>" selected="selected"><%= type %></option>
-  		    <% else %>
-  		      <option value="<%= type %>"><%= type %></option>
-  		    <% end %>
-  		  <% end %>
-  		  			-->
   		</select>
   	</div>
 
