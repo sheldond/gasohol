@@ -30,7 +30,7 @@ class UpdateZips < ActiveRecord::Migration
     
     File.open(File.join(File.dirname(__FILE__), 'default_data/inserts.txt'),'r').each_line do |line|
       Zip.connection.insert(line)
-      print 'inserted...'
+      # print 'inserted...'
     end.close
     
     puts '  -- done insert.'

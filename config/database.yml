@@ -18,4 +18,4 @@ production:
   host: db_primary
   database: gasohol
   username: root
-  password: 
+  password: bosco

@@ -52,7 +52,7 @@ set :ec2onrails_config, {
   # connections on the public network interface (you should block the MySQL
   # port with the firewall anyway). 
   # If you don't care about setting the mysql root password then remove this.
-  # :mysql_root_password => "bosco",
+  :mysql_root_password => "bosco",
   
   # Any extra Ubuntu packages to install if desired
   # If you don't want to install extra packages then remove this.
@@ -61,7 +61,7 @@ set :ec2onrails_config, {
   # Any extra RubyGems to install if desired: can be "gemname" or if a 
   # particular version is desired "gemname -v 1.0.1"
   # If you don't want to install extra rubygems then remove this
-  :rubygems => ["hpricot"],
+  # :rubygems => ["hpricot","chronic"],
   
   # Defines the web proxy that will be used.  Choices are :apache or :nginx
   :web_proxy_server => :apache,
@@ -101,3 +101,10 @@ set :ec2onrails_config, {
   # /etc/ssl/private/default.key (see :server_config_files_root).
   # :enable_ssl => true
 }
+
+# disable backup of MySQL to S3
+#after "ec2onrails:setup", :disable_slave_db_backup
+#after "ec2onrails:server:deploy_files", :disable_slave_db_backup
+#task :disable_slave_db_backup, :roles => :db do
+#    sudo "rm -rf /etc/cron.d/backup_app_db_to_s3"
+#end
