@@ -87,9 +87,8 @@ strong {
 	width: 32em;
 }
 
-	#home_search #search_list {
+	#home_search #search_location {
 		margin: 0 0 .5em;
-		font-weight: bold;
 	}
 
 	#home_search input#q1 {
