@@ -112,6 +112,23 @@ strong {
 		float: left;
 		margin: 0 2em 0 0;
 	}
+	
+	#home_search .inplaceeditor-form {
+		display: inline;
+	}
+	
+		#home_search .inplaceeditor-form input {
+			margin: 0 1em 0 0;
+		}
+	
+		#home_search .inplaceeditor-form a {
+			font-size: 93%;
+		}
+	
+	#home_search a#change_location {
+		font-size: 85%;
+		color: #999999;
+	}
 
 #search_refine {
 	position: fixed;

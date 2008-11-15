@@ -1,6 +1,7 @@
 class SearchController < ApplicationController
   
-  before_filter :login_required, :get_location
+  before_filter :login_required
+  before_filter :get_location, :only => [:index, :home]
   
   DO_RELATED_SEARCH = true
   SHOW_TIMESTAMPS = false   # show timestamps for API calls at the bottom of the page (can show anyway by adding debug=true to URL)
@@ -114,20 +115,35 @@ class SearchController < ApplicationController
   end
   
   def set_location
-    if params[:location]
-      zip = Zip.find_by_zip(params[:location])
+    @location = {}
+    if params[:value]
+      
+      if params[:value].to_i > 0    # is this a zip code?
+        zip = Zip.find_by_zip(params[:value])
+      else
+        city = params[:value].split(',').first.strip
+        state = params[:value].split(',').last.strip.downcase
+        found_state = Google::STATES.find { |key,value| value == state }
+        state = found_state ? found_state.first : state  # is this is a full state name, get the abbreviation instead
+        zip = Zip.find_by_city_and_state(city.titlecase,state.upcase)
+      end
+      
       unless zip.nil?
-        @location = {}
         ['zip','city','state','latitude','longitude'].each do |el|
           val = (el == 'state') ? { 'region' => Google::STATES[zip.send(el).downcase].titlecase } : { el => zip.send(el).to_s.titlecase }
           @location.merge!(val)
         end
         cookies[:location] = @location.to_json
       end
+      
     else
       raise 'No location provided'
     end
-    render :text => @location.inspect
+    unless @location.empty?
+      render :text => "#{@location['city']}, #{@location['region']}"
+    else
+      render :text => "Please enter a valid zip code"
+    end
   end
   
   private
@@ -177,13 +193,14 @@ class SearchController < ApplicationController
     if cookies[:location].nil?
       @location = {}
       begin
-        xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/74.125.19.99'))
+        xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/10.0.0.0'))
         (xml/:location).each do |loc| 
           ['zip','city','region','latitude','longitude'].each do |el|
             @location.merge!({ el => loc.at(el).innerHTML.titlecase })
           end
         end
-      rescue # any kind of error with the request, just don't set @location to anything, user will set manually
+      rescue # any kind of error with the request, set to San Diego, CA
+        set_location
       end
       # assuming we found a location, set it
       unless @location.empty?

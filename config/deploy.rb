@@ -17,10 +17,10 @@ ssh_options[:keys] = ["#{ENV['HOME']}/.ssh/searchpoc-keypair"]
 # Your EC2 instances. Use the ec2-xxx....amazonaws.com hostname, not
 # any other name (in case you have your own DNS alias) or it won't
 # be able to resolve to the internal IP address.
-role :web,      "ec2-67-202-35-233.compute-1.amazonaws.com"
-role :app,      "ec2-67-202-35-233.compute-1.amazonaws.com"
-role :memcache, "ec2-67-202-35-233.compute-1.amazonaws.com"
-role :db,       "ec2-67-202-35-233.compute-1.amazonaws.com", :primary => true
+role :web,      "75.101.162.64"
+role :app,      "75.101.162.64"
+role :memcache, "75.101.162.64"
+role :db,       "75.101.162.64", :primary => true
 # role :db,       "ec2-56-xx-xx-xx.z-1.compute-1.amazonaws.com", :primary => true, :ebs_vol_id => 'vol-12345abc'
 # optinally, you can specify Amazon's EBS volume ID if the database is persisted 
 # via Amazon's EBS.  See the main README for more information.

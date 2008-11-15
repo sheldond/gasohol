@@ -1,8 +1,3 @@
-<div>
-<h1>Cookies:</h1>
-<%= debug cookies %>
-</div>
-
 <% if params[:id] == 'amg' %>
   <div class="ads">
     <iframe height="90" frameborder="no" width="728" scrolling="no" marginheight="0" marginwidth="0" border="0" src="http://ads.active.com/html.ng/tile=926623&amp;site=network2&amp;channel=football&amp;subchannel=nosubchannel&amp;tanproduct=footballpower&amp;b2borb2c=b2c&amp;feature=content&amp;subfeature1=nosubfeature1&amp;subfeature2=nosubfeature2&amp;subfeature3=nosubfeature3&amp;sz=728x90&amp;position=leader_top&amp;ord=396793?" id="leader_top"><a target="_top" href="http://ads.active.com/click.ng/Params.richmedia=yes&tile=926623&site=network2&channel=football&subchannel=nosubchannel&tanproduct=footballpower&b2borb2c=b2c&feature=content&subfeature1=nosubfeature1&subfeature2=nosubfeature2&subfeature3=nosubfeature3&sz=728x90&position=leader_top&ord=396793?" target="_blank"><img src="http://ads.active.com/image.ng/Params.richmedia=yes&tile=926623&site=network2&channel=football&subchannel=nosubchannel&tanproduct=footballpower&b2borb2c=b2c&feature=content&subfeature1=nosubfeature1&subfeature2=nosubfeature2&subfeature3=nosubfeature3&sz=728x90&position=leader_top&ord=396793?" width="728" height="90" /></a></iframe>
@@ -13,9 +8,26 @@
 <form id="home_search" method="get" action="/search">
   <div id="search_location">
     <% if @location %>
-      Searching near <strong><%= @location['city'] %>, <%= @location['region'] %></strong> (<a href="#">change</a>)
+      Searching near <strong id="loc"><%= "#{@location['city']}, #{@location['region']}" %></strong> <%= link_to('change', { :action => 'set_location', :location => @location['zip'] }, :id => 'change_location') %>
+      <input type="hidden" name="location" id="location" value="<%= "#{@location['city']}, #{@location['region']}" %>" />
+      <script type="text/javascript">
+        new Ajax.InPlaceEditor('loc', '<%= url_for(:action => 'set_location', :location => @location['zip']) %>',
+                                { 
+                                  
+                                  okText:'Save',
+                                  externalControl:'change_location',
+                                  ajaxOptions:{
+                                    onSuccess:function(r) {
+                                      $('location').value = r.responseText;
+                                    },
+                                    onFailure:function(r) {
+                                      alert('Please provide a valid zip code to change your location');
+                                    }
+                                  }
+                                });
+      </script>
     <% else %>
-      Search near you! 
+      Hmmm... location error.
     <% end %>
   </div>
   <input type="text" name="q" id="q1" value="" onkeypress="return handleEnter(this.form, event);" />

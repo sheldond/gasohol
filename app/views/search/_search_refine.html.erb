@@ -6,11 +6,15 @@
   </ul>
   
 	<div id="keyword_search" class="tab">
-	  <%= render :partial => 'keyword_search' %>
+	  <form id="search_form1" name="search_form1" action="/search" method="get">
+  	  <%= render :partial => 'keyword_search' %>
+    </form>
 	</div>
 	
 	<div id="activity_search" class="tab" style="display:none">
-	  <%= render :partial => 'event_search' %>
+	  <form id="search_form2" name="search_form2" method="get" action="/search">
+	    <%= render :partial => 'event_search' %>
+	  </form>
   </div>
 
 </div>
