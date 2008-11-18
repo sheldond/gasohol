@@ -114,7 +114,11 @@ class SearchController < ApplicationController
     standard_response(@result)
   end
   
-  def set_location
+  def set_location(value=nil)
+    
+    # if we called this from elsewhere in the controller (rather than from a URL), used the passed value as the location
+    params[:value] = value || params[:value]
+    
     @location = {}
     if params[:value]
       
@@ -139,11 +143,16 @@ class SearchController < ApplicationController
     else
       raise 'No location provided'
     end
-    unless @location.empty?
-      render :text => "#{@location['city']}, #{@location['region']}"
-    else
-      render :text => "Please enter a valid zip code"
+    
+    if request.xhr?
+      # only render something (the city,state of the current location) if this was called via ajax
+      unless @location.empty?
+        render :text => "#{@location['city']}, #{@location['region']}"
+      else
+        render :text => "Please enter a valid zip code"
+      end
     end
+    
   end
   
   private
@@ -183,24 +192,24 @@ class SearchController < ApplicationController
   #
   # Slightly confusing...due to the way Rails handles cookies, you can't set one and read it in the same
   # request. cookie[] represents the incoming cookies FROM the browser, cookie[]= sets the outgoing
-  # cookies TO the browser. So, to around this weird fact, if the cookie doesn't exist we create it but don't rely
-  # on it existing to read back in -- we just set the @location variable directly and use it for this
-  # request. Future requests will see that the cookie exists, and that we haven't already set @location,
-  # and read in the cookie and set @location to it
+  # cookies TO the browser. So, to get around this weird fact, if the cookie doesn't exist we create
+  # it but don't rely on it existing to read back in -- we just set the @location variable directly 
+  # and use it for this request. Future requests will see that the cookie exists, and that we haven't 
+  # already set @location, and @location = cookie[:location]
   #
 
   def get_location
     if cookies[:location].nil?
       @location = {}
       begin
-        xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/10.0.0.0'))
+        xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
         (xml/:location).each do |loc| 
           ['zip','city','region','latitude','longitude'].each do |el|
             @location.merge!({ el => loc.at(el).innerHTML.titlecase })
           end
         end
       rescue # any kind of error with the request, set to San Diego, CA
-        set_location
+        set_location("San Diego,CA")
       end
       # assuming we found a location, set it
       unless @location.empty?
