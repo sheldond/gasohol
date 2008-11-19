@@ -3,6 +3,7 @@ google:
   results: 25
   collection: active_collection
   client: active_frontend
+  default_radius: 50
   
 flickr:
   url: http://api.flickr.com/services/rest

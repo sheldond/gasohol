@@ -1,7 +1,8 @@
 class SearchController < ApplicationController
   
   before_filter :login_required
-  before_filter :get_location, :only => [:index, :home]
+  before_filter :get_location, :only => [:index, :home, :google]
+  before_filter :format_query, :except => [:get_location, :set_location]
   
   DO_RELATED_SEARCH = true
   SHOW_TIMESTAMPS = false   # show timestamps for API calls at the bottom of the page (can show anyway by adding debug=true to URL)
@@ -16,7 +17,6 @@ class SearchController < ApplicationController
   @@flickr = Flickr.new
   @@yahoo = Yahoo.new
   
-  before_filter :format_query
   layout false
   
   def home
@@ -181,9 +181,21 @@ class SearchController < ApplicationController
   end
 
   def format_query
-    @query = params[:q] || DEFAULT_QUERY
+    @query = params[:q] || ''
     @options = {}
-    # put any other URL params into a hash as long as they're not the rails defaults (controller, action) or the query itself (that goes in @query)
+    
+    # add in the user's location
+    if params[:location]
+      city = params[:location].split(',').first.strip
+      state = params[:location].split(',').last.strip.downcase
+      found_state = Google::STATES.find { |key,value| value == state }
+      state = found_state ? found_state.first : state  # is this is a full state name, get the abbreviation instead
+      zip = Zip.find_by_city_and_state(city.titlecase,state.upcase)
+      @options.merge!({ :latitude => zip.latitude, :longitude => zip.longitude })
+    end
+      
+    # put any other URL params into a hash as long as they're not the rails defaults (controller, action) 
+    # or the query itself (that goes in @query)
     params.each do |key,value|
       @options.merge!({ key.to_sym => value.to_s }) if key != 'controller' && key != 'action' && key != 'q' && key != 'format'
     end
@@ -199,27 +211,29 @@ class SearchController < ApplicationController
   #
 
   def get_location
-    if cookies[:location].nil?
-      @location = {}
-      begin
-        xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
-        (xml/:location).each do |loc| 
-          ['zip','city','region','latitude','longitude'].each do |el|
-            @location.merge!({ el => loc.at(el).innerHTML.titlecase })
-          end
-        end
-      rescue # any kind of error with the request, set to San Diego, CA
-        set_location("San Diego,CA")
-      end
-      # assuming we found a location, set it
-      unless @location.empty?
-        cookies[:location] = @location.to_json
-      end
-    end
     
-    # if the cookie exists, and we didn't just find the location above, get it from the cookie
-    if cookies[:location] && @location.nil?
-      @location = ActiveSupport::JSON.decode(cookies[:location])
-    end
+      if cookies[:location].nil?
+        @location = {}
+        begin
+          xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
+          (xml/:location).each do |loc| 
+            ['zip','city','region','latitude','longitude'].each do |el|
+              @location.merge!({ el => loc.at(el).innerHTML.titlecase })
+            end
+          end
+        rescue # any kind of error with the request, set to San Diego, CA
+          set_location("San Diego,CA")
+        end
+        # assuming we found a location, set it
+        unless @location.empty?
+          cookies[:location] = @location.to_json
+        end
+      end
+    
+      # if the cookie exists, and we didn't just find the location above, get it from the cookie
+      if cookies[:location] && @location.nil?
+        @location = ActiveSupport::JSON.decode(cookies[:location])
+      end
+
   end
 end

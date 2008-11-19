@@ -14,8 +14,27 @@ class Google
                 :getfields => '*'}
   ALLOWED_PARAMS = DEFAULTS.keys + [:inurl]
   ACTIVE_TO_GOOGLE_PARAMS = { :category => 'category', :sport => 'channel' }    # translate our URL parameters into ones that google understands
-  DEFAULT_OUTPUT = { :results => [], :featured => [], :google => { :query => '', :params => {}, :total_results => 0, :next => 0, :prev => 0, :google_query => '', :full_query_path => '' } }
-  DEFAULT_RESULT = { :num => 0, :mime => '', :level => 1, :url => '', :title => '', :abstract => '', :date => '', :meta => {}, :featured => false, :rating => 0 }
+  DEFAULT_OUTPUT = {  :results => [], 
+                      :featured => [], 
+                      :google => { 
+                        :query => '', 
+                        :params => {}, 
+                        :total_results => 0, 
+                        :next => 0, 
+                        :prev => 0, 
+                        :google_query => '', 
+                        :full_query_path => '' } 
+                      }
+  DEFAULT_RESULT = {  :num => 0, 
+                      :mime => '', 
+                      :level => 1, 
+                      :url => '', 
+                      :title => '', 
+                      :abstract => '', 
+                      :date => '', 
+                      :meta => {}, 
+                      :featured => false, 
+                      :rating => 0 }
   DEFAULT_FEATURED_RESULT = { :url => '', :title => '', :featured => true }
   STATES = {  'al' => 'alabama',
               'ak' => 'alaska',
@@ -173,15 +192,39 @@ class Google
       # end
     end
 
-    # do the start/end date
-    if options[:start_date] and !options[:start_date].blank?
+    # do the start/end date. If there isn't one, set to today by default
+    if options[:start_date].nil? || options[:start_date].blank?
+      options[:start_date] = Time.now.to_s(:standard)
+    end
+    
+    #if options[:start_date] and !options[:start_date].blank?
       query += ' inmeta:startDate:daterange:' + Chronic.parse(options[:start_date]).strftime('%Y-%m-%d') + '..'
       if options[:end_date] and !options[:end_date].blank?
         query += Chronic.parse(options[:end_date]).strftime('%Y-%m-%d')
       end
-    end
+    #end
   
     # do the location
+    
+    # if there's no specified radius, set to the default in config/gasohol.yml
+    if options[:latitude] && options[:longitude]
+      if options[:radius].nil? || options[:radius].blank?
+        options[:radius] = GASOHOL_CONFIG['google']['default_radius'].to_f
+      end
+    
+      options[:radius] = options[:radius].to_f
+    
+      # based on latitude/longitude
+      latitude1 = ((options[:latitude] - (options[:radius] / 69.1)) * 10000).round.to_f / 10000
+      latitude2 = ((options[:latitude] + (options[:radius] / 69.1 )) * 10000).round.to_f / 10000
+      longitude1 = ((options[:longitude] - (options[:radius] / (69.1 * Math.cos(options[:latitude]/57.3)))) * 10000).round.to_f / 10000
+      longitude2 = ((options[:longitude] + (options[:radius] / (69.1 * Math.cos(options[:latitude]/57.3)))) * 10000).round.to_f / 10000
+    
+      query += " inmeta:latitude:#{latitude1}..#{latitude2} inmeta:longitude:#{longitude1}..#{longitude2}"
+    end
+    
+=begin 
+    # location based on city,state or zip
     if options[:location] and !options[:location].blank?
       output = { :city => '', :state => '', :zip => ''}
       # take the location and split on commas, removing extra whitespace and put into a new array
@@ -228,8 +271,10 @@ class Google
       end
     
     end
+=end
 
     return query
+    
   end
   
 end

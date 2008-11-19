@@ -211,7 +211,8 @@ strong {
 		
 		#activity_search #date_picker input {
 			display: inline;
-			width: 4em;
+			width: 5em;
+			font-size: 93%;
 		}
 		
 			#activity_search #date_picker input.button {

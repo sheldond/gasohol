@@ -1,5 +1,6 @@
 <input type="hidden" name="category" id="category" value="activities" />
 <input type="hidden" name="p" id="p" value="1" />
+<input type="hidden" name="location" id="location" value="<%= "#{@location['city']}, #{@location['region']}" %>" />
 
 <div id="keywords_container">
 	<label for="keywords">Keywords</label>
@@ -60,4 +61,7 @@
 <script type="text/javascript">
   // initialize search dropdowns
   var s = new Search(assets);
+  if ($('start_date').value == '') {
+    $('start_date').value = 'today';
+  }
 </script>
