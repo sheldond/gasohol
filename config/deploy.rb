@@ -7,7 +7,7 @@ default_run_options[:pty] = true
 set :repository,  "git://github.com/cannikin/gasohol.git"
 set :scm, "git"
 set :scm_passphrase, "" #This is your custom users password
-set :branch, "master"
+set :branch, "location"
 
 # NOTE: for some reason Capistrano requires you to have both the public and
 # the private key in the same folder, the public key should have the 
