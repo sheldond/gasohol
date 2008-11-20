@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
   
-  before_filter :login_required
+  before_filter :login_required, :except => [:location]
   before_filter :get_location, :only => [:index, :home, :google]
   before_filter :format_query, :except => [:get_location, :set_location]
   
