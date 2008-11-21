@@ -1,5 +1,5 @@
 <div id="context">
-  <% unless photos.nil? || photos.empty? %>
+  <% unless !defined?(photos) || photos.empty? %>
     <h4>Photos</h4>
     <span class="subtitle">via <%= link_to 'Flickr', 'http://flickr.com' %></span>
     <ul id="photos">
@@ -9,7 +9,7 @@
     </ul>
   <% end %>
   
-  <% unless videos.nil? || videos.empty? %>
+  <% unless !defined?(videos) || videos.empty? %>
     <h4>Video</h4>
     <span class="subtitle">via <%= link_to 'Yahoo', 'http://video.search.yahoo.com' %></span>
     <ul id="video">
@@ -19,7 +19,7 @@
     </ul>
   <% end %>
   
-  <% unless tweets.nil? || tweets.empty? %>
+  <% unless !defined?(tweets) || tweets.empty? %>
     <h4>What the web is saying</h4>
     <span class="subtitle">via <%= link_to 'Twitter', 'http://twitter.com' %></span>
     <ul id="tweets">
