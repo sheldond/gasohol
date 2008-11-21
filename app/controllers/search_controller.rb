@@ -64,18 +64,18 @@ class SearchController < ApplicationController
     end
     
     # flickr
-    threads << Thread.new do
-      @time[:flickr] = Time.now
-      @flickr = do_flickr
-      @time[:flickr] = Time.now - @time[:flickr]
-    end
+    #threads << Thread.new do
+    #  @time[:flickr] = Time.now
+    #  @flickr = do_flickr
+    #  @time[:flickr] = Time.now - @time[:flickr]
+    #end
     
     # yahoo video
-    threads << Thread.new do
-      @time[:yahoo] = Time.now
-      @yahoo = do_yahoo
-      @time[:yahoo] = Time.now - @time[:yahoo]
-    end
+    #threads << Thread.new do
+    #  @time[:yahoo] = Time.now
+    #  @yahoo = do_yahoo
+    #  @time[:yahoo] = Time.now - @time[:yahoo]
+    #end
     
     # wait for all the threads to finish
     threads.each { |t| t.join }

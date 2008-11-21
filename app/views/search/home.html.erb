@@ -6,33 +6,10 @@
 <% end %>
 
 <form id="home_search" method="get" action="/search">
-  <div id="search_location">
-    <% if @location %>
-      Searching near <strong id="loc"><%= "#{@location['city']}, #{@location['region']}" %></strong> <%= link_to('change', { :action => 'set_location', :location => @location['zip'] }, :id => 'change_location') %>
-      <input type="hidden" name="location" id="location" value="<%= "#{@location['city']}, #{@location['region']}" %>" />
-      <script type="text/javascript">
-        new Ajax.InPlaceEditor('loc', '<%= url_for(:action => 'set_location', :location => @location['zip']) %>',
-                                { 
-                                  
-                                  okText:'Save',
-                                  externalControl:'change_location',
-                                  ajaxOptions:{
-                                    onSuccess:function(r) {
-                                      $('location').value = r.responseText;
-                                    },
-                                    onFailure:function(r) {
-                                      alert('Please provide a valid zip code to change your location');
-                                    }
-                                  }
-                                });
-      </script>
-    <% else %>
-      Hmmm... location error.
-    <% end %>
-  </div>
+  <%= render :partial => 'location', :locals => { :location => @location } %>
   <input type="text" name="q" id="q1" value="" onkeypress="return handleEnter(this.form, event);" />
 	<input type="image" name="commit" id="commit" src="/images/button_search_big.png" class="submit" />
-	<div id="more_link"><a href="#" onclick="$('activity_search').toggle(); moreOptions(); return false;">More Options</a></div>
+	<div id="more_link"><a href="#" onclick="$('activity_search').toggle(); return false;">More Options</a></div>
 	<div id="activity_search" style="display:none;">
 	  <%= render :partial => 'event_search' %>
   </div>
@@ -42,7 +19,7 @@
     $('keywords_container').remove();
     $('commit2').remove();
     // make the moreOptions call now to set the values in activity_search's hidden form fields
-    moreOptions();
+    // moreOptions();
   </script>
 </form>
 

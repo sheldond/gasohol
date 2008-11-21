@@ -1,0 +1,24 @@
+<div id="search_location">
+  <% if location %>
+    Searching near <strong id="loc"><%= "#{location['city']}, #{location['region']}" %></strong> <%= link_to('change', { :action => 'set_location', :location => location['zip'] }, :id => 'change_location') %>
+    <input type="hidden" name="location" id="location" value="<%= "#{location['city']}, #{location['region']}" %>" />
+    <script type="text/javascript">
+      new Ajax.InPlaceEditor('loc', '<%= url_for(:action => 'set_location', :location => location['zip']) %>',
+                              { 
+                                
+                                okText:'Save',
+                                externalControl:'change_location',
+                                ajaxOptions:{
+                                  onSuccess:function(r) {
+                                    $('location').value = r.responseText;
+                                  },
+                                  onFailure:function(r) {
+                                    alert('Please provide a valid zip code to change your location');
+                                  }
+                                }
+                              });
+    </script>
+  <% else %>
+    Hmmm... location error.
+  <% end %>
+</div>

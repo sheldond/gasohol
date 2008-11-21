@@ -12,7 +12,7 @@ class Google
                 :client => GASOHOL_CONFIG['google']['client'], 
                 :output => 'xml_no_dtd', 
                 :getfields => '*',
-                :sort => 'date:A:S:d1' }
+                :sort => '' }
   ALLOWED_PARAMS = DEFAULTS.keys + [:inurl]
   ACTIVE_TO_GOOGLE_PARAMS = { :category => 'category', :sport => 'channel' }    # translate our URL parameters into ones that google understands
   DEFAULT_OUTPUT = {  :results => [], 

@@ -1,5 +1,5 @@
 body {
-	
+	color: #333333;
 }
 
 img {
@@ -11,7 +11,7 @@ a {
 }
 
 a:hover {
-	text-decoration: none;
+	color: #333333;
 }
 
 strong {
@@ -219,8 +219,12 @@ strong {
 				width: auto;
 			}
 			
-		#activity_search #location {
-			
+		#activity_search #search_location #loc {
+			display: block;
+		}
+		
+		#activity_search #search_location #loc-inplaceeditor input {
+			display: inline;
 		}
 
 #main {
@@ -386,9 +390,11 @@ strong {
 			margin-left: 2em;
 		}
 	
+	/*
 		.result:hover {
 			background: transparent url('/images/result_bg.png') top left repeat-x;
 		}
+	*/
 		
 		.result .title {
 			float: left;

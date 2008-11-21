@@ -15,6 +15,7 @@
    
 	<div id="activity_search" class="tab">
 	  <form id="search_form2" name="search_form2" method="get" action="/search">
+	    <%= render :partial => 'location', :locals => { :location => @location } %>
 	    <%= render :partial => 'event_search' %>
 	  </form>
   </div>

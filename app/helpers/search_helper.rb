@@ -4,6 +4,7 @@ module SearchHelper
     
     current_page = to / results_per_page
     total_pages = total / results_per_page
+    total_pages += 1 if total % results_per_page != 0
     
     count_from = 1
     count_to = total_pages > 7 ? 7 : total_pages
@@ -21,6 +22,7 @@ module SearchHelper
     # turn into a standard list of links and add some dots if there are more than 7 pages
     output = links.join(' ')
     output += '...' if total_pages > 7
+    return output
     
   end
   

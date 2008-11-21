@@ -48,6 +48,7 @@
     </div>
   <% end %>
 
-  <%= render :partial => 'context', :locals => { :tweets => @tweets[:results], :photos => @flickr[:results], :videos => @yahoo[:results] } %>
+  <%# render :partial => 'context', :locals => { :tweets => @tweets[:results], :photos => @flickr[:results], :videos => @yahoo[:results] } %>
+  <%= render :partial => 'context', :locals => { :tweets => @tweets[:results] } %>
 
 </div>
