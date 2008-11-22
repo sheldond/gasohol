@@ -13,7 +13,7 @@ class Google
                 :output => 'xml_no_dtd', 
                 :getfields => '*',
                 :sort => '' }
-  ALLOWED_PARAMS = DEFAULTS.keys + [:inurl]
+  ALLOWED_PARAMS = DEFAULTS.keys # + [:inurl]
   ACTIVE_TO_GOOGLE_PARAMS = { :category => 'category', :sport => 'channel' }    # translate our URL parameters into ones that google understands
   DEFAULT_OUTPUT = {  :results => [], 
                       :featured => [], 
@@ -194,16 +194,16 @@ class Google
     end
 
     # do the start/end date. If there isn't one, set to today by default
-    if options[:start_date].nil? || options[:start_date].blank?
-      options[:start_date] = Time.now.to_s(:standard)
-    end
+    #if options[:start_date].nil? || options[:start_date].blank?
+    #  options[:start_date] = Time.now.to_s(:standard)
+    #end
     
-    #if options[:start_date] and !options[:start_date].blank?
+    if options[:start_date] and !options[:start_date].blank?
       query += ' inmeta:startDate:daterange:' + Chronic.parse(options[:start_date]).strftime('%Y-%m-%d') + '..'
       if options[:end_date] and !options[:end_date].blank?
         query += Chronic.parse(options[:end_date]).strftime('%Y-%m-%d')
       end
-    #end
+    end
   
     # do the location
     

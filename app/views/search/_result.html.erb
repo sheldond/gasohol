@@ -29,22 +29,46 @@
           <li id="result_<%= result[:num] %>_links_registrants"></li>
           <li id="result_<%= result[:num] %>_links_watching"></li>
           <li id="result_<%= result[:num] %>_links_discussions"></li>
+          <li id="result_<%= result[:num] %>_links_articles"></li>
+          <!-- <li id="result_<%= result[:num] %>_links_training"></li> -->
         </ul>
         <img src="/images/indicator.gif" alt="Loading..." id="result_<%= result[:num] %>_indicator" />
       </div>
       <% if SearchController::DO_RELATED_SEARCH %>
         <script type="text/javascript">
-          new Ajax.Request( '/search/google.json?num=1&filter=s&q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&inurl=community.active.com',
+          new Ajax.Request( "/search/google.json?num=1&filter=s&q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&inurl=community.active.com",
                             { evalscripts:true,
                               onSuccess:function(r) {
                                 total = r.responseText.evalJSON().google.total_results
                                 if(total > 0) {
                                     $('result_<%= result[:num] %>_links_discussions').insert({bottom:'<a href="/search?q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&inurl=community.active.com">'+total+' discussion'+(total != 1 ? 's' : '')+'</a>'});
                                   }
+                                // $('result_<%= result[:num] %>_indicator').remove();
+                                }
+                            });
+                            
+          new Ajax.Request( "/search/google.json?num=1&filter=s&q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&category=Articles",
+                            { evalscripts:true,
+                              onSuccess:function(r) {
+                                total = r.responseText.evalJSON().google.total_results
+                                if(total > 0) {
+                                    $('result_<%= result[:num] %>_links_articles').insert({bottom:'<a href="/search?q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&category=Articles">'+total+' article'+(total != 1 ? 's' : '')+'</a>'});
+                                  }
                                 $('result_<%= result[:num] %>_indicator').remove();
                                 }
                             });
-        
+          /*
+          new Ajax.Request( "/search/google.json?num=1&filter=s&q=<%= result[:meta][:channel] %>&inurl=training.active.com",
+                            { evalscripts:true,
+                              onSuccess:function(r) {
+                                total = r.responseText.evalJSON().google.total_results
+                                if(total > 0) {
+                                    $('result_<%= result[:num] %>_links_training').insert({bottom:'<a href="/search?q=<%= result[:meta][:channel] %>&inurl=training.active.com">'+total+' training plan'+(total != 1 ? 's' : '')+'</a>'});
+                                  }
+                                $('result_<%= result[:num] %>_indicator').remove();
+                                }
+                            });
+          */
           // generate a random number of registrants (turn off the clickable link for now)
           // $('result_<%= result[:num] %>_links_registrants').update('<a href="#">'+Math.round(Math.random()*80)+' registrants</a>');
           // $('result_<%= result[:num] %>_links_watching').update('<a href="#">'+Math.round(Math.random()*40)+' watching</a>');
