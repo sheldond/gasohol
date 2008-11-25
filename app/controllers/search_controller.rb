@@ -2,9 +2,9 @@ class SearchController < ApplicationController
   
   before_filter :login_required, :except => [:location]
   before_filter :get_location, :only => [:index, :home, :google]
-  before_filter :format_query, :except => [:get_location, :set_location]
+  before_filter :format_query, :only => [:index, :google, :flickr, :yahoo, :youtube, :twitter, :location]
   
-  DO_RELATED_SEARCH = true
+  DO_RELATED_SEARCH = false
   SHOW_TIMESTAMPS = false   # show timestamps for API calls at the bottom of the page (can show anyway by adding debug=true to URL)
   DEFAULT_QUERY = 'active'
   # RESULTS_PER_PAGE = 25
@@ -115,41 +115,34 @@ class SearchController < ApplicationController
   end
   
   def set_location(value=nil)
-    
     # if we called this from elsewhere in the controller (rather than from a URL), used the passed value as the location
-    params[:value] = value || params[:value]
+    value = value || params[:value]
+    # if the value already is a valid location hash, just set it, this other crap isn't needed
+    @location = value.is_a?(Hash) ? value : {}
     
-    @location = {}
-    if params[:value]
-      
-      if params[:value].to_i > 0    # is this a zip code?
-        zip = Zip.find_by_zip(params[:value])
-      else
-        city = params[:value].split(',').first.strip
-        state = params[:value].split(',').last.strip.downcase
-        found_state = Google::STATES.find { |key,value| value == state }
-        state = found_state ? found_state.first : state  # is this is a full state name, get the abbreviation instead
-        zip = Zip.find_by_city_and_state(city.titlecase,state.upcase)
-      end
-      
-      unless zip.nil?
-        ['zip','city','state','latitude','longitude'].each do |el|
-          val = (el == 'state') ? { 'region' => Google::STATES[zip.send(el).downcase].titlecase } : { el => zip.send(el).to_s.titlecase }
-          @location.merge!(val)
+    if value
+      if @location.empty?     # if @location doesn't already contain a valid location Hash object
+        zip = find_zip(value)
+        unless zip.nil?
+          ['zip','city','state','latitude','longitude'].each do |el|
+            val = (el == 'state') ? { 'region' => Google::STATES[zip.send(el).downcase].titlecase } : { el => zip.send(el).to_s.titlecase }
+            @location.merge!(val)
+          end
         end
-        cookies[:location] = @location.to_json
       end
-      
+      # set the cookie
+      cookies[:location] = { :value => @location.to_json, :expires => 1.year.from_now }
     else
       raise 'No location provided'
     end
     
+    # only render something (the city, state of the current location) if this was called via ajax
+    # otherwise be silent
     if request.xhr?
-      # only render something (the city,state of the current location) if this was called via ajax
       unless @location.empty?
         render :text => "#{@location['city']}, #{@location['region']}"
       else
-        render :text => "Please enter a valid zip code"
+        render :text => "Please enter a valid city and state or zip"
       end
     end
     
@@ -179,6 +172,19 @@ class SearchController < ApplicationController
   def do_yahoo
     @@yahoo.search(@query, @options)
   end
+  
+  def find_zip(text) 
+    if text.to_i > 0    # is this a zip code?
+      zip = Zip.find_by_zip(text)
+    else
+      city = text.split(',').first.strip
+      state = text.split(',').last.strip.downcase
+      found_state = Google::STATES.find { |key,value| value == state }
+      state = found_state ? found_state.first : state  # is this is a full state name, get the abbreviation instead
+      zip = Zip.find_by_city_and_state(city.titlecase,state.upcase)
+    end
+    return zip
+  end
 
   def format_query
     @query = params[:q] || ''
@@ -186,11 +192,7 @@ class SearchController < ApplicationController
     
     # add in the user's location
     if params[:location]
-      city = params[:location].split(',').first.strip
-      state = params[:location].split(',').last.strip.downcase
-      found_state = Google::STATES.find { |key,value| value == state }
-      state = found_state ? found_state.first : state  # is this is a full state name, get the abbreviation instead
-      zip = Zip.find_by_city_and_state(city.titlecase,state.upcase)
+      zip = find_zip(params[:location])
       @options.merge!({ :latitude => zip.latitude, :longitude => zip.longitude })
     end
       
@@ -211,29 +213,30 @@ class SearchController < ApplicationController
   #
 
   def get_location
-    
-      if cookies[:location].nil?
-        @location = {}
-        begin
-          xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
-          (xml/:location).each do |loc| 
-            ['zip','city','region','latitude','longitude'].each do |el|
-              @location.merge!({ el => loc.at(el).innerHTML.titlecase })
-            end
+  
+    if cookies[:location].nil?
+      @location = {}
+      begin
+        xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
+        (xml/:location).each do |loc| 
+          ['zip','city','region','latitude','longitude'].each do |el|
+            @location.merge!({ el => loc.at(el).innerHTML.titlecase })
           end
-        rescue # any kind of error with the request, set to San Diego, CA
-          set_location("San Diego,CA")
         end
-        # assuming we found a location, set it
-        unless @location.empty?
-          cookies[:location] = @location.to_json
-        end
+      rescue # any kind of error with the request, set to San Diego, CA
+        set_location("San Diego,CA")
       end
-    
-      # if the cookie exists, and we didn't just find the location above, get it from the cookie
-      if cookies[:location] && @location.nil?
-        @location = ActiveSupport::JSON.decode(cookies[:location])
+      # assuming we found a location, set the cookie to it
+      unless @location.empty?
+        # cookies[:location] = @location.to_json
+        set_location(@location)
       end
+    end
+  
+    # if the cookie exists, and we didn't just find the location above, get it from the cookie
+    if cookies[:location] && @location.nil?
+      @location = ActiveSupport::JSON.decode(cookies[:location])
+    end
 
   end
 end
