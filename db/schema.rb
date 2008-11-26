@@ -11,6 +11,17 @@
 
 ActiveRecord::Schema.define(:version => 20080618144804) do
 
+  create_table "queries", :force => true do |t|
+    t.string   "keywords",   :default => "NULL"
+    t.string   "location",   :default => "NULL"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string   "sport",      :default => "NULL"
+    t.string   "type",       :default => "NULL"
+    t.string   "custom",     :default => "NULL"
+    t.integer  "count",      :default => 0
+  end
+
   create_table "sessions", :force => true do |t|
     t.string   "session_id",                     :null => false
     t.text     "data",       :default => "NULL"

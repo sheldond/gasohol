@@ -4,10 +4,9 @@ class SearchController < ApplicationController
   before_filter :get_location, :only => [:index, :home, :google]
   before_filter :format_query, :only => [:index, :google, :flickr, :yahoo, :youtube, :twitter, :location]
   
-  DO_RELATED_SEARCH = false
+  DO_RELATED_SEARCH = true
   SHOW_TIMESTAMPS = false   # show timestamps for API calls at the bottom of the page (can show anyway by adding debug=true to URL)
-  DEFAULT_QUERY = 'active'
-  # RESULTS_PER_PAGE = 25
+  # DEFAULT_QUERY = 'active'
   SPORTS = ['Baseball','Basketball','Cycling','Fitness &amp; Nutrition','Football','Golf','Mind &amp; Body','Outdoors','Running','Soccer','Softball','Tennis','Travel','Triathlon','Women','Others']
   CATEGORIES = ['Activities','Articles','eteamz Sites','Facilities','Organizations','People','Products','Videos']
   TYPES = ['Camp','Class','Conference','Event','Membership','Program','Tee Time','Tournament']
@@ -29,37 +28,19 @@ class SearchController < ApplicationController
     
     @time = {}
     @time[:all] = Time.now
+    
+    # google
     threads << Thread.new do
       @time[:google] = Time.now
-      @google = do_google
-      # if there were any sort params, sort the results by them
-      @google[:results] = case params[:sort]
-      when 'name'
-        @google[:results].sort_by do |result|
-          result[:title]
-        end
-      when 'date'
-        @google[:results].sort_by do |result|
-          result[:meta][:start_date]
-        end
-      #when 'location'
-      #  @google[:results].sort_by do |result|
-      #    result[:meta][:state]
-      #  end
-      when 'rating'
-        @google[:results].sort_by do |result|
-          result[:rating]
-        end.reverse
-      else
-        @google[:results]
-      end
+        Query.record(@query,@options)
+        @google = do_google
       @time[:google] = Time.now - @time[:google]
     end
     
     # twitter
     threads << Thread.new do
       @time[:twitter] = Time.now
-      @tweets = do_twitter              # @tweets = {:results => []}              # if we need to disable tweets
+        @tweets = do_twitter              # @tweets = {:results => []}              # if we need to disable tweets
       @time[:twitter] = Time.now - @time[:twitter]
     end
     
@@ -79,6 +60,7 @@ class SearchController < ApplicationController
     
     # wait for all the threads to finish
     threads.each { |t| t.join }
+    
     @time[:all] = Time.now - @time[:all]
     
     render :layout => 'application'
@@ -114,6 +96,9 @@ class SearchController < ApplicationController
     standard_response(@result)
   end
   
+  #
+  # takes a location string or hash and sets a cookie on the browser
+  #
   def set_location(value=nil)
     # if we called this from elsewhere in the controller (rather than from a URL), used the passed value as the location
     value = value || params[:value]
@@ -158,6 +143,8 @@ class SearchController < ApplicationController
   end
   
   def do_google
+    # would love to have the query recording here, but it runs for all related searches as well
+    # Query.record(@query,@options)
     @@google.search(@query, @options)
   end
   

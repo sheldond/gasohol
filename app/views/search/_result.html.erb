@@ -29,7 +29,7 @@
           <li id="result_<%= result[:num] %>_links_registrants"></li>
           <li id="result_<%= result[:num] %>_links_watching"></li>
           <li id="result_<%= result[:num] %>_links_discussions"></li>
-          <li id="result_<%= result[:num] %>_links_articles"></li>
+          <!-- <li id="result_<%= result[:num] %>_links_articles"></li> -->
           <!-- <li id="result_<%= result[:num] %>_links_training"></li> -->
         </ul>
         <img src="/images/indicator.gif" alt="Loading..." id="result_<%= result[:num] %>_indicator" />
@@ -43,10 +43,10 @@
                                 if(total > 0) {
                                     $('result_<%= result[:num] %>_links_discussions').insert({bottom:'<a href="/search?q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&inurl=community.active.com">'+total+' discussion'+(total != 1 ? 's' : '')+'</a>'});
                                   }
-                                // $('result_<%= result[:num] %>_indicator').remove();
+                                $('result_<%= result[:num] %>_indicator').remove();
                                 }
                             });
-                            
+          /*
           new Ajax.Request( "/search/google.json?num=1&filter=s&q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&category=Articles",
                             { evalscripts:true,
                               onSuccess:function(r) {
@@ -57,7 +57,7 @@
                                 $('result_<%= result[:num] %>_indicator').remove();
                                 }
                             });
-          /*
+
           new Ajax.Request( "/search/google.json?num=1&filter=s&q=<%= result[:meta][:channel] %>&inurl=training.active.com",
                             { evalscripts:true,
                               onSuccess:function(r) {
