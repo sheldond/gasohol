@@ -11,7 +11,7 @@ class CreateZips < ActiveRecord::Migration
       t.column 'time_zone', :string
       t.column 'dst', :boolean, :default => false
       t.column 'latitude', :decimal, :precision => 7, :scale => 5
-      t.column 'longitude', :decimal, :precision => 7, :scale => 5
+      t.column 'longitude', :decimal, :precision => 8, :scale => 5
       t.column 'msa', :integer
       t.column 'pmsa', :integer
       t.column 'congress_dist', :integer
