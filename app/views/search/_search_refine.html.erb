@@ -1,4 +1,4 @@
-<div id="search_refine">
+
   
   <!-- 
   <ul id="search_tabs">
@@ -12,14 +12,13 @@
     </form>
 	</div>
   -->
-   
-	<div id="activity_search" class="tab">
-	  <form id="search_form2" name="search_form2" method="get" action="/search">
-	    <%= render :partial => 'location', :locals => { :location => @location } %>
-	    <%= render :partial => 'event_search' %>
-	  </form>
+<div id="refine_container">
+  <div id="activity_search" class="tab">
+    <form id="search_form2" name="search_form2" method="get" action="/search">
+      <%= render :partial => 'location', :locals => { :location => @location } %>
+      <%= render :partial => 'event_search' %>
+    </form>
   </div>
-
 </div>
 
 <script type="text/javascript">
@@ -34,6 +33,9 @@
   // was there already a radius, sport or type in the query string?
   // url.radius ? selectOption('radius',url.radius) : null;
   url.sport ? selectOption('sport',url.sport) : null;
+  s.changeSport();
   url.type ? selectOption('type',url.type) : null;
+  s.changeType();
+  url.custom ? selectOption('custom',url.custom) : null;
 </script>
 

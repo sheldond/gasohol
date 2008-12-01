@@ -4,7 +4,7 @@ class SearchController < ApplicationController
   before_filter :get_location, :only => [:index, :home, :google]
   before_filter :format_query, :only => [:index, :google, :flickr, :yahoo, :youtube, :twitter, :location]
   
-  DO_RELATED_SEARCH = true
+  DO_RELATED_SEARCH = false
   SHOW_TIMESTAMPS = false   # show timestamps for API calls at the bottom of the page (can show anyway by adding debug=true to URL)
   # DEFAULT_QUERY = 'active'
   SPORTS = ['Baseball','Basketball','Cycling','Fitness &amp; Nutrition','Football','Golf','Mind &amp; Body','Outdoors','Running','Soccer','Softball','Tennis','Travel','Triathlon','Women','Others']

@@ -1,56 +1,54 @@
-<%= render :partial => 'search_refine' %>
+<table id="search_table">
+  <tr>
+    <td id="refine">
+      <div style="overflow: hidden; width: 240px; visibility: hidden; height: 0pt;"></div>
+      <%= render :partial => 'search_refine' %>
+    </td>
+    <td id="main">
+      <div style="overflow: hidden; width: 400px; visibility: hidden; height: 0pt;"></div>
+      <%= render :partial => 'breadcrumbs', :locals => { :google => @google } %>
 
-<div id="main">
-  
-  <% unless @google[:results].blank? %>
-    <div id="breadcrumb">
-    	<h2>
-    	  <%= build_breadcrumbs(params)%>
-    	</h2>
-  	
-    	<div id="result_count">
-        <%= @google[:results].first[:num] %>-<%= @google[:results].last[:num] %> of <%= number_with_delimiter(@google[:google][:total_results]) %> results
-      </div>
-    </div>
+      <% unless @google[:results].blank? %>
+        <div id="results">
+          <% unless @google[:featured].empty? %>
+            <div id="featured">
+              <h3>Featured Events</h3>
+              <%= render :partial => 'featured', :collection => @google[:featured] %>
+            </div>
+          <% end %>
 
-    <div id="results">
-      <% unless @google[:featured].empty? %>
-        <div id="featured">
-          <h3>Featured Events</h3>
-          <%= render :partial => 'featured', :collection => @google[:featured] %>
+          <%= render :partial => 'sort' %>
+
+          <%= render :partial => 'result', :collection => @google[:results] %>
+
+          <% if @google[:google][:total_results] > GASOHOL_CONFIG['google']['results'] %>
+            <div id="paging">
+              <%= render :partial => 'paging', :locals => { :from => @google[:results].first[:num], 
+                                                            :to => @google[:results].last[:num], 
+                                                            :total => @google[:google][:total_results],
+                                                            :results_per_page => GASOHOL_CONFIG['google']['results'],
+                                                            :query => @google[:google][:query] } %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div id="results">
+          <div class="no_results">No results found.</div>
         </div>
       <% end %>
-      
-      <%= render :partial => 'sort' %>
-      
-      <%# output actual records...got a little more complicated by inserting the plug for the events only search %>
-      <%= render :partial => 'result', :collection => @google[:results] %>
-      
-      <% if @google[:google][:total_results] > GASOHOL_CONFIG['google']['results'] %>
-        <div id="paging">
-          <%= render :partial => 'paging', :locals => { :from => @google[:results].first[:num], 
-                                                        :to => @google[:results].last[:num], 
-                                                        :total => @google[:google][:total_results],
-                                                        :results_per_page => GASOHOL_CONFIG['google']['results'],
-                                                        :query => @google[:google][:query] } %>
-        </div>
-      <% end %>
-      
-      <% if SearchController::SHOW_TIMESTAMPS or params[:debug] %>
+    </td>
+    <td id="context">
+      <div style="overflow: hidden; width: 280px; visibility: hidden; height: 0pt;"></div>
+      <%# render :partial => 'context', :locals => { :tweets => @tweets[:results], :photos => @flickr[:results], :videos => @yahoo[:results] } %>
+      <%= render :partial => 'context', :locals => { :tweets => @tweets[:results] } %>
+    </td>
+  </tr>
+  <% if SearchController::SHOW_TIMESTAMPS or params[:debug] %>
+    <tr id="debugging">
+      <td>&nbsp;</td>
+      <td colspan="2">
         <%= render :partial => 'debug', :locals => { :time => @time, :google => @google } %>
-      <% end %>
-    </div>
-      
-  <% else %>
-    <div id="results">
-      <div class="no_results">No results found.</div>
-      <% if SearchController::SHOW_TIMESTAMPS or params[:debug] %>
-        <%= render :partial => 'debug', :locals => { :time => @time, :google => @google } %>
-      <% end %>
-    </div>
+      </td>
+    </tr>
   <% end %>
-
-  <%# render :partial => 'context', :locals => { :tweets => @tweets[:results], :photos => @flickr[:results], :videos => @yahoo[:results] } %>
-  <%= render :partial => 'context', :locals => { :tweets => @tweets[:results] } %>
-
-</div>
+</table>

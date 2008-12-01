@@ -1,0 +1,12 @@
+<% first = google[:results].first ? google[:results].first[:num] : 0 %>
+<% last = google[:results].last ? google[:results].last[:num] : 0 %>
+<% total = google[:google][:total_results] %>
+
+<div id="breadcrumb">
+	<h2>
+	  <%= build_breadcrumbs(params) %>
+	</h2>
+	<div id="result_count">
+    <%= "#{first}-#{last} of #{number_with_delimiter(total)} results" %>
+  </div>
+</div>

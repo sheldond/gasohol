@@ -1,5 +1,8 @@
 module SearchHelper
   
+  #
+  # output the page links for a given number of results
+  #
   def output_pages(from,to,total,results_per_page,query)
     
     current_page = to / results_per_page
@@ -26,6 +29,9 @@ module SearchHelper
     
   end
   
+  #
+  # create star rating images and surrounding <div> based on a number passed in
+  #
   def output_rating(num)
     output = '<div class="rating">'
     1.upto(num) { output += image_tag('/images/star_on.png', :title => "Average rating: #{num}") }    # rating
@@ -38,14 +44,18 @@ module SearchHelper
     result[:meta][:category] == 'Activities'
   end
   
-  # return params that affect the search only (remove stuff like controller and action
+  #
+  # return params that affect the search only (remove stuff like controller and action)
+  #
   def good_params
     params.find_all do |key,value|
-      key != 'controller' and key != 'action' and key != 'format' and key != 'commit.x' and key != 'commit.y' and key != 'commit2.x' and key != 'commit2.y'
+      key != 'controller' and key != 'action' and key != 'format'
     end
   end
   
+  #
   # build the breadcrumb list by specifying what should be in each position
+  #
   def build_breadcrumbs(params)
     # start as an array and then split with > later
     output = []
@@ -59,7 +69,9 @@ module SearchHelper
     output.join(' <span>&gt;</span> ')
   end
   
+  #
   # return only the params that the 'all' search cares about (q, category, sport)
+  #
   def all_search_params(without=nil)
     include_params = ['q','sport','category','action','controller','format','id']; include_params.delete(without.to_s)
     options = params.dup
