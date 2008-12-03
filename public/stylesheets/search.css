@@ -149,6 +149,7 @@ strong {
 		margin-top: -40px;
 		padding: 60px 10px 10px 40px;
 		background: transparent url('/images/search_refine_active_logo.png') 20px 0 no-repeat;
+		width: 190px;
 	}
 
 	#refine #search_tabs {
