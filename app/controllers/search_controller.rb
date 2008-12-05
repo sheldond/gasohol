@@ -12,9 +12,9 @@ class SearchController < ApplicationController
   TYPES = ['Camp','Class','Conference','Event','Membership','Program','Tee Time','Tournament']
   
   @@google = Google.new
-  @@twitter = Twitter.new
-  @@flickr = Flickr.new
-  @@yahoo = Yahoo.new
+  #@@twitter = Twitter.new
+  #@@flickr = Flickr.new
+  #@@yahoo = Yahoo.new
   
   layout false
   
@@ -26,6 +26,7 @@ class SearchController < ApplicationController
   def index
     params[:q] ||= ''
     threads = []
+    @delayed_ajax = ''
     
     @time = {}
     @time[:all] = Time.now
@@ -39,11 +40,11 @@ class SearchController < ApplicationController
     end
     
     # twitter
-    threads << Thread.new do
-      @time[:twitter] = Time.now
-        @tweets = do_twitter              # @tweets = {:results => []}              # if we need to disable tweets
-      @time[:twitter] = Time.now - @time[:twitter]
-    end
+    #threads << Thread.new do
+    #  @time[:twitter] = Time.now
+    #    @tweets = do_twitter              # @tweets = {:results => []}              # if we need to disable tweets
+    #  @time[:twitter] = Time.now - @time[:twitter]
+    #end
     
     # flickr
     #threads << Thread.new do

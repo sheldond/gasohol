@@ -233,7 +233,7 @@ strong {
 		}
 	
 	#activity_search {
-		
+		overflow: auto;
 	}
 	
 		#activity_search label {
@@ -278,6 +278,52 @@ strong {
 		width: 280px;
 		border-left: 1px solid #999999;
 	}
+	
+		#context #related_articles, #context #related_training{
+			display: block;
+			margin: 0 0 2em;
+		}
+		
+			#context #related_articles h4, #context #related_training h4{
+				display: block;
+				float: none;
+			}
+	
+		#context .result {
+			margin: 0;
+			padding: .1em 0;
+			overflow: hidden;
+		}
+
+		#context.result .title {
+			float: left;
+			margin: 0 0 .2em;
+		}
+
+		#context .result h3 {
+			font-size: 100%;
+			display: inline;
+		}
+
+			#context .result .title.sport {
+				background-color: transparent;
+				background-position: 0 1px;
+				background-repeat: no-repeat;
+				background-image: none;
+				padding: 0;
+			}
+			
+			#context .indicator {
+				display: block;
+				width: 32px;
+				margin: 1em auto;
+			}
+			
+		#context .more {
+			display: block;
+			text-align: center;
+			margin: 1em 0 0;
+		}
 	
 		#context_container {
 			margin: 1em;
@@ -418,6 +464,28 @@ strong {
 			float: left;
 			margin: 0 0 .2em;
 		}
+		
+			.result .title.sport {
+				background-color: transparent;
+				background-position: 0 1px;
+				background-repeat: no-repeat;
+			}
+		
+			/* sport icons next to titles */
+			.result .title.running {
+				padding-left: 20px;
+				background-image: url('/images/sport_icon_running.png');
+			}
+			
+			.result .title.triathlon {
+				padding-left: 20px;
+				background-image: url('/images/sport_icon_triathlon.png');
+			}
+			
+			.result .title.cycling {
+				padding-left: 20px;
+				background-image: url('/images/sport_icon_cycling.png');
+			}
 		
 			.result h3 {
 				font-size: 116%;
