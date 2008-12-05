@@ -1,0 +1,14 @@
+<% unless @popular_local_searches.empty? %>
+  <div id="popular">
+    <h3>Most popular <%= @location['city'] %> searches:</h3>
+    <ul>
+      <% @popular_local_searches.each do |search| %>
+        <% if search.keywords.blank? %>
+          <li><%= link_to("*", { :action => 'index', :location => search.location, :q => search.keywords, :sport => search.sport, :type => search.type, :custom => search.custom }) %></li>
+        <% else %>
+          <li><%= link_to(search.keywords, { :action => 'index', :location => search.location, :q => search.keywords, :sport => search.sport, :type => search.type, :custom => search.custom }) %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

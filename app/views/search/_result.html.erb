@@ -4,7 +4,7 @@
       <div class="title">
         <%# link_to(image_tag('/images/icons/magnifier.png'), result.url, :class => 'snap_shots', :onclick => 'return false;') %>
         <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
-        <%# output_rating(result[:rating]) %>
+        <%= output_rating(rand(6)) %>
       </div>
       <!-- <%= link_to(image_tag('/images/icons/add.png'), '#', :class => 'save', :title => 'Save to my Calendar') %> -->
       <% if result[:abstract] %>
@@ -22,7 +22,7 @@
     <% if activity?(result) %>
       <div id="result_<%= result[:num] %>_links" class="related_links">
         <% if result[:meta][:online_registration_available] %>
-          <a href="<%= result[:url] %>" class="register_link">Register Now!</a>
+          <%= link_to('Register Now', result[:url], :class => 'register_link') %>
         <% end %>
         <strong>Related:</strong>
         <ul>

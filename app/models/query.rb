@@ -22,7 +22,27 @@ class Query < ActiveRecord::Base
   end
   
   def self.find_popular(num=5)
-    
+    # select keywords, sum(`count`) as count from queries where location = 'San Diego, California' group by keywords order by count desc;
+    find_by_sql(["select *, sum(count) as total \
+                  from queries \
+                  group by keywords, sport, type, custom \
+                  order by total desc \
+                  limit ?", num])
+  end
+  
+  def self.find_popular_by_location(num=5, loc='')
+    # if this is a hash, get the city and state out, otherwise assume it's a valid location string
+    if loc.respond_to?(:keys)
+      location = "#{loc['city']}, #{loc['region']}"
+    else
+      location = loc
+    end
+    find_by_sql(["select *, sum(count) as total \
+                  from queries \
+                  where location = ? \
+                  group by keywords \
+                  order by total desc \
+                  limit ?", location, num])
   end
   
 end

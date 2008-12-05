@@ -129,6 +129,17 @@ strong {
 		font-size: 85%;
 		color: #999999;
 	}
+	
+	#home_search #popular {
+		margin-top: 5em;
+		overflow: auto;
+	}
+	
+		#home_search #popular li {
+			display: block;
+			float: left;
+			margin: 0 1em 0 0;
+		}
 
 #search_table {
 	width: 100%;
@@ -193,7 +204,7 @@ strong {
 		margin: .5em 0;
 	}
 	
-	#refine h3 {
+	#refine h3, #popular h3 {
 		font-weight: bold;
 		margin: 1em 0 .5em;
 		color: #d06f1a;
@@ -211,6 +222,11 @@ strong {
 		
 		a.small {
 			font-size: 85%;
+		}
+		
+		#refine #popular {
+			margin-top: 2em;
+			overflow: auto;
 		}
 	
 	#activity_search {
