@@ -132,13 +132,16 @@ strong {
 	
 	#home_search #popular {
 		margin-top: 5em;
-		overflow: auto;
+		overflow: hidden;
 	}
 	
+		#home_search #popular ul {
+			text-align: center;
+		}
+	
 		#home_search #popular li {
-			display: block;
-			float: left;
-			margin: 0 1em 0 0;
+			display: inline;
+			padding: 0 1em .5em 0;
 		}
 
 #search_table {
