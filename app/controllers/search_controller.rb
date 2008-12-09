@@ -9,7 +9,7 @@ class SearchController < ApplicationController
   SHOW_TIMESTAMPS = true   # show timestamps for various processes at the bottom of the page (can show anyway by adding debug=true to URL)
   
   # instantiate an instance of the Google class as soon as this controller loads the first time
-  @@google = Active.new(GASOHOL_CONFIG['google'])
+  @@gsa = ActiveSearch.new(GASOHOL_CONFIG['google'])
   
   # This is the default homepage that just shows a search box and popular searches
   def home
@@ -113,7 +113,7 @@ class SearchController < ApplicationController
     # Maybe a flag you pass, defaulted to true, telling the system to record the query to the database
     
     # Query.record(@query,@options)
-    @@google.search(@query, @options)
+    @@gsa.search(@query, @options)
   end
 
   # Helper action that returns an ActiveRecord instance of the zip location for a passed zip or city,state

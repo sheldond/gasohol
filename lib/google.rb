@@ -8,7 +8,7 @@
 # There are two parts to a Google GSA request:
 #
 # 1. query (search terms)
-# 2. options (stuff like 'collection' and 'client')
+# 2. options (stuff like 'collection,' client,' and 'num')
 #
 # And then there is the actual string that you see in your browser, the "query string," which contains
 # all of the & and = parts.
@@ -36,6 +36,8 @@ require 'hpricot'
 require 'chronic'
 
 class Google
+  
+  attr_reader :config
   
   URL = GASOHOL_CONFIG['google']['url']
   DEFAULT_OPTIONS = { :num => GASOHOL_CONFIG['google']['results'], 
@@ -124,7 +126,7 @@ class Google
     # the keyword string that was searched for
     output[:google][:query] = query
     # the query that we send to the GSA, not the complete query string
-    output[:google][:google_query] = googlize_options_into_query(options,output[:google][:query])
+    output[:google][:google_query] = googlize_params_into_query(options,output[:google][:query])
     # the full path to google including the options and hostname of the GSA (makes a easily clickable link for debugging)
     output[:google][:full_query_path] = query_path(output[:google][:google_query],options)
   
@@ -182,9 +184,9 @@ class Google
   end
 
   private
-  # This method is only concerned with turning the query and all of the options into the query (#1 above).
-  # The options (#2) are defined in the @@options class variable, which is used as a local variable 'options'
-  # in various places above
+  # This method is only concerned with turning the query and all of the params into the Google query variable (q).
+  # The options (collection, client, etc.) are defined in the @@options class variable, which is used as a local 
+  # variable 'options' in various places above.
   #
   # == googleize_options_into_query
   # Extend Google with an your own application-specific implementation of this method if you need to search
@@ -198,7 +200,7 @@ class Google
   # for Google. That's what this method will do.
   #
   #
-  def googlize_options_into_query(parts,query)
+  def googlize_params_into_query(parts,query)
     return ''
   end
   
