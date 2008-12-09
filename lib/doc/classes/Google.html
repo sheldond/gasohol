@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Google</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Google</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/google_rb.html">
+                google.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000001">new</a>&nbsp;&nbsp;
+      <a href="#M000002">search</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">URL</td>
+          <td>=</td>
+          <td class="context-item-value">GASOHOL_CONFIG['google']['url']</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">DEFAULT_OPTIONS</td>
+          <td>=</td>
+          <td class="context-item-value">{ :num =&gt; GASOHOL_CONFIG['google']['results'],                        :start =&gt; 0,                        :filter =&gt; 'p',                        :collection =&gt; GASOHOL_CONFIG['google']['collection'],                        :client =&gt; GASOHOL_CONFIG['google']['client'],                        :output =&gt; 'xml_no_dtd',                        :getfields =&gt; '*',                       :sort =&gt; '' }</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ALLOWED_PARAMS</td>
+          <td>=</td>
+          <td class="context-item-value">DEFAULT_OPTIONS.keys</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">DEFAULT_OUTPUT</td>
+          <td>=</td>
+          <td class="context-item-value">{  :results =&gt; [],                        :featured =&gt; [],                        :google =&gt; {                          :query =&gt; '',                          :params =&gt; {},                          :total_results =&gt; 0,                          :next =&gt; 0,                          :prev =&gt; 0,                          :google_query =&gt; '',                          :full_query_path =&gt; '' }</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">DEFAULT_RESULT</td>
+          <td>=</td>
+          <td class="context-item-value">{  :num =&gt; 0,                        :mime =&gt; '',                        :level =&gt; 1,                        :url =&gt; '',                        :title =&gt; '',                        :abstract =&gt; '',                        :date =&gt; '',                        :meta =&gt; {},                        :featured =&gt; false,                        :rating =&gt; 0 }</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">DEFAULT_FEATURED_RESULT</td>
+          <td>=</td>
+          <td class="context-item-value">{ :url =&gt; '', :title =&gt; '', :featured =&gt; true }</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000001" class="method-detail">
+        <a name="M000001"></a>
+
+        <div class="method-heading">
+          <a href="Google.src/M000001.html" target="Code" class="method-signature"
+            onclick="popupCode('Google.src/M000001.html');return false;">
+          <span class="method-name">new</span><span class="method-args">(config=nil, options={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+To get gasohol ready, instantiate a <a href="Google.html#M000001">new</a>
+copy with Gasohol.new(config) where &#8216;config&#8217; is a hash of
+options so that we know how/where to access your GSA instance. This
+information is saved and used for every request after initializing your
+gasohol instance. For <a href="Google.html">Google</a>&#8216;s reference of
+what these options do, check out the Search Protocol Reference: <a
+href="http://code.google.com/apis/searchappliance/documentation/50/xml_reference.html">code.google.com/apis/searchappliance/documentation/50/xml_reference.html</a>
+</p>
+<h2>Required config options</h2>
+<ul>
+<li>url =&gt; the URL to the <a href="Google.html#M000002">search</a> results
+page of your GSA. ie: <a
+href="http://127.0.0.1/search">127.0.0.1/search</a>
+
+</li>
+<li>collection =&gt; the GSA can contain several collections, specify which one
+to use for this <a href="Google.html#M000002">search</a>
+
+</li>
+<li>client =&gt; the GSA can contain several clients, specify which one to use
+for this <a href="Google.html#M000002">search</a>
+
+</li>
+</ul>
+<h2>Optional config options</h2>
+<ul>
+<li>filter =&gt; how to filter the results, defaults to &#8216;p&#8216;
+
+</li>
+<li>output =&gt; the output format of the results, defaults to
+&#8216;xml_no_dtd&#8217; (leave this setting alone for gasohol to work
+correctly)
+
+</li>
+<li>getfields =&gt; which meta tag values to return in the results, defaults to
+&#8217;*&#8217; (all meta tags)
+
+</li>
+<li>num =&gt; the default number of results to return, defaults to 25
+
+</li>
+</ul>
+<p>
+Example config hash:
+</p>
+<pre>
+  config =&gt; { :url =&gt; 'http://127.0.0.1',
+              :collection =&gt; 'default_collection',
+              :client =&gt; 'my_client',
+              :num =&gt; 25 }
+</pre>
+<p>
+So if you&#8216;re using gasohol with Rails, for example, you would place
+the following in your <a href="Google.html#M000002">search</a> controller:
+</p>
+<pre>
+  @google = Gasohol.new(config)
+</pre>
+<p>
+For a simple <a href="Google.html#M000002">search</a> now you go:
+</p>
+<pre>
+  @results = @google.search('pizza')
+</pre>
+<p>
+What you&#8216;ll get back in @results is a nicely formatted version of <a
+href="Google.html">Google</a>&#8216;s results.
+</p>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000002" class="method-detail">
+        <a name="M000002"></a>
+
+        <div class="method-heading">
+          <a href="Google.src/M000002.html" target="Code" class="method-signature"
+            onclick="popupCode('Google.src/M000002.html');return false;">
+          <span class="method-name">search</span><span class="method-args">(query,options={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Assembles the query and options into a big query string and sends over to
+your GSA.
+</p>
+<pre>
+ @google = Google.new(config)
+ @results = @google.search('pizza')
+</pre>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

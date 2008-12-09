@@ -1,20 +1,52 @@
+# = Introduction
+# Gasohol lets you query a Google Search Appliance and get results back in an easily traversable format.
+# 
+# == Terms
+# Let's get some nomenclature out of the way. It's a little confusing when we talk about 'query' in
+# a couple of different ways.
+#
+# There are two parts to a Google GSA request:
+#
+# 1. query (search terms)
+# 2. options (stuff like 'collection' and 'client')
+#
+# And then there is the actual string that you see in your browser, the "query string," which contains
+# all of the & and = parts.
+#
+# Think of the query as the keywords to search for. However the query to the GSA can actually contain 
+# several parts besides just keywords. If you are using metadata then the query can contain several 
+# 'inmeta:' flags, for example. All of these combined with the keywords become one big long string, 
+# each part separated by a space:
+#
+#   pizza inmeta:category=food inmeta:pieSize:12..18
+#
+# All of that is only the query (comes after ?q=). There are several additional options which the GSA requires, like
+# 'collection' and 'client.' These are the options. The query and all of the options are combined
+# into the final query string and sent to the GSA.
+#
+# A sample query string might look like:
+#   ?q=pizza+inmeta:category=food+inmeta:pieSize:12..18&collection=default_collection&client=my_client&num=10
+#
+# (Note that spaces in the query are turned into + signs.) This full query string is then appended to the URL
+# you provided in the config options when you initialized gasohol (see Google::new) and the request is made to
+# the GSA. The results come back and are parsed and converted into a nicer format than XML.
+
 require 'open-uri'
 require 'hpricot'
 require 'chronic'
 
 class Google
-
+  
   URL = GASOHOL_CONFIG['google']['url']
-  DEFAULTS = {  :num => GASOHOL_CONFIG['google']['results'], 
-                :start => 0, 
-                :filter => 'p', 
-                :collection => GASOHOL_CONFIG['google']['collection'], 
-                :client => GASOHOL_CONFIG['google']['client'], 
-                :output => 'xml_no_dtd', 
-                :getfields => '*',
-                :sort => '' }
-  ALLOWED_PARAMS = DEFAULTS.keys # + [:inurl]
-  ACTIVE_TO_GOOGLE_PARAMS = { :category => 'category', :sport => 'channel' }    # translate our URL parameters into ones that google understands
+  DEFAULT_OPTIONS = { :num => GASOHOL_CONFIG['google']['results'], 
+                      :start => 0, 
+                      :filter => 'p', 
+                      :collection => GASOHOL_CONFIG['google']['collection'], 
+                      :client => GASOHOL_CONFIG['google']['client'], 
+                      :output => 'xml_no_dtd', 
+                      :getfields => '*',
+                      :sort => '' }
+  ALLOWED_PARAMS = DEFAULT_OPTIONS.keys
   DEFAULT_OUTPUT = {  :results => [], 
                       :featured => [], 
                       :google => { 
@@ -37,79 +69,70 @@ class Google
                       :featured => false, 
                       :rating => 0 }
   DEFAULT_FEATURED_RESULT = { :url => '', :title => '', :featured => true }
-  STATES = {  'al' => 'alabama',
-              'ak' => 'alaska',
-              'ar' => 'arkansas',
-              'az' => 'arizona',
-              'ca' => 'california',
-              'co' => 'colorado',
-              'ct' => 'connecticut',
-              'dc' => 'district of columbia',
-              'de' => 'delaware',
-              'fl' => 'florida',
-              'ga' => 'georgia',
-              'hi' => 'hawaii',
-              'id' => 'idaho',
-              'ia' => 'iowa',
-              'il' => 'illinois',
-              'in' => 'indiana',
-              'ks' => 'kansas',
-              'ky' => 'kentucky',
-              'la' => 'louisiana',
-              'ma' => 'massachusetts',
-              'md' => 'maryland',
-              'me' => 'maine',
-              'mi' => 'michigan',
-              'mo' => 'missouri',
-              'mn' => 'minnesota',
-              'ms' => 'mississippi',
-              'mt' => 'montana',
-              'nc' => 'north carolina',
-              'nd' => 'north dakota',
-              'ne' => 'nebraska',
-              'nh' => 'new hampshire',
-              'nj' => 'new jersey',
-              'nm' => 'new mexico',
-              'ny' => 'new york',
-              'nv' => 'nevada',
-              'oh' => 'ohio',
-              'ok' => 'oklahoma',
-              'or' => 'oregon',
-              'pa' => 'pennsylvania',
-              'pr' => 'puerto rico',
-              'ri' => 'rhode island',
-              'sc' => 'south carolina',
-              'sd' => 'south dakota',
-              'tn' => 'tennessee',
-              'tx' => 'texas',
-              'ut' => 'utah',
-              'va' => 'virginia',
-              'vt' => 'vermont',
-              'wa' => 'washington',
-              'wi' => 'wisconsin',
-              'wv' => 'west virginia',
-              'wy' => 'wyoming' }
+
+  # To get gasohol ready, instantiate a new copy with Gasohol.new(config) where 'config' is a hash of options so that we know how/where
+  # to access your GSA instance. This information is saved and used for every request after initializing your gasohol instance.
+  # For Google's reference of what these options do, check out the Search Protocol Reference: http://code.google.com/apis/searchappliance/documentation/50/xml_reference.html
+  #
+  # == Required config options
+  # * url => the URL to the search results page of your GSA. ie: http://127.0.0.1/search
+  # * collection => the GSA can contain several collections, specify which one to use for this search
+  # * client => the GSA can contain several clients, specify which one to use for this search
+  #
+  # == Optional config options
+  # * filter => how to filter the results, defaults to 'p'
+  # * output => the output format of the results, defaults to 'xml_no_dtd' (leave this setting alone for gasohol to work correctly)
+  # * getfields => which meta tag values to return in the results, defaults to '*' (all meta tags)
+  # * num => the default number of results to return, defaults to 25
+  #
+  # Example config hash:
+  #   config => { :url => 'http://127.0.0.1',
+  #               :collection => 'default_collection',
+  #               :client => 'my_client',
+  #               :num => 25 }
+  #
+  # So if you're using gasohol with Rails, for example, you would place the following in your search controller:
+  #   @google = Gasohol.new(config)
+  #
+  # For a simple search now you go:
+  #   @results = @google.search('pizza')
+  #
+  # What you'll get back in @results is a nicely formatted version of Google's results.
   
-  def initialize(options={})
-    @@options = DEFAULTS.merge(options)
+  def initialize(config=nil, options={})
+    # TODO: get rid of reading config into the DEFAULT_OPTIONS above and pass them into the instance here instead
+    unless config.nil?
+      @config = config
+      RAILS_DEFAULT_LOGGER.info("\n\n@config=\n#{@config.inspect}")
+    else
+      raise 'Missing config - you must pass some configuration options to tell gasohol how to access your GSA. See Gasohol::initialize for configuration options'
+    end
+    @@options = DEFAULT_OPTIONS.merge(options)
   end
+  
+  # Assembles the query and options into a big query string and sends over to your GSA.
+  #
+  #  @google = Google.new(config)
+  #  @results = @google.search('pizza')
   
   def search(query,options={})    
     options = @@options.merge(options)
     
-    # the struct we're gonna output
+    # the struct we're going to output
     output = DEFAULT_OUTPUT
 
     # the keyword string that was searched for
     output[:google][:query] = query
-    output[:google][:google_query] = googlize_options_into_query(options,output[:google][:query])   # the actual query string that we actually send to google (will probably include meta values)
+    # the query that we send to the GSA, not the complete query string
+    output[:google][:google_query] = googlize_options_into_query(options,output[:google][:query])
+    # the full path to google including the options and hostname of the GSA (makes a easily clickable link for debugging)
     output[:google][:full_query_path] = query_path(output[:google][:google_query],options)
   
     begin
       # do the query and save the xml
       xml = Hpricot(open(output[:google][:full_query_path]))
     
-      # set params
+      # save params from the results
       xml.search(:param).each do |param|
         output[:google][:params].merge!({param.attributes['name'].to_sym => param.attributes['value'].to_s})
       end
@@ -119,18 +142,16 @@ class Google
   
       # if there was at least one result, parse the xml
       if output[:google][:total_results] > 0
-        #
+
         # get featured results (called 'sponsored links' on the results page, displayed at the top)
-        #
         output[:featured] = xml.search(:gm).collect do |xml_result|
           result = Marshal.load(Marshal.dump(DEFAULT_FEATURED_RESULT))
           result[:url] = xml.at(:gl) ? xml.at(:gl).inner_html : ''
           result[:title] = xml.at(:gd) ? xml.at(:gd).inner_html : ''
           result
         end
-        #
+
         # get regular results
-        #
         output[:results] = xml.search(:r).collect do |xml|
           result = Marshal.load(Marshal.dump(DEFAULT_RESULT))
           result[:num] = xml.attributes['n'].to_i
@@ -161,6 +182,27 @@ class Google
   end
 
   private
+  # This method is only concerned with turning the query and all of the options into the query (#1 above).
+  # The options (#2) are defined in the @@options class variable, which is used as a local variable 'options'
+  # in various places above
+  #
+  # == googleize_options_into_query
+  # Extend Google with an your own application-specific implementation of this method if you need to search
+  # in meta tags.
+  #
+  # * 'parts' should contain a hash of everything that is _not_ the actual keyword query terms.
+  # * 'query' is the keyword(s) query terms
+  #
+  # On most implementations that offer more than staight keyword matches you're going to want additional
+  # parameters, like meta searches, to appear in the browser's URL. These will not be formatted correctly
+  # for Google. That's what this method will do.
+  #
+  #
+  def googlize_options_into_query(parts,query)
+    return ''
+  end
+  
+  # This method creates #3 above - combination of the query and options into one big query string
   def query_path(query,options)
     output = URL + '?q=' + CGI::escape(query)
     options.each do |option|
@@ -169,113 +211,6 @@ class Google
       end
     end
     output
-  end
-
-  def googlize_options_into_query(options,query)
-    
-    # are we searching just a single url?
-    if options[:inurl] and !options[:inurl].blank?
-      query += ' inurl:' + options[:inurl]
-    end
-  
-    # get the easy query params and convert to meta values google knows about
-    ACTIVE_TO_GOOGLE_PARAMS.each do |key,value|
-      if options[key] and !options[key].blank? and options[key] != 'Any'
-        query += " inmeta:#{value}=#{options[key]}"
-      end
-    end
-    
-    # turn the 'custom' field into a subMediaType, which is really  mediaType\subMediaType
-    if options[:type] and !options[:type].blank? and options[:type] != 'Any'
-      query += " inmeta:mediaType=#{options[:type]}"
-      # if options[:custom] and !options[:custom].blank?
-      #  query += "\\#{options[:custom]}"
-      # end
-    end
-
-    # do the start/end date. If there isn't one, set to today by default
-    #if options[:start_date].nil? || options[:start_date].blank?
-    #  options[:start_date] = Time.now.to_s(:standard)
-    #end
-    
-    if options[:start_date] and !options[:start_date].blank?
-      query += ' inmeta:startDate:daterange:' + Chronic.parse(options[:start_date]).strftime('%Y-%m-%d') + '..'
-      if options[:end_date] and !options[:end_date].blank?
-        query += Chronic.parse(options[:end_date]).strftime('%Y-%m-%d')
-      end
-    end
-  
-    # do the location
-    
-    # if there's no specified radius, set to the default in config/gasohol.yml
-    if options[:latitude] && options[:longitude]
-      if options[:radius].nil? || options[:radius].blank?
-        options[:radius] = GASOHOL_CONFIG['google']['default_radius'].to_f
-      end
-    
-      options[:radius] = options[:radius].to_f
-    
-      # based on latitude/longitude
-      latitude1 = ((options[:latitude] - (options[:radius] / 69.1)) * 10000).round.to_f / 10000
-      latitude2 = ((options[:latitude] + (options[:radius] / 69.1 )) * 10000).round.to_f / 10000
-      longitude1 = ((options[:longitude] - (options[:radius] / (69.1 * Math.cos(options[:latitude]/57.3)))) * 10000).round.to_f / 10000
-      longitude2 = ((options[:longitude] + (options[:radius] / (69.1 * Math.cos(options[:latitude]/57.3)))) * 10000).round.to_f / 10000
-    
-      query += " inmeta:latitude:#{latitude1}..#{latitude2} inmeta:longitude:#{longitude1}..#{longitude2}"
-    end
-    
-=begin 
-    # location based on city,state or zip
-    if options[:location] and !options[:location].blank?
-      output = { :city => '', :state => '', :zip => ''}
-      # take the location and split on commas, removing extra whitespace and put into a new array
-      location_parts = options[:location].split(',').collect { |part| part.strip }
-      # is there more than one part to the location?
-      if location_parts.length > 1
-      
-        output[:city] = location_parts.first
-        if STATES.has_key? location_parts.last.downcase
-          output[:state] = STATES[location_parts.last.downcase]   # user entered abbreviation, replace with full state name
-        else
-          output[:state] = location_parts.last                    # already had full state name
-        end
-
-      elsif options[:location].to_i > 0    
-        if options[:radius].downcase != 'any'                     # zip code, and there's a radius          
-          output[:zip] = Zip.find_within_radius(options[:location],options[:radius]).collect do |zip|
-            zip[:zip]
-          end
-        end
-      elsif STATES.has_value? options[:location].downcase
-        output[:state] = options[:location]                       # user entered full state only
-      elsif STATES.has_key? options[:location].downcase
-        output[:state] = STATES[options[:location].downcase]      # user entered state abbreviation
-      else
-        output[:city] = options[:location]                        # user entered something we don't recognize, assume it's a city
-      end
-    
-      # put city/state/zip into query string
-      output.each do |key,value|
-        if key == :zip and !value.blank?
-          # zips have special formatting -- looks like: inmeta:zip~12345 OR inmeta:zip~67890
-          value.each_with_index do |val,index|
-            query += " inmeta:zip=#{val}"
-            unless index == value.length-1
-              query += " OR"
-            end
-          end
-        else
-          unless value.blank?
-            query += " inmeta:#{key.to_s}~#{value}"
-          end
-        end
-      end
-    
-    end
-=end
-
-    return query
-    
   end
   
 end

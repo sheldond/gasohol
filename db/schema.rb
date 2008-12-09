@@ -12,13 +12,13 @@
 ActiveRecord::Schema.define(:version => 20081205204633) do
 
   create_table "queries", :force => true do |t|
-    t.string   "keywords",   :default => "NULL"
-    t.string   "location",   :default => "NULL"
+    t.string   "keywords"
+    t.string   "location"
     t.datetime "start_date"
     t.datetime "end_date"
-    t.string   "sport",      :default => "NULL"
-    t.string   "type",       :default => "NULL"
-    t.string   "custom",     :default => "NULL"
+    t.string   "sport"
+    t.string   "type"
+    t.string   "custom"
     t.integer  "count",      :default => 0
   end
 

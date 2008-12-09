@@ -68,7 +68,11 @@ Search.prototype = {
 		this.reset(obj);
 		// var options = obj.options;
 		values.each(function(value) {
-			var option = new Option(value.text,value.text);
+			if(value.value || value.value == '') {
+				var option = new Option(value.text,value.value);
+			} else {
+				var option = new Option(value.text,value.text);
+			}
 			if(Prototype.Browser.IE) {
 				obj.add(option);
 			} else {

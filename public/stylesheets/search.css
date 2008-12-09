@@ -301,7 +301,7 @@ strong {
 		}
 
 		#context .result h3 {
-			font-size: 100%;
+			font-size: 93%;
 			display: inline;
 		}
 
@@ -488,7 +488,7 @@ strong {
 			}
 		
 			.result h3 {
-				font-size: 116%;
+				font-size: 108%;
 				display: inline;
 			}
 		
@@ -614,3 +614,69 @@ strong {
 		text-decoration: none;
 		background-color: #eeeeee;
 		}
+		
+/* 404 and 500 */
+  div#error {
+  	margin: 4em 2em 4em 8em;
+  	}
+  	div#error h1 {
+  		color: #003e7e;
+  		font-size: 150%;
+  		height: 51px;
+  		}
+  	div#error.page404 h1 {
+  		background: transparent url('/images/icon-info.png') top left no-repeat;
+  		margin-left: -65px;
+  		padding: .5em 0 0 65px;
+  		}
+  	div#error.page500 h1 {
+  		background: transparent url('/images/icon-warning.png') top left no-repeat;
+  		margin-left: -75px;
+  		padding: .5em 0 0 75px;
+  		}
+  	div#error h2 {
+  		font-size: 130%;
+  		margin: 1em 0;
+  		}
+  	div#error dl {
+  		overflow: hidden;
+  		}
+  	div#error dt {
+  		margin: 0;
+  		padding: 0;
+  		font-weight: bold;
+  		}
+  	div#error dd {
+  		margin: 0 0 .5em;
+  		padding: 0;
+  		}
+  	div#error div#feedback_form {
+  		background-color: #d7e8f7;
+  		padding: 1em;
+  		width: 400px;
+  		margin: 4em auto;
+  		font-size: 90%;
+  		}
+  		div#error div#feedback_form h3 {
+  			font-size: 110%;
+  			margin: 0 0 1em;
+  			}
+  		div#error div#feedback_form textarea {
+  			display: block;
+  			height: 6em;
+  			width: 33em;
+  			}
+  		div#error div#feedback_form input {
+  			display: block;
+  			width: 25em;
+  			}
+  		div#error div#feedback_form label {
+  			display: block;
+  			color: #666666;
+  			margin: .5em 0 0;
+  			}
+  		div#error div#feedback_form #commit {
+  			width: 56px;
+  			height: 21px;
+  			margin: 1em auto 0;
+  			}

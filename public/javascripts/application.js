@@ -176,7 +176,7 @@ var assets = [
 			{	text:'Event', hasResults:true,
 				custom:	{	
 					name:'Distance', values: [
-					  { text:'Any' },
+					  { text:'Any', value:'' },
 						{	text:'5k' },
 						{	text:'10k' },
 						{	text:'15k' },

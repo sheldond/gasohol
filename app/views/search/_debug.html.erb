@@ -2,10 +2,10 @@
   <ul style="margin: 0 1em;">
     <% if time %>
       <% time.each do |key,value| %>
-        <li style="list-style-type:disc"><%= key %> response time: <%= (value.to_f * 1000).round %> milliseconds</li>
+        <li style="list-style-type:disc"><strong><%= key %> response time:</strong> <%= (value.to_f * 1000).round %> milliseconds</li>
       <% end %>
     <% end %>
-    <li style="list-style-type:disc">Google Query String: '<%= google[:google][:google_query] %>'</li>
-    <li style="list-style-type:disc; width: 600px;">Google Search URL: '<%= link_to google[:google][:full_query_path], google[:google][:full_query_path], :target => '_blank' %>'<li>
+    <li style="list-style-type:disc"><strong>Google Query String:</strong> '<%= google[:google][:google_query] %>'</li>
+    <li style="list-style-type:disc; width: 600px;"><strong>Google Search URL:</strong> '<%= link_to google[:google][:full_query_path], google[:google][:full_query_path], :target => '_blank' %>'<li>
   </ul>
 </div>

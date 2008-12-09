@@ -3,7 +3,7 @@ class CreateZips < ActiveRecord::Migration
     create_table :zips, :id => false do |t|
       t.column 'city', :string
       t.column 'state', :string
-      t.column 'zip', :integer
+      t.column 'zip', :string
       t.column 'area_code', :integer
       t.column 'fips', :integer
       t.column 'county', :string
@@ -23,7 +23,7 @@ class CreateZips < ActiveRecord::Migration
     
     add_index :zips, 'zip', :unique => true
     
-    File.open(File.join(File.dirname(__FILE__), 'default_data/inserts.txt'),'r').each_line do |line|
+    File.open(File.join(File.dirname(__FILE__), 'default_data/zips.txt'),'r').each_line do |line|
       Zip.connection.insert(line)
       # print 'inserted...'
     end.close

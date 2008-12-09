@@ -1,30 +1,43 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>	
+	<title>Active.com Search Beta - Page Not Found</title>
+	
+	<link href="/stylesheets/reset.css?1211921661" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/stylesheets/fonts.css?1211921637" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/stylesheets/search.css?1228517259" media="screen" rel="stylesheet" type="text/css" />
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <title>The page you were looking for doesn't exist (404)</title>
-	<style type="text/css">
-		body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }
-		div.dialog {
-			width: 25em;
-			padding: 0 4em;
-			margin: 4em auto 0 auto;
-			border: 1px solid #ccc;
-			border-right-color: #999;
-			border-bottom-color: #999;
-		}
-		h1 { font-size: 100%; color: #f00; line-height: 1.5em; }
-	</style>
 </head>
 
 <body>
-  <!-- This file lives in public/404.html -->
-  <div class="dialog">
-    <h1>The page you were looking for doesn't exist.</h1>
-    <p>You may have mistyped the address or the page may have moved.</p>
+  
+  <div id="header">
+    <div id="active">
+      <a href="/"><img alt="Active_header_left" id="active_left" src="/images/active_header_left.png?1224094034" /></a>
+    </div>
   </div>
+
+  <div id="body">
+    
+    <div id="error" class="page404">
+    	<h1>Sorry, the page you are trying to view was not found.</h1>
+    	<h2>What happened?</h2>
+    	<dl>
+    		<dt>Did you click a link on our site?</dt>
+    		<dd>We may have moved the page and forgot to update a link. Please use the feedback form below and let us know so we can fix our mistake.</dd>
+    		<dt>Did you follow a link from another site?</dt>
+    		<dd>Sometimes links from other sites aren't kept updated or can contain errors. If you let us know what site you came from we will try to get in contact with them to update their page.</dd>
+    		<dt>Did you type in the URL?</dt>
+    		<dd>You may have just typed the address (URL) incorrectly.</dd>
+    	</dl>
+    	<h2>Now what?</h2>
+    	<p>You can always <a href="#" onclick="history.go(-1); return false;">go back</a> to where you just were, head to <a href="http://active.com">our homepage</a> or <a href="/">try another search</a>.</p>
+    </div>
+    
+    <!-- feedback -->
+    <script src="http://active.uservoice.com/pages/search_proof_of_concept/widgets/tab.js?alignment=left&amp;color=333333" type="text/javascript"></script>
+
+</div>
+  
 </body>
 </html>

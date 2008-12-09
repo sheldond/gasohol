@@ -1,20 +1,20 @@
 <script type="text/javascript">
   // have to put the related context stuff here if we want these results to come back
   // before the regular related searches for each and every event
-  new Ajax.Updater( "related_articles", "/search/google.html?style=short&num=5&filter=s&q=&inurl=active.com/*/Articles&category=Articles",
+  new Ajax.Updater( "related_articles", "/search/google.html?style=short&num=5&filter=s&q=<%= params[:q] %>&inurl=active.com/*/Articles&category=Articles",
                     { evalscripts:true,
                       insertion:'bottom',
                       onComplete:function() {
                         $('related_articles_indicator').remove();
-                        $('related_articles').insert({bottom:'<a href="/search/google.html?style=short&num=5&filter=s&q=&inurl=active.com/*/Articles&category=Articles" class="more">More articles &raquo;</a>'});
+                        $('related_articles').insert({bottom:'<a href="/search?&q=<%= params[:q] %>&inurl=active.com/*/Articles&category=Articles" class="more">More articles &raquo;</a>'});
                       }
                     });
-  new Ajax.Updater( "related_training", "/search/google.html?style=short&num=5&filter=s&q=&inurl=training.active.com",
+  new Ajax.Updater( "related_training", "/search/google.html?style=short&num=5&filter=s&q=<%= params[:q] %>&inurl=training.active.com",
                     { evalscripts:true,
                       insertion:'bottom',
                       onComplete:function() {
                         $('related_training_indicator').remove();
-                        $('related_training').insert({bottom:'<a href="/search/google.html?style=short&num=5&filter=s&q=&inurl=training.active.com" class="more">More training &raquo;</a>'});
+                        $('related_training').insert({bottom:'<a href="/search?q=<%= params[:q] %>&inurl=training.active.com" class="more">More training &raquo;</a>'});
                       }
                     });
 </script>

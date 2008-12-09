@@ -7,7 +7,6 @@
     <div class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
       <div class="text">
         <div class="title <%= "sport #{result[:meta][:channel].downcase}" if result[:meta] && result[:meta][:channel] %>">
-          <%# link_to(image_tag('/images/icons/magnifier.png'), result.url, :class => 'snap_shots', :onclick => 'return false;') %>
           <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
         </div>
       </div>
@@ -20,12 +19,10 @@
     <div id="result_<%= result[:num] %>" class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
       <div class="text">
         <div class="title <%= "sport #{result[:meta][:channel].downcase}" if result[:meta] && result[:meta][:channel] %>">
-          <%# link_to(image_tag('/images/icons/magnifier.png'), result.url, :class => 'snap_shots', :onclick => 'return false;') %>
           <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
           <%= output_rating(rand(6)) %>
         </div>
-        <!-- <%= link_to(image_tag('/images/icons/add.png'), '#', :class => 'save', :title => 'Save to my Calendar') %> -->
-        <% if result[:abstract] %>
+        <% if result[:abstract] && !activity?(result) %>
           <span class="abstract"><%= un result[:abstract] %></span>
         <% end %>
       </div>
@@ -39,18 +36,23 @@
       </ul>
       <% if activity?(result) %>
         <div id="result_<%= result[:num] %>_links" class="related_links">
+          
           <% if result[:meta][:online_registration_available] %>
             <%= link_to('Register Now', result[:url], :class => 'register_link') %>
           <% end %>
-          <strong>Related:</strong>
-          <ul>
-            <li id="result_<%= result[:num] %>_links_registrants"></li>
-            <li id="result_<%= result[:num] %>_links_watching"></li>
-            <li id="result_<%= result[:num] %>_links_discussions"></li>
-            <li id="result_<%= result[:num] %>_links_articles"></li>
-            <!-- <li id="result_<%= result[:num] %>_links_training"></li> -->
-          </ul>
-          <img src="/images/indicator.gif" alt="Loading..." id="result_<%= result[:num] %>_indicator" />
+          
+          <% if SearchController::DO_RELATED_SEARCH %>
+            <strong>Related:</strong>
+            <ul>
+              <li id="result_<%= result[:num] %>_links_registrants"></li>
+              <li id="result_<%= result[:num] %>_links_watching"></li>
+              <li id="result_<%= result[:num] %>_links_discussions"></li>
+              <li id="result_<%= result[:num] %>_links_articles"></li>
+              <!-- <li id="result_<%= result[:num] %>_links_training"></li> -->
+            </ul>
+            <img src="/images/indicator.gif" alt="Loading..." id="result_<%= result[:num] %>_indicator" />
+          <% end %>
+          
         </div>
         <% if SearchController::DO_RELATED_SEARCH %>
         
@@ -98,11 +100,6 @@
           </script>
         <% end %>
       <% end %>
-      <!--
-      <div class="preview_image">
-        <%= image_tag result[:meta][:photoURL] unless result[:meta][:photoURL].nil? %>
-      </div>
-      -->
 
     </div>
     
