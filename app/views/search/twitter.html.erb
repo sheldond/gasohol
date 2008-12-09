@@ -1,5 +1,0 @@
-<ul>
-  <% @result[:results].each do |tweet| %>
-    <li><%= tweet['text'] %> - <%= link_to(tweet['from_user'],'http://twitter.com/'+tweet['from_user']) %></li>
-  <% end %>
-</ul>

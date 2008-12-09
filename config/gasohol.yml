@@ -1,6 +1,6 @@
 google:
   url: http://203.36.98.91/search
-  results: 25
+  num: 25
   collection: active_collection
   client: active_frontend
   default_radius: 50

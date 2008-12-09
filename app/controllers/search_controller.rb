@@ -2,14 +2,14 @@ class SearchController < ApplicationController
   
   before_filter :login_required, :except => [:location] # this page is locked down, only accessible if logged in
   before_filter :get_location, :only => [:index, :home, :google]  # get location from user cookie
-  before_filter :format_query, :only => [:index, :google, :location] # format the query automatically for each request
-  layout false  # most of the actions here are API calls, so by default we'll never want a layout
+  before_filter :get_options_from_query, :only => [:index, :google, :location] # format the query automatically for each request
+  layout false  # most of the actions here are API calls, so by default we don't want a layout
   
   DO_RELATED_SEARCH = false  # do all the related (ajax) searches for each and every result
   SHOW_TIMESTAMPS = true   # show timestamps for various processes at the bottom of the page (can show anyway by adding debug=true to URL)
   
   # instantiate an instance of the Google class as soon as this controller loads the first time
-  @@gsa = ActiveSearch.new(GASOHOL_CONFIG['google'])
+  @@gsa = ActiveSearch.new(GASOHOL_CONFIG[:google])
   
   # This is the default homepage that just shows a search box and popular searches
   def home
@@ -17,22 +17,17 @@ class SearchController < ApplicationController
     render :layout => 'application'
   end
 
-  # This is where all the good stuff happens. Send the Google class the query and all the URL
-  # variables and we'll ask the GSA and format the results into a simpler format that we use in our views.
+  # This is where all the good stuff happens. Send the Google class the query (@query) and all the URL
+  # variables (@options) and we'll ask the GSA and format the results into a simpler format that we use in our views.
   def index
-    params[:q] ||= ''
-    # default to sorting by date
-    # @options.merge!({ :sort => 'date:A:S:d1'})
+    
+    # @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
 
     @time = {}
-    @time[:all] = Time.now
-    
-    # google
     @time[:google] = Time.now
       Query.record(@query,@options)
       @google = do_google
     @time[:google] = Time.now - @time[:google]
-    @time[:all] = Time.now - @time[:all]
     
     @popular_local_searches = Query.find_popular_by_location(5, @location)
     
@@ -59,13 +54,11 @@ class SearchController < ApplicationController
     standard_response(@result)
   end
   
-  # Takes a ?value=abc query string variable and gets location data from the database. 'value' can be
-  # either a city,state or zip code.
+  # If called internally we can pass a string or location object as 'value', otherwise looks at the url for params[:value]
+  # and uses that instead. If passed a string it should be in the form 'city,state', 'state', or 'zip'
   def set_location(value=nil)
-    # if we called this from elsewhere in the controller (rather than from a URL), used the passed value as the location
     value = value || params[:value]
-    # if the value is already a valid location hash, just set it, this other crap isn't needed
-    @location = value.is_a?(Hash) ? value : {}
+    @location = value.is_a?(Hash) ? value : {}  # if the value is already a valid location hash, just set it, this other crap isn't needed
     
     if value
       if @location.empty?     # if @location doesn't already contain a valid location Hash object
@@ -83,8 +76,7 @@ class SearchController < ApplicationController
       raise 'No location provided'
     end
     
-    # only render something (the city, state of the current location) if this was called via ajax
-    # otherwise be silent
+    # render the name of the city,state or an error message if this was called via ajax
     if request.xhr?
       unless @location.empty?
         render :text => "#{@location['city']}, #{@location['region']}"
@@ -97,11 +89,11 @@ class SearchController < ApplicationController
   
   private
 
-  # Handles all the format options of the various API methods
+  # Handles all the format types of the various API methods
   def standard_response(output)
    respond_to do |format|
       format.html
-      format.xml { render :xml => output.to_xml }
+      format.xml  { render :xml => output.to_xml }
       format.json { render :text => output.to_json }
       format.yaml { render :text => output.to_yaml }
     end
@@ -154,7 +146,7 @@ class SearchController < ApplicationController
 
   # Gets the query terms out of the query string and puts it in '@query'. Takes the remaining query string variables
   # and puts them into a hash called '@options'
-  def format_query
+  def get_options_from_query
     @query = params[:q] || ''
     @options = {}
     
