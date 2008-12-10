@@ -1,48 +1,9 @@
 <script type="text/javascript">
   // have to put the related context stuff here if we want these results to come back
   // before the regular related searches for each and every event
-  new Ajax.Request( "/search/google.html?style=short&num=5&q=<%= params[:q] %>&inurl=active.com/*/Articles&category=Articles",
-                    { evalscripts:true,
-                      onSuccess:function(r) {
-                        if(r.responseText.strip() == '') {
-                          $('related_articles').remove()
-                        } else {
-                          $('related_articles').insert({'bottom':r.responseText});
-                        }
-                      },
-                      onComplete:function() {
-                        $('related_articles_indicator').remove();
-                        $('related_articles').insert({'bottom':'<a href="/search?&q=<%= params[:q] %>&inurl=active.com/*/Articles&category=Articles" class="more">More articles &raquo;</a>'});
-                      }
-                    });
-  new Ajax.Request( "/search/google.html?style=short&num=5&q=<%= params[:q] %>&inurl=community.active.com",
-                    { evalscripts:true,
-                      onSuccess:function(r) {
-                        if(r.responseText.strip() == '') {
-                          $('related_discussions').remove()
-                        } else {
-                          $('related_discussions').insert({'bottom':r.responseText});
-                        }
-                      },
-                      onComplete:function() {
-                        $('related_discussions_indicator').remove();
-                        $('related_discussions').insert({'bottom':'<a href="/search?q=<%= params[:q] %>&inurl=community.active.com" class="more">More discussions &raquo;</a>'});
-                      }
-                    });
-  new Ajax.Request( "/search/google.html?style=short&num=5&q=<%= params[:q] %>&inurl=training.active.com",
-                    { evalscripts:true,
-                      onSuccess:function(r) {
-                        if(r.responseText.strip() == '') {
-                          $('related_training').remove()
-                        } else {
-                          $('related_training').insert({'bottom':r.responseText});
-                        }
-                      },
-                      onComplete:function() {
-                        $('related_training_indicator').remove();
-                        $('related_training').insert({'bottom':'<a href="/search?q=<%= params[:q] %>&inurl=training.active.com" class="more">More training &raquo;</a>'});
-                      }
-                    });
+  <%= ajax_for_context_related(:articles) %>
+  <%= ajax_for_context_related(:discussions) %>
+  <%= ajax_for_context_related(:training) %>
 </script>
 
 <table id="search_table">
@@ -55,8 +16,9 @@
       <div style="overflow: hidden; width: 400px; visibility: hidden; height: 0pt;"></div>
       <%= render :partial => 'breadcrumbs', :locals => { :google => @google } %>
 
-      <% unless @google[:results].blank? %>
-        <div id="results">
+      <div id="results">
+        <% unless @google[:results].blank? %>
+        
           <% unless @google[:featured].empty? %>
             <div id="featured">
               <h3>Featured Events</h3>
@@ -77,16 +39,14 @@
                                                             :query => @google[:google][:query] } %>
             </div>
           <% end %>
-        </div>
-      <% else %>
-        <div id="results">
+
+        <% else %>
           <div class="no_results">No results found.</div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </td>
     <td id="context">
       <div style="overflow: hidden; width: 280px; visibility: hidden; height: 0pt;"></div>
-      <%# render :partial => 'context', :locals => { :tweets => @tweets[:results], :photos => @flickr[:results], :videos => @yahoo[:results] } %>
       <%= render :partial => 'context' %>
     </td>
   </tr>

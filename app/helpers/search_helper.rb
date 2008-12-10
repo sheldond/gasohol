@@ -82,39 +82,107 @@ module SearchHelper
     end
   end
   
-  def related_search_url_for(type,loc,result)
+  # Creates URLs for 'related items' searches. Both the ajax URL (returning JSON) and a full URL
+  # that can be browsed to in order to see full results.
+  #
+  # result => Result object from GSA
+  # options[:type] => What we want back from the search (count_only | full | short)
+  # options[:category] => What we're searching for (:articles | :discussions | :training)
+  # options[:q] => The keyword query. If it's blank then we figure it out in certain instances
+  #
+  # This code is very specific to our implementation which is why it's so hideously ugly. Different 
+  # assets need to be searched in different ways, sometimes with 'inurl' if the asset has no meta data, 
+  # otherwise with regular 'category' if it does.
+  #
+  # If one day all content, including discussions, are indexed and given the same meta data as events and
+  # articles then this code can become much simpler.
+  def related_search_url_for(result,options)
+    
+    path = ''
+    parts = {}
     
     # is this just a count of articles or a full query URL?
-    case loc
+    case options[:type]
     when :count_only
-      start = '/search/google.json?num=1&'
+      path = url_for(:controller => 'search', :action => 'google', :format => 'json')
+      parts[:num] = 1
     when :full
-      start = '/search?'
+      path = url_for(:controller => 'search')
+    when :short
+      path = url_for(:controller => 'search', :action => 'google', :format => 'html')
+      parts[:num] = 5
+      parts[:style] = 'short'
     end
     
-    # what are we searching for? This code is very specific to our implementation
-    case type
+    # what type of content are we searching?
+    case options[:category]
     when :training
-      url = start + 'category=Products&q='
-      result[:meta][:media_types].each_with_index do |mt,i|
-        if mt.values.first.match(/\\/)
-          url += "inmeta:mediaType~#{mt.values.first.split('\\').last}" if mt.values.first.match(/\\/)
-          url += ' OR ' if result[:meta][:media_types].length-1 != i
+      parts[:category] = 'Products'
+      parts[:q] = options[:q] || ''
+      
+      unless options[:q]
+        # add on inmeta values and OR them together so we get training plans for all media types, not just the first or last
+        result[:meta][:media_types].each_with_index do |mt,i|
+          if mt.values.first.match(/\\/)
+            parts[:q] += "inmeta:mediaType~#{mt.values.first.split('\\').last}" if mt.values.first.match(/\\/)
+            parts[:q] += ' OR ' if result[:meta][:media_types].length-1 != i
+          end
         end
       end
-    
     when :articles
-      query = CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,''))
-      url = start + "q=%22#{query}%22&category=Articlesinurl:active.com/*/Articles"
-    
+      parts[:q] = options[:q] || '"' + format_title(result[:title]) + '"'
+      parts[:category] = "Articles"
+      parts[:inurl] = "active.com/*/Articles"
     when :discussions
-      query = CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,''))
-      url = start + "q=%22#{query}%22&inurl=community.active.com"
-
+      parts[:q] = options[:q] || '"' + format_title(result[:title]) + '"'
+      parts[:inurl] = 'community.active.com'
     end
     
-    return url
+    url = path + '?' + parts.to_query
+    return url.gsub(/%2B/,'+')  # to_query escapes our pluses into %2B so we need to change them back)
   
+  end
+  
+  # Outputs the javascript for an ajax call to get related contextual stuff
+  def ajax_for_context_related(category)
+    ajax = related_search_url_for(nil, { :type => :short, :category => category, :q => params[:q] })
+    link = related_search_url_for(nil, { :type => :full, :category => category, :q => params[:q] })
+
+    output = <<END_OF_AJAX
+    new Ajax.Request( "#{ajax}",
+                      { evalscripts:true,
+                        onSuccess:function(r) {
+                          if(r.responseText.strip() == '') {
+                            $('related_#{category.to_s}').remove()
+                          } else {
+                            $('related_#{category.to_s}').insert({'bottom':r.responseText});
+                          }
+                        },
+                        onComplete:function() {
+                          $('related_#{category.to_s}_indicator').remove();
+                          $('related_#{category.to_s}').insert({'bottom':'<a href="#{link}" class="more">More #{category.to_s} &raquo;</a>'});
+                        }
+                      });
+END_OF_AJAX
+  end
+  
+  # Outputs the javascript for an ajax call to get related content for each search result.
+  def ajax_for_result_related(result, type)
+    ajax = related_search_url_for(result, { :type => :count_only, :category => type })
+    link = related_search_url_for(result, { :type => :full, :category => type })
+
+    output = <<END_OF_AJAX
+    new Ajax.Request( "#{ajax}",
+                      { evalscripts:true,
+                        onSuccess:function(r) {
+                          total = r.responseText.evalJSON().google.total_results
+                          if(total > 0) {
+                              $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{type}'+(total != 1 ? 's' : '')+'</a>'});
+                            }
+                          $('result_#{result[:num]}_indicator').remove();
+                          }
+                      });
+END_OF_AJAX
   end
   
 end

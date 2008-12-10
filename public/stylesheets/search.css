@@ -261,6 +261,7 @@ strong {
 
 	#results {
 		float: left;
+		width: 100%;
 	}
 	
 		.no_results {

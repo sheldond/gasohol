@@ -1,49 +1,14 @@
 <div id="context_container">
-  
   <div id="related_articles" class="related">
     <h4>Related Articles</h4>
     <img src="/images/indicator_medium.gif" id="related_articles_indicator" class="indicator" />
   </div>
-  
   <div id="related_discussions" class="related">
     <h4>Related Discussions</h4>
     <img src="/images/indicator_medium.gif" id="related_discussions_indicator" class="indicator" />
   </div>
-  
   <div id="related_training" class="related">
     <h4>Related Training</h4>
     <img src="/images/indicator_medium.gif" id="related_training_indicator" class="indicator" />
-  </div>
-  
-  <div id="third_party">
-    <% unless !defined?(photos) || photos.empty? %>
-      <h4>Photos</h4>
-      <span class="subtitle">via <%= link_to 'Flickr', 'http://flickr.com' %></span>
-      <ul id="photos">
-        <% photos.each do |photo| %>
-          <li><%= link_to(image_tag(photo[:thumbnail], :alt => photo[:title]), photo[:url], :title => photo[:title]) %></li>
-        <% end %>
-      </ul>
-    <% end %>
-  
-    <% unless !defined?(videos) || videos.empty? %>
-      <h4>Video</h4>
-      <span class="subtitle">via <%= link_to 'Yahoo', 'http://video.search.yahoo.com' %></span>
-      <ul id="video">
-        <% videos.each do |video| %>
-          <li><%= link_to(image_tag(video[:thumbnail], :alt => video[:title]), video[:url], :title => video[:title]) %></li>
-        <% end %>
-      </ul>
-    <% end %>
-  
-    <% unless !defined?(tweets) || tweets.empty? %>
-      <h4>What the web is saying</h4>
-      <span class="subtitle">via <%= link_to 'Twitter', 'http://twitter.com' %></span>
-      <ul id="tweets">
-        <% tweets.each do |tweet| %>
-          <li><%= tweet['text'] %> - <%= link_to(tweet['from_user'],'http://twitter.com/'+tweet['from_user']) %></li>
-        <% end %>
-      </ul>
-    <% end %>
   </div>
 </div>

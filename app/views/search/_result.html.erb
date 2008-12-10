@@ -60,41 +60,14 @@
           <% end %>
           
         </div>
+        
         <% if SearchController::DO_RELATED_SEARCH %>
         
           <!-- save these up in a variable and output later -->
           <script type="text/javascript">
-            new Ajax.Request( "<%= related_search_url_for(:discussions,:count_only,result) %>",
-                              { evalscripts:true,
-                                onSuccess:function(r) {
-                                  total = r.responseText.evalJSON().google.total_results
-                                  if(total > 0) {
-                                      $('result_<%= result[:num] %>_links_discussions').insert({bottom:'<a href="<%= related_search_url_for(:discussions,:full,result) %>">'+total+' discussion'+(total != 1 ? 's' : '')+'</a>'});
-                                    }
-                                  // $('result_<%= result[:num] %>_indicator').remove();
-                                  }
-                              });
-        
-            new Ajax.Request( "<%= related_search_url_for(:articles,:count_only,result) %>",
-                              { evalscripts:true,
-                                onSuccess:function(r) {
-                                  total = r.responseText.evalJSON().google.total_results
-                                  if(total > 0) {
-                                      $('result_<%= result[:num] %>_links_articles').insert({bottom:'<a href="<%= related_search_url_for(:articles,:full,result) %>">'+total+' article'+(total != 1 ? 's' : '')+'</a>'});
-                                    }
-                                  // $('result_<%= result[:num] %>_indicator').remove();
-                                  }
-                              });            
-            new Ajax.Request( "<%= related_search_url_for(:training,:count_only,result) %>",
-                              { evalscripts:true,
-                                onSuccess:function(r) {
-                                  total = r.responseText.evalJSON().google.total_results
-                                  if(total > 0) {
-                                      $('result_<%= result[:num] %>_links_training').insert({bottom:'<a href="<%= related_search_url_for(:training,:full,result) %>">'+total+' training plan'+(total != 1 ? 's' : '')+'</a>'});
-                                    }
-                                  $('result_<%= result[:num] %>_indicator').remove();
-                                  }
-                              });
+            <%= ajax_for_result_related(result, :discussions) %>
+            <%= ajax_for_result_related(result, :articles) %>
+            <%= ajax_for_result_related(result, :training) %>
 
             // generate a random number of registrants (turn off the clickable link for now)
             $('result_<%= result[:num] %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
