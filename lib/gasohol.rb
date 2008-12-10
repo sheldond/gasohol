@@ -222,7 +222,8 @@ class Gasohol
   
   # This method creates the combination of the query and options into one big query string
   def query_path(query,options)
-    output = options[:url] + '?q=' + CGI::escape(query)
+    url = options.delete(:url)  # sets url to the value of options[:url] and then removes it from the hash
+    output = url + '?q=' + CGI::escape(query)
     options.each do |option|
       if ALLOWED_PARAMS.include? option.first
         output += "&#{CGI::escape(option.first.to_s)}=#{CGI::escape(option.last.to_s)}"
