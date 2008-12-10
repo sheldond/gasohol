@@ -11,7 +11,7 @@ a {
 }
 
 a:hover {
-	color: #333333;
+	color: #d06f1a;
 }
 
 strong {
@@ -26,21 +26,6 @@ strong {
 	z-index: 1;
 }
 
-	#myactive {
-		background: transparent url('/images/myactive_bg.png') left top repeat-x;
-		overflow: hidden;
-	}
-	
-		#myactive_left {
-			display: block;
-			float: left;
-		}
-	
-		#myactive_right {
-			display: block;
-			float: right;
-		}
-	
 	#active {
 		background: transparent url('/images/active_header_bg.png') left top repeat-x;
 		overflow: hidden;
@@ -61,10 +46,20 @@ strong {
 		margin: 1em;
 	}
 	
+		ul#logged_in_options li {
+			float: left;
+			padding: 0 .5em;
+		}
+	
 		ul#logged_in_options a {
 			color: 	#ffc425;
 		}
-	
+
+	#beta_notice {
+		position: absolute;
+		top: 40px;
+		right: 50px;
+	}
 	
 #body {
 	font-family: Lucida Grande, Arial;
@@ -277,14 +272,15 @@ strong {
 	#context {
 		width: 280px;
 		border-left: 1px solid #999999;
+		padding-top: 70px;
 	}
 	
-		#context #related_articles, #context #related_training{
+		#context .related {
 			display: block;
 			margin: 0 0 2em;
 		}
 		
-			#context #related_articles h4, #context #related_training h4{
+			#context .related h4 {
 				display: block;
 				float: none;
 			}
@@ -303,7 +299,12 @@ strong {
 		#context .result h3 {
 			font-size: 93%;
 			display: inline;
+			line-eig
 		}
+		
+			#context .result h3 a {
+				text-decoration: none;
+			}
 
 			#context .result .title.sport {
 				background-color: transparent;
@@ -467,23 +468,23 @@ strong {
 		
 			.result .title.sport {
 				background-color: transparent;
-				background-position: 0 1px;
+				background-position: 0 3px;
 				background-repeat: no-repeat;
 			}
 		
 			/* sport icons next to titles */
 			.result .title.running {
-				padding-left: 20px;
+				padding-left: 34px;
 				background-image: url('/images/sport_icon_running.png');
 			}
 			
 			.result .title.triathlon {
-				padding-left: 20px;
+				padding-left: 34px;
 				background-image: url('/images/sport_icon_triathlon.png');
 			}
 			
 			.result .title.cycling {
-				padding-left: 20px;
+				padding-left: 34px;
 				background-image: url('/images/sport_icon_cycling.png');
 			}
 		
@@ -529,7 +530,7 @@ strong {
 			display: block;
 			float: none;
 			clear: both;
-			margin: .2em 0 0;
+			margin: .2em 0 0 1em;
 			font-size: 93%;
 		}
 		

@@ -21,6 +21,7 @@
         <li><%= link_to('Admin', users_path) if is_admin? %></li>
       </ul>
     </div>
+    <img src="/images/beta_notice.png" alt="Remember, it's a beta!" id="beta_notice" />
   </div>
 
   <div id="body">
@@ -30,6 +31,18 @@
   
   <!-- feedback -->
   <script src="http://active.uservoice.com/pages/search_proof_of_concept/widgets/tab.js?alignment=left&amp;color=333333" type="text/javascript"></script>
+
+  <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+    try {
+      var pageTracker = _gat._getTracker("UA-6622846-1");
+      pageTracker._trackPageview();
+    } 
+    catch(err) {}
+  </script>
   
 </body>
 </html>

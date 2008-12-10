@@ -18,7 +18,7 @@
   
     <div id="result_<%= result[:num] %>" class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
       <div class="text">
-        <div class="title <%= "sport #{result[:meta][:channel].downcase}" if result[:meta] && result[:meta][:channel] %>">
+        <div class="title <%= "sport #{result[:meta][:channel].downcase}" if activity?(result) && result[:meta] && result[:meta][:channel] %>">
           <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
           <%= output_rating(rand(6)) %>
         </div>
@@ -27,11 +27,17 @@
         <% end %>
       </div>
       <ul class="meta">
-        <% if result[:meta][:channel] %><li><strong>Sport:</strong> <%= result[:meta][:channel] %></li><% end %>
-        <% if result[:meta][:category] and !activity?(result)%><li><strong>Category:</strong> <%= result[:meta][:category] %></li><% end %>
+        <li><strong>What:</strong>
+          <% if result[:meta][:channel] %>
+            <%= result[:meta][:channel].split('\\').first %>
+          <% end %>
+          <% if result[:meta][:media_types] && result[:meta][:media_types].first %>
+            <%= result[:meta][:media_types].first.values.first.split('\\').first %>
+          <% end %>
+        </li>
         <% if activity?(result) %>
-          <li><strong>Location:</strong> <%= result[:meta][:city] %>, <%= result[:meta][:state] %></li>
-          <li><strong>Date:</strong> <%= result[:meta][:start_date].strftime('%A, %B %d, %Y') %></li>
+          <li><strong>Where:</strong> <%= result[:meta][:city] %>, <%= result[:meta][:state] %></li>
+          <li><strong>When:</strong> <%= result[:meta][:start_date].strftime('%A, %B %d, %Y') %></li>
         <% end %>
       </ul>
       <% if activity?(result) %>
@@ -48,7 +54,7 @@
               <li id="result_<%= result[:num] %>_links_watching"></li>
               <li id="result_<%= result[:num] %>_links_discussions"></li>
               <li id="result_<%= result[:num] %>_links_articles"></li>
-              <!-- <li id="result_<%= result[:num] %>_links_training"></li> -->
+              <li id="result_<%= result[:num] %>_links_training"></li>
             </ul>
             <img src="/images/indicator.gif" alt="Loading..." id="result_<%= result[:num] %>_indicator" />
           <% end %>
@@ -58,43 +64,39 @@
         
           <!-- save these up in a variable and output later -->
           <script type="text/javascript">
-            new Ajax.Request( "/search/google.json?num=1&filter=s&q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&inurl=community.active.com",
+            new Ajax.Request( "<%= related_search_url_for(:discussions,:count_only,result) %>",
                               { evalscripts:true,
                                 onSuccess:function(r) {
                                   total = r.responseText.evalJSON().google.total_results
                                   if(total > 0) {
-                                      $('result_<%= result[:num] %>_links_discussions').insert({bottom:'<a href="/search?q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22&inurl=community.active.com">'+total+' discussion'+(total != 1 ? 's' : '')+'</a>'});
+                                      $('result_<%= result[:num] %>_links_discussions').insert({bottom:'<a href="<%= related_search_url_for(:discussions,:full,result) %>">'+total+' discussion'+(total != 1 ? 's' : '')+'</a>'});
                                     }
                                   // $('result_<%= result[:num] %>_indicator').remove();
                                   }
                               });
         
-            new Ajax.Request( "/search/google.json?num=1&filter=s&q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22 inurl:active.com/*/Articles&category=Articles",
+            new Ajax.Request( "<%= related_search_url_for(:articles,:count_only,result) %>",
                               { evalscripts:true,
                                 onSuccess:function(r) {
                                   total = r.responseText.evalJSON().google.total_results
                                   if(total > 0) {
-                                      $('result_<%= result[:num] %>_links_articles').insert({bottom:'<a href="/search?q=%22<%= CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,'')) %>%22 inurl:active.com/*/Articles&category=Articles">'+total+' article'+(total != 1 ? 's' : '')+'</a>'});
+                                      $('result_<%= result[:num] %>_links_articles').insert({bottom:'<a href="<%= related_search_url_for(:articles,:full,result) %>">'+total+' article'+(total != 1 ? 's' : '')+'</a>'});
                                     }
-                                  $('result_<%= result[:num] %>_indicator').remove();
+                                  // $('result_<%= result[:num] %>_indicator').remove();
                                   }
-                              });
-            /*
-            new Ajax.Request( "/search/google.json?num=1&filter=s&q=<%= result[:meta][:channel] %>&inurl=training.active.com",
+                              });            
+            new Ajax.Request( "<%= related_search_url_for(:training,:count_only,result) %>",
                               { evalscripts:true,
                                 onSuccess:function(r) {
                                   total = r.responseText.evalJSON().google.total_results
                                   if(total > 0) {
-                                      $('result_<%= result[:num] %>_links_training').insert({bottom:'<a href="/search?q=<%= result[:meta][:channel] %>&inurl=training.active.com">'+total+' training plan'+(total != 1 ? 's' : '')+'</a>'});
+                                      $('result_<%= result[:num] %>_links_training').insert({bottom:'<a href="<%= related_search_url_for(:training,:full,result) %>">'+total+' training plan'+(total != 1 ? 's' : '')+'</a>'});
                                     }
                                   $('result_<%= result[:num] %>_indicator').remove();
                                   }
                               });
 
-            */
             // generate a random number of registrants (turn off the clickable link for now)
-            // $('result_<%= result[:num] %>_links_registrants').update('<a href="#">'+Math.round(Math.random()*80)+' registrants</a>');
-            // $('result_<%= result[:num] %>_links_watching').update('<a href="#">'+Math.round(Math.random()*40)+' watching</a>');
             $('result_<%= result[:num] %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
             $('result_<%= result[:num] %>_links_watching').update(Math.round(Math.random()*40)+' watching');
           </script>

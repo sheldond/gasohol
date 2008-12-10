@@ -82,4 +82,39 @@ module SearchHelper
     end
   end
   
+  def related_search_url_for(type,loc,result)
+    
+    # is this just a count of articles or a full query URL?
+    case loc
+    when :count_only
+      start = '/search/google.json?num=1&'
+    when :full
+      start = '/search?'
+    end
+    
+    # what are we searching for? This code is very specific to our implementation
+    case type
+    when :training
+      url = start + 'category=Products&q='
+      result[:meta][:media_types].each_with_index do |mt,i|
+        if mt.values.first.match(/\\/)
+          url += "inmeta:mediaType~#{mt.values.first.split('\\').last}" if mt.values.first.match(/\\/)
+          url += ' OR ' if result[:meta][:media_types].length-1 != i
+        end
+      end
+    
+    when :articles
+      query = CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,''))
+      url = start + "q=%22#{query}%22&category=Articlesinurl:active.com/*/Articles"
+    
+    when :discussions
+      query = CGI::escape(un(result[:title].split("|").first.strip).gsub(/<.*?>/,''))
+      url = start + "q=%22#{query}%22&inurl=community.active.com"
+
+    end
+    
+    return url
+  
+  end
+  
 end

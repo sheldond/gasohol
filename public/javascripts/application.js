@@ -186,7 +186,7 @@ var assets = [
 						{	text:'Half Marathon' },
 						{	text:'Marathon' },
 						{	text:'Ultra Marathon' },
-						{	text:'Spring' },
+						{	text:'Sprint' },
 						{	text:'Fun Run' },
 						{	text:'All Womens' },
 						{	text:'Kids Run' },

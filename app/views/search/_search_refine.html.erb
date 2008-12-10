@@ -25,6 +25,6 @@
   s.changeSport();
   url.type ? selectOption('type',url.type) : null;
   s.changeType();
-  url.custom ? selectOption('custom',url.custom) : null;
+  url.custom ? selectOption('custom',url.custom.replace(/\+/g,' ')) : null;
 </script>
 

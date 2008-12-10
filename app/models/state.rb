@@ -4,4 +4,5 @@ class State < ActiveRecord::Base
     text.downcase!
     find(:first, :conditions => ['name = ? or abbreviation = ?',text,text])
   end
+  
 end

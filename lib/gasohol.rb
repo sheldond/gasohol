@@ -171,11 +171,19 @@ class Gasohol
           result[:title] = xml.at(:t) ? xml.at(:t).inner_html : ''
           result[:abstract] = xml.at(:s) ? xml.at(:s).inner_html.gsub(/&lt;br&gt;/i,'').gsub(/\.\.\./,'') : ''
           result[:date] = xml.at(:fs) ? Chronic.parse(xml.at(:fs)[:value]) : ''
+          result[:meta][:media_types] = []
           xml.search(:mt).each do |meta|
-            if meta.attributes['n'].match(/date/i)
-              result[:meta].merge!({ meta.attributes['n'].underscore.to_sym => Chronic.parse(meta.attributes['v']) })
+            tag = { meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s }
+            
+            if tag.keys.first.to_s.match(/date/i)
+              result[:meta].merge!({ tag.keys.first => Chronic.parse(tag.values.first) })
             else
-              result[:meta].merge!({ meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s })
+              # if this is a media_type then append to an array, otherwise just set the key/value
+              if tag.keys.first == :media_type
+                result[:meta][:media_types] << tag
+              else
+                result[:meta].merge!(tag)
+              end
             end
           end
           result[:featured] = false

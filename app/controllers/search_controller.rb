@@ -5,18 +5,19 @@ class SearchController < ApplicationController
   before_filter :get_options_from_query, :only => [:index, :google, :location] # format the query automatically for each request
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = false  # do all the related (ajax) searches for each and every result
-  SHOW_TIMESTAMPS = true   # show timestamps for various processes at the bottom of the page (can show anyway by adding debug=true to URL)
+  DO_RELATED_SEARCH = true  # do all the related (ajax) searches for each and every result
+  SHOW_TIMESTAMPS = false   # show timestamps for various processes at the bottom of the page (can show anyway by adding debug=true to URL)
   
-  # instantiate an instance of the Google class as soon as this controller loads the first time
-  @@gsa = ActiveSearch.new(GASOHOL_CONFIG[:google])
+  @@gsa = ActiveSearch.new(GASOHOL_CONFIG[:google]) # instantiate an instance of gasohol (in this case our custom extension of it) as soon as this controller loads the first time
   
-  # This is the default homepage that just shows a search box and popular searches
+  # (/ or /search/home) 
+  # homepage that just shows a search box and popular searches
   def home
     @popular_local_searches = Query.find_popular_by_location(10, @location)
     render :layout => 'application'
   end
-
+  
+  # (/search or /search/index)
   # This is where all the good stuff happens. Send the Google class the query (@query) and all the URL
   # variables (@options) and we'll ask the GSA and format the results into a simpler format that we use in our views.
   def index
@@ -34,6 +35,7 @@ class SearchController < ApplicationController
     render :layout => 'application'
   end
   
+  # (/search/google)
   # API for getting Google results. Tack on .xml, .json, .yaml for various formats.
   # By default will output HTML formatted for our search results. Passing in ?style=short
   # to the HTML version will display the title only
@@ -42,6 +44,7 @@ class SearchController < ApplicationController
     standard_response(@google)
   end
   
+  # (/search/location)
   # API for getting location data based on a zip code and optional radius. Tack on .xml, .json, .yaml for various formats.
   # For the query string variables, 'zip' is required and 'radius' is optional.
   def location
@@ -54,6 +57,7 @@ class SearchController < ApplicationController
     standard_response(@result)
   end
   
+  # (/search/set_location)
   # If called internally we can pass a string or location object as 'value', otherwise looks at the url for params[:value]
   # and uses that instead. If passed a string it should be in the form 'city,state', 'state', or 'zip'
   def set_location(value=nil)
