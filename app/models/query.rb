@@ -25,6 +25,7 @@ class Query < ActiveRecord::Base
     # select keywords, sum(`count`) as count from queries where location = 'San Diego, California' group by keywords order by count desc;
     find_by_sql(["select *, sum(count) as total \
                   from queries \
+                  where keywords != '' \
                   group by keywords, sport, type, custom \
                   order by total desc \
                   limit ?", num])
@@ -39,7 +40,7 @@ class Query < ActiveRecord::Base
     end
     find_by_sql(["select *, sum(count) as total \
                   from queries \
-                  where location = ? \
+                  where location = ? and keywords != '' \
                   group by keywords \
                   order by total desc \
                   limit ?", location, num])

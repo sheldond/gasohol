@@ -140,7 +140,9 @@ strong {
 	
 		#home_search #popular li {
 			display: inline;
-			padding: 0 1em .5em 0;
+			padding: 0 1em 0 0;
+			line-height: 1.5;
+			white-space: nowrap;
 		}
 
 #search_table {
