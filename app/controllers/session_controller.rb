@@ -15,10 +15,7 @@ class SessionController < ApplicationController
           flash[:notice] = 'You have been banned! You must have done something naughty. To appeal, email jeremy.thomas@active.com'
           render :action => 'new'
         elsif user.can_log_in or user.is_admin
-          session[:user] = user.id
-          user.last_login_at = Time.now
-          user.last_login_ip = request.remote_addr
-          user.save
+          log_in_user(user)
           redirect_back
         else
           flash[:notice] = 'Your inviation hasn\'t been sent yet! You should hear from us soon.'
@@ -36,7 +33,7 @@ class SessionController < ApplicationController
 
   def destroy
     # remove user's session - logout
-    session[:user] = nil
+    log_out_user
     flash[:notice] = 'You have been logged out. Come back soon!'
     redirect_to login_path
   end

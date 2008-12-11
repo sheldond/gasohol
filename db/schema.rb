@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081205204633) do
+ActiveRecord::Schema.define(:version => 20081208204713) do
 
   create_table "queries", :force => true do |t|
     t.string   "keywords"
@@ -34,6 +34,14 @@ ActiveRecord::Schema.define(:version => 20081205204633) do
 
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+
+  create_table "states", :force => true do |t|
+    t.string "name"
+    t.string "abbreviation"
+  end
+
+  add_index "states", ["abbreviation"], :name => "index_states_on_abbreviation", :unique => true
+  add_index "states", ["name"], :name => "index_states_on_name", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "name",          :default => "'''NULL'''"

@@ -28,10 +28,25 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     
+    # has an invite code?
+    if params[:code]
+      invite = Invite.find_by_code(params[:code].downcase)
+      if invite && invite.used < invite.available   # if the invite is valid and there are still some available
+        invite.used += 1
+        invite.last_used_at = Time.now.to_s(:db)
+        invite.save
+        @user.can_log_in = true
+      else
+        flash[:notice] = "Your invite code has expired or was invalid! We will email you an invite soon."
+      end
+    end
+    
     if @user.save
-      # flash[:notice] = 'Your invitation has been accepted!'
       if is_admin?
-        redirect_to users_path
+        redirect_to users_path  # if you're admin go back to the admin list
+      elsif @user.can_log_in
+        log_in_user(@user)      # if you can log in (valid invite code), go ahead and log in automatically
+        redirect_to root_path   # then go to the search homepage
       else
         render :action => 'thankyou'
       end

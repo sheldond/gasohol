@@ -16,6 +16,17 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def log_in_user(user)
+    session[:user] = user.id
+    user.last_login_at = Time.now
+    user.last_login_ip = request.remote_addr
+    user.save
+  end
+  
+  def log_out_user
+    session[:user] = nil
+  end
+  
   def login_required
     if !logged_in?
       session[:return_to] = request.request_uri

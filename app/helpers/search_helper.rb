@@ -170,6 +170,15 @@ END_OF_AJAX
   def ajax_for_result_related(result, type)
     ajax = related_search_url_for(result, { :type => :count_only, :category => type })
     link = related_search_url_for(result, { :type => :full, :category => type })
+    
+    case type
+    when :training
+      noun = 'training plan'
+    when :discussions
+      noun = 'discussion'
+    when :articles
+      noun = 'article'
+    end
 
     output = <<END_OF_AJAX
     new Ajax.Request( "#{ajax}",
@@ -177,7 +186,7 @@ END_OF_AJAX
                         onSuccess:function(r) {
                           total = r.responseText.evalJSON().google.total_results
                           if(total > 0) {
-                              $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{type}'+(total != 1 ? 's' : '')+'</a>'});
+                              $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
                             }
                           $('result_#{result[:num]}_indicator').remove();
                           }

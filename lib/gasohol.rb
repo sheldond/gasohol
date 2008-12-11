@@ -201,21 +201,16 @@ class Gasohol
 
   private
   # This method is only concerned with turning the query and all of the params into the Google query variable (q).
-  # The options (collection, client, etc.) are defined in the @@options class variable, which is used as a local 
+  # The options (collection, client, etc.) are defined in @config, which is used as a local 
   # variable 'options' in various places above.
-  #
-  # == googleize_options_into_query
-  # Extend Google with an your own application-specific implementation of this method if you need to search
-  # in meta tags.
   #
   # * 'parts' should contain a hash of everything that is _not_ the actual keyword query terms.
   # * 'query' is the keyword(s) query terms
   #
-  # On most implementations that offer more than staight keyword matches you're going to want additional
+  # On most implementations that offer more than straight keyword matches you're going to want additional
   # parameters, like meta searches, to appear in the browser's URL. These will not be formatted correctly
-  # for Google. That's what this method will do.
-  #
-  #
+  # for Google. That's what this method will do. Extend the Gasohol class with your own and then override 
+  # this method so you can build a query string specific to your implementation.
   def googlize_params_into_query(parts,query)
     return ''
   end
