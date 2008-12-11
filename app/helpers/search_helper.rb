@@ -1,8 +1,6 @@
 module SearchHelper
   
-  #
-  # output the page links for a given number of results
-  #
+  # Output the page links for a given number of results
   def output_pages(from,to,total,results_per_page,query)
     
     current_page = to / results_per_page
@@ -29,9 +27,7 @@ module SearchHelper
     
   end
   
-  #
-  # create star rating images and surrounding <div> based on a number passed in
-  #
+  # Create star rating images and surrounding <div> based on a number passed in
   def output_rating(num)
     output = '<div class="rating">'
     1.upto(num) { output += image_tag('/images/star_on.png', :title => "Average rating: #{num}") }    # rating
@@ -40,38 +36,32 @@ module SearchHelper
     return output
   end
   
+  # Determines if the passed result is an activity
   def activity?(result)
     result[:meta][:category] == 'Activities'
   end
   
-  #
-  # return params that affect the search only (remove stuff like controller and action)
-  #
+  # Return params that affect the search only (remove stuff like controller and action)
   def good_params
     params.find_all do |key,value|
       key != 'controller' and key != 'action' and key != 'format'
     end
   end
   
-  #
-  # build the breadcrumb list by specifying what should be in each position
-  #
+  # Given the params in the URL, build a breadcrumb with all the parts
   def build_breadcrumbs(params)
-    # start as an array and then split with > later
     output = []
     output << params[:category].titlecase unless !params[:category] or params[:category].downcase == 'any'
     output << params[:sport].titlecase unless !params[:sport] or params[:sport].downcase == 'any'
     output << params[:type].titlecase unless !params[:type] or params[:type].downcase == 'any'
-    output << params[:custom].titlecase unless !params[:custom] or params[:custom].downcase == 'any'
+    output << params[:custom].titlecase unless !params[:custom] or params[:custom].downcase == ''
     output << params[:location] unless !params[:location] or params[:location] == ''
     output << "within #{params[:radius]} miles" unless !params[:radius] or params[:radius].downcase == 'any'
     output << "&apos;#{params[:q]}&apos;"
     output.join(' <span>&gt;</span> ')
   end
   
-  #
-  # return only the params that the 'all' search cares about (q, category, sport)
-  #
+  # Return only the params that the 'all' search cares about (q, category, sport)
   def all_search_params(without=nil)
     include_params = ['q','sport','category','action','controller','format','id']; include_params.delete(without.to_s)
     options = params.dup
@@ -82,26 +72,31 @@ module SearchHelper
     end
   end
   
-  # Creates URLs for 'related items' searches. Both the ajax URL (returning JSON) and a full URL
-  # that can be browsed to in order to see full results.
+  # Creates URLs for 'related items' searches. 
   #
-  # result => Result object from GSA
-  # options[:type] => What we want back from the search (count_only | full | short)
-  # options[:category] => What we're searching for (:articles | :discussions | :training)
-  # options[:q] => The keyword query. If it's blank then we figure it out in certain instances
+  # * result => Result object from GSA
+  # * options[:type] => What we want back from the search (count_only | full | short)
+  # * options[:category] => What we're searching for (:articles | :discussions | :training)
+  # * options[:q] => The keyword query. If it's blank then we figure it out in certain instances
+  #
+  # options[:type]s are broken down into:
+  #
+  # * count_only => a URL that returns only 1 result, and all we really care about is the total number of results
+  # * full => a URL to a regular search
+  # * short => a URL that pulls back only the titles of the top 5 results
   #
   # This code is very specific to our implementation which is why it's so hideously ugly. Different 
   # assets need to be searched in different ways, sometimes with 'inurl' if the asset has no meta data, 
   # otherwise with regular 'category' if it does.
   #
   # If one day all content, including discussions, are indexed and given the same meta data as events and
-  # articles then this code can become much simpler.
+  # articles then this code can become much simpler and prettier.
   def related_search_url_for(result,options)
     
     path = ''
     parts = {}
     
-    # is this just a count of articles or a full query URL?
+    # what kind of URL are we looking for?
     case options[:type]
     when :count_only
       path = url_for(:controller => 'search', :action => 'google', :format => 'json')
@@ -123,8 +118,8 @@ module SearchHelper
       unless options[:q]
         # add on inmeta values and OR them together so we get training plans for all media types, not just the first or last
         result[:meta][:media_types].each_with_index do |mt,i|
-          if mt.values.first.match(/\\/)
-            parts[:q] += "inmeta:mediaType~#{mt.values.first.split('\\').last}" if mt.values.first.match(/\\/)
+          if mt.value.match(/\\/)
+            parts[:q] += "inmeta:mediaType~#{mt.value.split('\\').last}" if mt.value.match(/\\/)
             parts[:q] += ' OR ' if result[:meta][:media_types].length-1 != i
           end
         end
@@ -143,7 +138,7 @@ module SearchHelper
   
   end
   
-  # Outputs the javascript for an ajax call to get related contextual stuff
+  # Outputs the javascript for an ajax call to get related contextual links (currently shown in the right column)
   def ajax_for_context_related(category)
     ajax = related_search_url_for(nil, { :type => :short, :category => category, :q => params[:q] })
     link = related_search_url_for(nil, { :type => :full, :category => category, :q => params[:q] })
@@ -171,6 +166,7 @@ END_OF_AJAX
     ajax = related_search_url_for(result, { :type => :count_only, :category => type })
     link = related_search_url_for(result, { :type => :full, :category => type })
     
+    # the actual noun of what this is so we can show proper singular/plural version depending on how many results we get back
     case type
     when :training
       noun = 'training plan'
@@ -188,7 +184,7 @@ END_OF_AJAX
                           if(total > 0) {
                               $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
                             }
-                          $('result_#{result[:num]}_indicator').remove();
+                          $('result_#{result[:num]}_indicator') ? $('result_#{result[:num]}_indicator').remove() : null;
                           }
                       });
 END_OF_AJAX

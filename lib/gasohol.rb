@@ -34,6 +34,7 @@
 require 'open-uri'
 require 'hpricot'
 require 'chronic'
+require 'core_extensions'
 
 class Gasohol
   
@@ -175,11 +176,11 @@ class Gasohol
           xml.search(:mt).each do |meta|
             tag = { meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s }
             
-            if tag.keys.first.to_s.match(/date/i)
-              result[:meta].merge!({ tag.keys.first => Chronic.parse(tag.values.first) })
+            if tag.key.to_s.match(/date/i)
+              result[:meta].merge!({ tag.key => Chronic.parse(tag.value) })
             else
               # if this is a media_type then append to an array, otherwise just set the key/value
-              if tag.keys.first == :media_type
+              if tag.key == :media_type
                 result[:meta][:media_types] << tag
               else
                 result[:meta].merge!(tag)

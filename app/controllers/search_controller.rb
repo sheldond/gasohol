@@ -22,7 +22,7 @@ class SearchController < ApplicationController
   # variables (@options) and we'll ask the GSA and format the results into a simpler format that we use in our views.
   def index
     
-    # @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
+    @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
 
     @time = {}
     @time[:google] = Time.now

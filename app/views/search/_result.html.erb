@@ -32,12 +32,12 @@
             <%= result[:meta][:channel].split('\\').first %>
           <% end %>
           <% if result[:meta][:media_types] && result[:meta][:media_types].first %>
-            <%= result[:meta][:media_types].first.values.first.split('\\').first %>
+            <%= result[:meta][:media_types].first.value.split('\\').first %>
           <% end %>
         </li>
         <% if activity?(result) %>
           <li><strong>Where:</strong> <%= result[:meta][:city] %>, <%= result[:meta][:state] %></li>
-          <li><strong>When:</strong> <%= result[:meta][:start_date].strftime('%A, %B %d, %Y') %></li>
+          <li><strong>When:</strong> <%= result[:meta][:start_date].full_date_with_day %></li>
         <% end %>
       </ul>
       <% if activity?(result) %>
@@ -62,16 +62,16 @@
         </div>
         
         <% if SearchController::DO_RELATED_SEARCH %>
-        
-          <!-- save these up in a variable and output later -->
           <script type="text/javascript">
-            <%= ajax_for_result_related(result, :discussions) %>
-            <%= ajax_for_result_related(result, :articles) %>
-            <%= ajax_for_result_related(result, :training) %>
-
             // generate a random number of registrants (turn off the clickable link for now)
             $('result_<%= result[:num] %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
             $('result_<%= result[:num] %>_links_watching').update(Math.round(Math.random()*40)+' watching');
+            
+            <%= ajax_for_result_related(result, :discussions) %>
+            <%= ajax_for_result_related(result, :articles) %>
+            <% if result[:meta][:media_types].find { |mt| mt.value =~ /\\/ } %>
+              <%= ajax_for_result_related(result, :training) %>
+            <% end %>
           </script>
         <% end %>
       <% end %>

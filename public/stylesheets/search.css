@@ -76,6 +76,10 @@ strong {
 		display: inline;
 	}
 
+#popular a {
+	text-decoration: none;
+}
+
 #home_search {
 	text-align: left;
 	margin: 100px auto;
@@ -239,7 +243,7 @@ strong {
 		
 		#activity_search #date_picker input {
 			display: inline;
-			width: 5em;
+			width: 7em;
 			font-size: 93%;
 		}
 		
@@ -292,15 +296,18 @@ strong {
 			overflow: hidden;
 		}
 
-		#context.result .title {
+		#context .result .title {
 			float: left;
-			margin: 0 0 .2em;
+			margin: 0 0 .4em;
+			line-height: 1.1;
 		}
+			#context .result .title a {
+				border: none;
+			}
 
 		#context .result h3 {
 			font-size: 93%;
 			display: inline;
-			line-eig
 		}
 		
 			#context .result h3 a {
@@ -325,7 +332,12 @@ strong {
 			display: block;
 			text-align: center;
 			margin: 1em 0 0;
+			text-decoration: none;
+			color: #5091CD;
 		}
+			#context .more:hover {
+				color:#D06F1A;
+			}
 	
 		#context_container {
 			margin: 1em;
@@ -433,6 +445,10 @@ strong {
 		margin: 1em 0 1em;
 	}
 	
+		#sort a {
+			text-decoration: none;
+		}
+	
 		#sort ul {
 			display: inline;
 		}
@@ -466,6 +482,14 @@ strong {
 			float: left;
 			margin: 0 0 .2em;
 		}
+			.result .title a {
+				text-decoration: none;
+				border-bottom: 1px solid #5091CD;
+			}
+			.result .title a:hover {
+				text-decoration: none;
+				border-bottom: 1px solid #d06f1a;
+			}
 		
 			.result .title.sport {
 				background-color: transparent;

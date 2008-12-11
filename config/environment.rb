@@ -66,3 +66,5 @@ temp_config = File.open(RAILS_ROOT+'/config/gasohol.yml') { |file| YAML::load(fi
 temp_config.symbolize_keys!
 temp_config.each { |key,value| value.symbolize_keys! }
 GASOHOL_CONFIG = temp_config
+
+require 'core_extensions'
