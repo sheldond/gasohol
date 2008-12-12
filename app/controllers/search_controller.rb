@@ -32,9 +32,9 @@ class SearchController < ApplicationController
       @google = do_google
     @time[:google] = Time.now - @time[:google]
     
-    @popular_local_searches = Query.find_popular_by_location(@location,5)
-    @related_searches = Query.find_related_by_location(@query,@location,5)
-    @month_separator_count = 0  # keeps track of what month is being shown in the results
+    @popular_local_searches = Query.find_popular_by_location(@location,5)   # most frequent keyword searches in same location
+    @related_searches = Query.find_related_by_location(@query,@location,5)  # searches that contain the same keyword in the same location
+    @month_separator_check = ''  # keeps track of what month is being shown in the results
     
     render :layout => 'application'
   end
