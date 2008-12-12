@@ -8,6 +8,8 @@
   
   <%= render :partial => 'popular_local_searches' %>
   
+  <%= render :partial => 'related_searches' unless @query == '' %>
+  
 </div>
 
 <script type="text/javascript">

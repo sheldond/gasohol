@@ -40,10 +40,19 @@ class Query < ActiveRecord::Base
     end
     find_by_sql(["select *, sum(count) as total \
                   from queries \
-                  where location = ? and keywords != '' \
+                  where location = ? and keywords != '' and keywords not like '%inmeta%' and keywords not like '%inurl%' \
                   group by keywords \
                   order by total desc \
                   limit ?", location, num])
+  end
+  
+  def self.find_related(text,num=5)
+    find_by_sql(["select *, sum(count) as total \
+                  from queries \
+                  where keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? \
+                  group by keywords \
+                  order by total desc \
+                  limit ?", "%#{text}%", text, num])
   end
   
 end

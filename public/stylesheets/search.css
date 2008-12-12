@@ -76,7 +76,7 @@ strong {
 		display: inline;
 	}
 
-#popular a {
+#popular a, #related a {
 	text-decoration: none;
 }
 
@@ -232,7 +232,7 @@ strong {
 		}
 		
 		#refine #popular {
-			margin-top: 2em;
+			margin-top: 1em;
 			overflow: auto;
 		}
 	
