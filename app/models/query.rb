@@ -31,7 +31,7 @@ class Query < ActiveRecord::Base
                   limit ?", num])
   end
   
-  def self.find_popular_by_location(num=5, loc='')
+  def self.find_popular_by_location(loc='',num=5)
     # if this is a hash, get the city and state out, otherwise assume it's a valid location string
     if loc.respond_to?(:keys)
       location = "#{loc['city']}, #{loc['region']}"
@@ -46,13 +46,19 @@ class Query < ActiveRecord::Base
                   limit ?", location, num])
   end
   
-  def self.find_related(text,num=5)
+  def self.find_related_by_location(text,loc,num=5)
+    # if this is a hash, get the city and state out, otherwise assume it's a valid location string
+    if loc.respond_to?(:keys)
+      location = "#{loc['city']}, #{loc['region']}"
+    else
+      location = loc
+    end
     find_by_sql(["select *, sum(count) as total \
                   from queries \
-                  where keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? \
+                  where location = ? and keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? \
                   group by keywords \
                   order by total desc \
-                  limit ?", "%#{text}%", text, num])
+                  limit ?", location, "%#{text}%", text, num])
   end
   
 end

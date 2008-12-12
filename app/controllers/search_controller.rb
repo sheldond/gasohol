@@ -14,7 +14,7 @@ class SearchController < ApplicationController
   # homepage that just shows a search box and popular searches
   def home
     params[:q] ||= ''
-    @popular_local_searches = Query.find_popular_by_location(10, @location)
+    @popular_local_searches = Query.find_popular_by_location(@location,10)
     render :layout => 'application'
   end
   
@@ -32,8 +32,8 @@ class SearchController < ApplicationController
       @google = do_google
     @time[:google] = Time.now - @time[:google]
     
-    @popular_local_searches = Query.find_popular_by_location(5, @location)
-    @related_searches = Query.find_related(@query,5)
+    @popular_local_searches = Query.find_popular_by_location(@location,5)
+    @related_searches = Query.find_related_by_location(@query,@location,5)
     
     render :layout => 'application'
   end
