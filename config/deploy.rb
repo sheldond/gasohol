@@ -108,3 +108,6 @@ set :ec2onrails_config, {
 #task :disable_slave_db_backup, :roles => :db do
 #    sudo "rm -rf /etc/cron.d/backup_app_db_to_s3"
 #end
+
+before 'deploy', 'deploy:web:disable'
+after 'deploy', 'deploy:web:enable'
