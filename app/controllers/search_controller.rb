@@ -13,6 +13,7 @@ class SearchController < ApplicationController
   # (/ or /search/home) 
   # homepage that just shows a search box and popular searches
   def home
+    params[:q] ||= ''
     @popular_local_searches = Query.find_popular_by_location(10, @location)
     render :layout => 'application'
   end
@@ -21,6 +22,7 @@ class SearchController < ApplicationController
   # This is where all the good stuff happens. Send the Google class the query (@query) and all the URL
   # variables (@options) and we'll ask the GSA and format the results into a simpler format that we use in our views.
   def index
+    params[:q] ||= ''
     
     @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
 

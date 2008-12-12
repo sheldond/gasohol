@@ -38,7 +38,15 @@ module SearchHelper
   
   # Determines if the passed result is an activity
   def activity?(result)
-    result[:meta][:category] == 'Activities'
+    result[:meta][:category] && result[:meta][:category] == 'Activities'
+  end
+  
+  def training?(result)
+    result[:meta][:media_types][0] && result[:meta][:media_types][0].value.match(/Training Plan/)
+  end
+  
+  def article?(result)
+    result[:meta][:category] == 'Articles'
   end
   
   # Return params that affect the search only (remove stuff like controller and action)

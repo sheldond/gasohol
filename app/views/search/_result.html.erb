@@ -27,17 +27,23 @@
         <% end %>
       </div>
       <ul class="meta">
-        <li><strong>What:</strong>
-          <% if result[:meta][:channel] %>
+        <% if result[:meta][:channel] %>
+          <li><strong>What:</strong>
             <%= result[:meta][:channel].split('\\').first %>
-          <% end %>
-          <% if result[:meta][:media_types] && result[:meta][:media_types].first %>
-            <%= result[:meta][:media_types].first.value.split('\\').first %>
-          <% end %>
-        </li>
+            <% if result[:meta][:media_types] && result[:meta][:media_types].first %>
+              <%= result[:meta][:media_types].first.value.split('\\').first %>
+            <% end %>
+          </li>
+        <% end %>
         <% if activity?(result) %>
           <li><strong>Where:</strong> <%= result[:meta][:city] %>, <%= result[:meta][:state] %></li>
-          <li><strong>When:</strong> <%= result[:meta][:start_date].full_date_with_day %></li>
+          <li><strong>When:</strong> <%= result[:meta][:start_date].to_s(:full_with_day) %></li>
+        <% end %>
+        <% if training?(result) && result[:meta][:participation_criteria] %>
+          <li><strong>Difficulty:</strong> <%= result[:meta][:participation_criteria] %></li>
+        <% end %>
+        <% if article?(result) %>
+          <li><strong>Published on:</strong> <%= result[:meta][:update_date_time].to_s(:standard) %></li>
         <% end %>
       </ul>
       <% if activity?(result) %>

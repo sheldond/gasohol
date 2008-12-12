@@ -177,7 +177,7 @@ class Gasohol
             tag = { meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s }
             
             if tag.key.to_s.match(/date/i)
-              result[:meta].merge!({ tag.key => Chronic.parse(tag.value) })
+              result[:meta].merge!({ tag.key => Time.parse(tag.value) })
             else
               # if this is a media_type then append to an array, otherwise just set the key/value
               if tag.key == :media_type

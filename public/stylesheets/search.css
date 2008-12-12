@@ -89,6 +89,9 @@ strong {
 	#home_search #search_location {
 		margin: 0 0 .5em;
 	}
+		#home_search #search_location a {
+			font-size: 93%;
+		}
 
 	#home_search input#q1 {
 		width: 20em;
@@ -241,13 +244,24 @@ strong {
 			display: block;
 			margin: .7em 0 .2em;
 			color: #666666;
+			clear: left;
 		}
 		
 		#activity_search #date_picker input {
 			display: inline;
 			width: 7em;
 			font-size: 93%;
+			margin: .2em 0;
 		}
+			#activity_search #date_picker label {
+				float: left;
+				clear: left;
+				width: 3em;
+				font-size: 93%;
+				text-align: right;
+				color: #999999;
+				margin: .4em .2em 0 0;
+			}
 		
 			#activity_search #date_picker input.button {
 				width: auto;
@@ -256,13 +270,21 @@ strong {
 		#activity_search #search_location #loc {
 			display: block;
 		}
-		
+			
 		#activity_search #search_location #loc-inplaceeditor input {
 			display: inline;
 		}
+		
+			#activity_search #search_location #change_location {
+				font-size: 85%;
+			}
 
 	#main {
-		padding: 0 1em 1em;
+		padding: 0 0 1em;
+	}
+	
+	#results_container {
+		margin: 0 1em;
 	}
 
 	#results {
@@ -595,7 +617,7 @@ strong {
 		
 			.result .related_links li {
 				display: inline;
-				margin: 0 1em 0 0;
+				margin: 0 .5em 0 0;
 			}
 		
 #paging {

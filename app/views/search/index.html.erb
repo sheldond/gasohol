@@ -14,35 +14,37 @@
     </td>
     <td id="main">
       <div style="overflow: hidden; width: 400px; visibility: hidden; height: 0pt;"></div>
-      <%= render :partial => 'breadcrumbs', :locals => { :google => @google } %>
-
-      <div id="results">
-        <% unless @google[:results].blank? %>
+      <div id="results_container">
+        <%= render :partial => 'breadcrumbs', :locals => { :google => @google } %>
+      
+        <div id="results">
+          <% unless @google[:results].blank? %>
         
-          <% unless @google[:featured].empty? %>
-            <div id="featured">
-              <h3>Featured Events</h3>
-              <%= render :partial => 'featured', :collection => @google[:featured] %>
-            </div>
+            <% unless @google[:featured].empty? %>
+              <div id="featured">
+                <h3>Featured Events</h3>
+                <%= render :partial => 'featured', :collection => @google[:featured] %>
+              </div>
+            <% end %>
+
+            <%# render :partial => 'sort' %>
+
+            <%= render :partial => 'result', :collection => @google[:results] %>
+
+            <% if @google[:google][:total_results] > GASOHOL_CONFIG[:google][:num] %>
+              <div id="paging">
+                <%= render :partial => 'paging', :locals => { :from => @google[:results].first[:num], 
+                                                              :to => @google[:results].last[:num], 
+                                                              :total => @google[:google][:total_results],
+                                                              :results_per_page => GASOHOL_CONFIG[:google][:num],
+                                                              :query => @google[:google][:query] } %>
+              </div>
+            <% end %>
+
+          <% else %>
+            <div class="no_results">No results found.</div>
           <% end %>
-
-          <%# render :partial => 'sort' %>
-
-          <%= render :partial => 'result', :collection => @google[:results] %>
-
-          <% if @google[:google][:total_results] > GASOHOL_CONFIG[:google][:num] %>
-            <div id="paging">
-              <%= render :partial => 'paging', :locals => { :from => @google[:results].first[:num], 
-                                                            :to => @google[:results].last[:num], 
-                                                            :total => @google[:google][:total_results],
-                                                            :results_per_page => GASOHOL_CONFIG[:google][:num],
-                                                            :query => @google[:google][:query] } %>
-            </div>
-          <% end %>
-
-        <% else %>
-          <div class="no_results">No results found.</div>
-        <% end %>
+        </div>
       </div>
     </td>
     <td id="context">
