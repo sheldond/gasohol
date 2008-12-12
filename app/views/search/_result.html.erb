@@ -15,6 +15,15 @@
   <% else %>
     
     <%# full length results, ?style=long or no style in URL %>
+
+    <% if do_separator %>
+      <% if @month_separator_check != result[:meta][:start_date].month %>
+        <div class="month_separator">
+          <%= result[:meta][:start_date].to_s(:month_year) %>
+        </div>
+        <% @month_separator_check = result[:meta][:start_date].month %>
+      <% end %>
+    <% end %>
   
     <div id="result_<%= result[:num] %>" class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
       <div class="text">
@@ -41,6 +50,7 @@
         <% end %>
         <% if training?(result) && result[:meta][:participation_criteria] %>
           <li><strong>Difficulty:</strong> <%= result[:meta][:participation_criteria] %></li>
+          <li><strong>Price:</strong> <%= result[:meta][:online_registration_cost] %></li>
         <% end %>
         <% if article?(result) %>
           <li><strong>Published on:</strong> <%= result[:meta][:update_date_time].to_s(:standard) %></li>

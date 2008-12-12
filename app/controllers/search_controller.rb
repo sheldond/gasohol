@@ -5,7 +5,7 @@ class SearchController < ApplicationController
   before_filter :get_options_from_query, :only => [:index, :google, :location] # format the query automatically for each request
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = false  # do all the related (ajax) searches for each and every result
+  DO_RELATED_SEARCH = true  # do all the related (ajax) searches for each and every result
   SHOW_TIMESTAMPS = false   # show timestamps for various processes at the bottom of the page (can show anyway by adding debug=true to URL)
   
   @@gsa = ActiveSearch.new(GASOHOL_CONFIG[:google]) # instantiate an instance of gasohol (in this case our custom extension of it) as soon as this controller loads the first time
@@ -34,6 +34,7 @@ class SearchController < ApplicationController
     
     @popular_local_searches = Query.find_popular_by_location(@location,5)
     @related_searches = Query.find_related_by_location(@query,@location,5)
+    @month_separator_count = 0  # keeps track of what month is being shown in the results
     
     render :layout => 'application'
   end

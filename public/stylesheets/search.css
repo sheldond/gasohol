@@ -485,6 +485,11 @@ strong {
 			#sort li.selected {
 				font-weight: bold;
 			}
+			
+	.month_separator {
+		padding: .5em 1em;
+		background-color: #d7e8f7;
+		}
 		
 	.result {
 		margin: 0;
