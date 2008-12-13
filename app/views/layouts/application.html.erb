@@ -3,7 +3,7 @@
 <head>	
 	<title>Active.com - Search</title>
 	
-	<%= stylesheet_link_tag 'reset','fonts','search' %>
+	<%= stylesheet_link_tag 'reset','fonts','search', "skins/#{@skin}.css" %>
 	<%= javascript_include_tag 'prototype','effects','search','controls','application' %>
 	<script src="/javascripts/calendar_date_select/calendar_date_select.js?1207035522" type="text/javascript"></script>
   <script src="/javascripts/calendar_date_select/format_american.js?1207035522" type="text/javascript"></script>
@@ -15,8 +15,9 @@
   
   <div id="header">
     <div id="active">
-      <%= link_to(image_tag("/images/active_header_left.png", :id => "active_left"), root_path) %>
-      <!-- <img src="/images/active_header_right.png" id="active_right" /> -->
+      <div id="active_left">
+        <%= link_to('<h1><span>Active.com</span></h1>', root_path) %>
+      </div>
       <ul id="logged_in_options">
         <li><%= link_to 'Logout', logout_path %></li>
         <li><%= link_to('Admin', users_path) if is_admin? %></li>
@@ -44,6 +45,8 @@
     } 
     catch(err) {}
   </script>
+  
+  <div id="skin_logo"></div>
   
 </body>
 </html>

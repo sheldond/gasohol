@@ -1,0 +1,81 @@
+#active {
+	background: transparent url('/images/skins/nike/active_header_bg.png') left top repeat-x;
+	overflow: hidden;
+}
+
+	#active_left h1 {
+		background: transparent url('/images/skins/nike/active_header_left.png') top left no-repeat;
+	}
+	
+#body {
+	background: transparent url('/images/skins/nike/body_top.png') top left repeat-x;
+	padding: 2em 0 3em;
+}
+
+a {
+	color: #990000;
+}
+
+.month_separator {
+	background-color: #eeeeee;
+}
+
+#refine h3, #popular h3 {
+	color: #333333;
+}
+
+#refine_container {
+	background-image: none;
+}
+
+#breadcrumb h2 {
+	color: #990000;
+}
+
+#featured {
+	background-color: #999999;
+	color: #ffffff;
+}
+	#featured h3 {
+		color: #333333;
+	}
+
+	#featured a {
+		color: #ffffff;
+		border-color: #ffffff;
+	}
+
+#context {
+
+}
+
+#context .related h4 {
+	background-color: #333333;
+	color: #cccccc;
+	padding: .2em .4em;
+}
+
+#context .more {
+	color: #666666;
+}
+
+#skin_logo {
+	display: block;
+	position: fixed;
+	bottom: 0;
+	height: 60px;
+	width: 100%;
+	z-index: 99;
+	background: transparent url('/images/skins/nike/body_bottom.png') no-repeat scroll left bottom;
+}
+
+/*
+#bottom_fade {style.css (line 23)
+background:transparent url(bottom-fade.png) no-repeat scroll left bottom;
+bottom:0;
+height:200px;
+position:fixed;
+width:600px;
+z-index:99;
+}
+*/

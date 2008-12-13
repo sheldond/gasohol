@@ -31,10 +31,19 @@ strong {
 		overflow: hidden;
 	}
 	
-		#active_left {
+		#active_left h1 {
 			display: block;
 			float: left;
+			background: transparent url('/images/active_header_left.png') top left no-repeat;
+			height: 95px;
+			width: 299px;
 		}
+			#active_left a {
+				display: block;
+			}
+			#active_left span {
+				display: none;
+			}
 		
 		#active_right {
 			display: block;

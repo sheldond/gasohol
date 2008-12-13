@@ -3,6 +3,7 @@ class SearchController < ApplicationController
   before_filter :login_required, :except => [:location] # this page is locked down, only accessible if logged in
   before_filter :get_location, :only => [:index, :home, :google]  # get location from user cookie
   before_filter :get_options_from_query, :only => [:index, :google, :location] # format the query automatically for each request
+  before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
   DO_RELATED_SEARCH = true  # do all the related (ajax) searches for each and every result
@@ -204,4 +205,15 @@ class SearchController < ApplicationController
     end
 
   end
+  
+  def check_skin
+    @skin = 'default'
+    if params[:skin]
+      cookies[:skin] = params[:skin]
+      @skin = params[:skin]
+    elsif cookies[:skin]
+      @skin = cookies[:skin]
+    end
+  end
+  
 end
