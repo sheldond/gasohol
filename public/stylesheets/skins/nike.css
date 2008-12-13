@@ -1,3 +1,7 @@
+body {
+	color: #ffffff;
+}
+
 #active {
 	background: transparent url('/images/skins/nike/active_header_bg.png') left top repeat-x;
 	overflow: hidden;
@@ -8,20 +12,24 @@
 	}
 	
 #body {
-	background: transparent url('/images/skins/nike/body_top.png') top left repeat-x;
+	background: #333333 url('/images/skins/nike/body_top.png') top left repeat-x;
 	padding: 2em 0 3em;
 }
 
-a {
-	color: #990000;
+body#search_home #body {
+	height: 100%;
 }
 
-.month_separator {
-	background-color: #eeeeee;
+a {
+	color: #FFC423;
+}
+
+a:hover {
+	color: #ffffff;
 }
 
 #refine h3, #popular h3 {
-	color: #333333;
+	color: #999999;
 }
 
 #refine_container {
@@ -29,21 +37,41 @@ a {
 }
 
 #breadcrumb h2 {
-	color: #990000;
+	color: #ffffff;
 }
 
 #featured {
-	background-color: #999999;
+	background-color: #222222;
 	color: #ffffff;
 }
 	#featured h3 {
-		color: #333333;
+		color: #999999;
 	}
 
 	#featured a {
 		color: #ffffff;
 		border-color: #ffffff;
 	}
+	
+.month_separator {
+	background-color: #444444;
+}
+
+.result .title a {
+	border-color: #ffc425;
+}
+
+.result ul.meta {
+	color: #aaaaaa;
+}
+
+.result .related_links {
+	color: #888888;
+}
+
+.result .related_links a.register_link {
+	color: #f89728;
+}
 
 #context {
 
@@ -54,6 +82,10 @@ a {
 	color: #cccccc;
 	padding: .2em .4em;
 }
+
+	#context a {
+		color: #ffd18b;
+	}
 
 #context .more {
 	color: #666666;
