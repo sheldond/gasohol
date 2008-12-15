@@ -13,7 +13,7 @@ class CreateUsers < ActiveRecord::Migration
       t.timestamps
     end
     
-    User.create(:name => 'Rob', :login => 'cannikin', :password => 'bosco', :email => 'cannikinn@gmail.com', :can_log_in => true)
+    User.create(:name => 'Rob', :login => 'cannikin', :password => 'bosco', :email => 'cannikinn@gmail.com', :can_log_in => true, :is_admin => true)
     
   end
 

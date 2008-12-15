@@ -1,0 +1,1 @@
+insert into cities (name, state_id) values ('boston',22);

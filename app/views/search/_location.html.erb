@@ -1,9 +1,14 @@
 <div id="search_location">
   <% if location %>
-    Searching near <strong id="loc"><%= "#{location['city']}, #{location['region']}" %></strong> <%= link_to('change', { :action => 'set_location', :location => location['zip'] }, :id => 'change_location') %>
-    <input type="hidden" name="location" id="location" value="<%= "#{location['city']}, #{location['region']}" %>" />
+    Searching near 
+    <% if location.everywhere %>
+      <strong id="loc">everywhere</strong>
+    <% else %>
+      <strong id="loc"><%= "#{location.city}," if location.city %> <%= location.state %></strong> <%= link_to('change', { :action => 'set_location', :location => location.zip }, :id => 'change_location') %>
+    <% end %>
+    <input type="hidden" name="location" id="location" value="<%= "#{location.city}, #{location.state}" %>" />
     <script type="text/javascript">
-      new Ajax.InPlaceEditor('loc', '<%= url_for(:action => 'set_location', :location => location['zip']) %>',
+      new Ajax.InPlaceEditor('loc', '<%= url_for(:action => 'set_location', :location => location.zip) %>',
                               { 
                                 
                                 okText:'Save',

@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(:version => 20081208204713) do
   add_index "queries", ["keywords"], :name => "index_queries_on_keywords"
 
   create_table "sessions", :force => true do |t|
-    t.string   "session_id",                     :null => false
-    t.text     "data",       :default => "NULL"
+    t.string   "session_id", :null => false
+    t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -44,12 +44,12 @@ ActiveRecord::Schema.define(:version => 20081208204713) do
   add_index "states", ["name"], :name => "index_states_on_name", :unique => true
 
   create_table "users", :force => true do |t|
-    t.string   "name",          :default => "'''NULL'''"
-    t.string   "login",         :default => "'''NULL'''"
-    t.string   "password",      :default => "'''NULL'''"
-    t.string   "email",         :default => "'''NULL'''"
+    t.string   "name"
+    t.string   "login"
+    t.string   "password"
+    t.string   "email"
     t.datetime "last_login_at"
-    t.string   "last_login_ip", :default => "'''NULL'''"
+    t.string   "last_login_ip"
     t.boolean  "can_log_in",    :default => false
     t.boolean  "is_banned",     :default => false
     t.datetime "created_at"
@@ -58,24 +58,24 @@ ActiveRecord::Schema.define(:version => 20081208204713) do
   end
 
   create_table "zips", :id => false, :force => true do |t|
-    t.string  "city",                                        :default => "NULL"
-    t.string  "state",                                       :default => "NULL"
-    t.integer "zip",                                         :default => 0
-    t.integer "area_code",                                   :default => 0
-    t.integer "fips",                                        :default => 0
-    t.string  "county",                                      :default => "NULL"
-    t.string  "preferred",                                   :default => "NULL"
-    t.string  "time_zone",                                   :default => "NULL"
+    t.string  "city"
+    t.string  "state"
+    t.string  "zip"
+    t.integer "area_code"
+    t.integer "fips"
+    t.string  "county"
+    t.string  "preferred"
+    t.string  "time_zone"
     t.boolean "dst",                                         :default => false
-    t.decimal "latitude",      :precision => 7, :scale => 5, :default => 0.0
-    t.decimal "longitude",     :precision => 7, :scale => 5, :default => 0.0
-    t.integer "msa",                                         :default => 0
-    t.integer "pmsa",                                        :default => 0
-    t.integer "congress_dist",                               :default => 0
-    t.integer "dma",                                         :default => 0
-    t.string  "type",                                        :default => "NULL"
-    t.integer "batch",                                       :default => 0
-    t.integer "status",                                      :default => 0
+    t.decimal "latitude",      :precision => 7, :scale => 5
+    t.decimal "longitude",     :precision => 8, :scale => 5
+    t.integer "msa"
+    t.integer "pmsa"
+    t.integer "congress_dist"
+    t.integer "dma"
+    t.string  "type"
+    t.integer "batch"
+    t.integer "status"
   end
 
   add_index "zips", ["zip"], :name => "index_zips_on_zip", :unique => true

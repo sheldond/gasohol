@@ -68,7 +68,34 @@ class SearchController < ApplicationController
   def set_location(value=nil)
     value = value || params[:value]
     @location = value.is_a?(Hash) ? value : {}  # if the value is already a valid location hash, just set it, this other crap isn't needed
+
+    if value
+      if @location.empty?     # if @location doesn't already contain a valid location Hash object
+        @location = Location.new(value)
+      end
+      # set the cookie
+      cookies[:location] = { :value => @location.to_cookie, :expires => 1.year.from_now }
+    else
+      raise 'No location provided'
+    end
     
+    # render the name of the city,state or an error message if this was called via ajax
+    if request.xhr?
+      unless @location.empty?
+        if @location.everywhere
+          render :text => "everywhere"
+        elsif @location.only_state?
+          render :text => @location.state.titlecase
+        else
+          render :text => "#{@location.city}, #{@location.state}"
+        end
+      else
+        render :text => "Please enter a valid city and state or zip"
+      end
+    end
+
+
+=begin    
     if value
       if @location.empty?     # if @location doesn't already contain a valid location Hash object
         zip = find_zip_from_string(value)
@@ -93,6 +120,7 @@ class SearchController < ApplicationController
         render :text => "Please enter a valid city and state or zip"
       end
     end
+=end
     
   end
   
@@ -117,41 +145,6 @@ class SearchController < ApplicationController
     @@gsa.search(@query, @options)
   end
 
-  # Helper action that returns an ActiveRecord instance of the zip location for a passed zip or city,state
-  def find_zip_from_string(text) 
-    unless text.blank?
-      if text.to_i > 0    # is this a zip code?
-        zip = Zip.find_by_zip(text)
-      else
-        parts = text.split(',')
-        # string contains a comma? if so, city and state
-        if parts.length > 1
-          city = text.split(',').first.strip
-          state = State.find_by_name_or_abbreviation(text.split(',').last.strip)
-          # TODO: shouldn't have to worry about case here
-          if state
-            zip = Zip.find_by_city_and_state(city.titlecase,state.abbreviation.upcase) # requires city name and 2-letter state abbreviation
-          else
-            raise "State '#{state}' not found"
-          end
-        else
-          # otherwise assume this is a state
-          # TODO: Write some logic to find the center-most zip in the state instead of the first one the database returns
-          #       Also override the default location logic -- instead of worrying purely about radius we'll figure out the
-          #       the optimal latitude/longitude numbers to use here and pass those on for the search
-          zip = Zip.find_by_state(State.find_by_name_or_abbreviation(text.split(',').first.strip).abbreviation.upcase)
-          unless zip
-            raise "State '#{state}' not found"
-          end
-        end
-      end
-    else
-      raise "No text provided to find zip from (ie: 92121 or 'san diego, ca')"
-    end
-    
-    return zip
-  end
-
 
   # Gets the query terms out of the query string and puts it in '@query'. Takes the remaining query string variables
   # and puts them into a hash called '@options'
@@ -161,8 +154,8 @@ class SearchController < ApplicationController
     
     # add in the user's location
     if params[:location]
-      zip = find_zip_from_string(params[:location])
-      @options.merge!({ :latitude => zip.latitude, :longitude => zip.longitude })
+      # zip = find_zip_from_string(params[:location])
+      @options.merge!({ :latitude => @location.latitude, :longitude => @location.longitude })
     end
       
     # put any other URL params into a hash as long as they're not the rails 
@@ -179,7 +172,31 @@ class SearchController < ApplicationController
   # and use it for this request. Future requests will see that the cookie exists, and that we haven't 
   # already set @location, and @location = cookie[:location]
   def get_location
-  
+    
+    if params[:location]    # if there's a location in the URL, use that above everything else
+      @location = Location.new(params[:location])
+    else
+      if cookies[:location].nil?
+        begin
+          xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
+          @location = Location.new((xml/:location).at('zip').innerHTML)
+        rescue # any kind of error with the request, set to San Diego, CA
+          set_location("San Diego,CA")
+        end
+        
+        # assuming we found a location, set the cookie to it
+        unless @location.empty?
+          set_location(@location)
+        end
+      end
+
+      # if the cookie exists, and we didn't just find the location above, get it from the cookie
+      if cookies[:location] && @location.nil?
+        @location = Location.from_cookie(cookies[:location])
+      end
+    end
+    
+=begin  
     if cookies[:location].nil?
       @location = {}
       begin
@@ -203,6 +220,7 @@ class SearchController < ApplicationController
     if cookies[:location] && @location.nil?
       @location = ActiveSupport::JSON.decode(cookies[:location])
     end
+=end
 
   end
   
