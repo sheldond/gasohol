@@ -1,10 +1,12 @@
-<script type="text/javascript">
-  // have to put the related context stuff here if we want these results to come back
-  // before the regular related searches for each and every event
-  <%= ajax_for_context_related(:articles) %>
-  <%= ajax_for_context_related(:discussions) %>
-  <%= ajax_for_context_related(:training) %>
-</script>
+<% if SearchController::DO_CONTEXT_SEARCH %>
+  <script type="text/javascript">
+    // have to put the related context stuff here if we want these results to come back
+    // before the regular related searches for each and every event
+    <%= ajax_for_context_related(:articles) %>
+    <%= ajax_for_context_related(:discussions) %>
+    <%= ajax_for_context_related(:training) %>
+  </script>
+<% end %>
 
 <table id="search_table">
   <tr>

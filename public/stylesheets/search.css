@@ -276,8 +276,8 @@ strong {
 				width: auto;
 			}
 			
-		#activity_search #search_location #loc {
-			display: block;
+		#activity_search #search_location #loc strong {
+			
 		}
 			
 		#activity_search #search_location #loc-inplaceeditor input {
@@ -453,7 +453,7 @@ strong {
 		}
 	
 	#featured {
-		margin: 1em 0 0;
+		margin: 1em 0;
 		padding: 0 1em;
 		background-color: #d7e8f7;
 		overflow: auto;

@@ -6,7 +6,7 @@ class Location
   include Exceptions
   
   DEFAULT_OPTIONS = { :radius => 50 }
-  ANYWHERE_PHRASES = ['anywhere','everywhere','any']
+  ANYWHERE_PHRASES = ['anywhere','everywhere','any','us','usa','united states']
   
   attr_reader :zip, :city, :state, :latitude, :longitude, :radius, :everywhere
   
@@ -23,7 +23,7 @@ class Location
     end
   end
   
-  # alias 'new' as 'from_cookie' if we are creating a new Location from a cookie
+  # Alias 'new' as 'from_cookie' if we are creating a new Location from a cookie (just looks nicer when called)
   def self.from_cookie(obj,options={})
     new(obj,options)
   end
@@ -32,7 +32,7 @@ class Location
     return (@zip.nil? && @city.nil? && @state.nil? && !@everywhere) ? true : false
   end
   
-  # return a Hash version
+  # Return a Hash version of this object
   def to_h
     { :zip => @zip,
       :city => @city,
@@ -43,14 +43,39 @@ class Location
       :everywhere => @everywhere }
   end
   
-  # return a Hash version encoded into JSON
+  # Return a version of this object ready to go into a cookie
   def to_cookie
     self.to_h.to_json
   end
   
-  # is this a state-only search?
+  # Figures out if this is only a state-search
   def only_state?
     return (@state && @city.nil? && @zip.nil?) ? true : false
+  end
+  
+  def everywhere?
+    @everywhere
+  end
+  
+  # Outputs the proper string for the location input field in a search form
+  def form_value
+    if @everywhere
+      return 'everywhere'
+    elsif only_state?
+      return @state.titlecase
+    else
+      return "#{@city.titlecase}, #{@state.titlecase}"
+    end
+  end
+  
+  def type
+    if @everywhere
+      return :everywhere
+    elsif only_state?
+      return :only_state
+    else
+      return :city_state
+    end
   end
   
   private
@@ -59,14 +84,15 @@ class Location
   def parse(obj,options)
     
     # this is already a valid location hash
-    if (ActiveSupport::JSON.decode(obj)).is_a? Hash
-      @zip = obj['zip']
-      @city = obj['city']
-      @state = obj['state']
-      @latitude = obj['latitude']
-      @longitude = obj['longitude']
-      @radius = obj['longitude']
-      @everywhere = obj['everywhere']
+    if (ActiveSupport::JSON.decode(obj)).is_a?(Hash)
+      loc = ActiveSupport::JSON.decode(obj)
+      @zip = loc['city']
+      @city = loc['city']
+      @state = loc['state']
+      @latitude = loc['latitude']
+      @longitude = loc['longitude']
+      @radius = loc['radius']
+      @everywhere = loc['everywhere']
       return
     end
     
@@ -87,7 +113,7 @@ class Location
       if zip
         @zip = zip.zip
         @city = zip.city
-        @state = zip.state
+        @state = State.find_by_abbreviation(zip.state.downcase).name.titlecase
         @latitude = zip.latitude
         @longitude = zip.longitude
         @radius = options[:radius]
@@ -106,7 +132,7 @@ class Location
         center = find_center_point_of(zips)
         # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
         @city = zips[0].city
-        @state = zips[0].state
+        @state = State.find_by_abbreviation(zips[0].state.downcase).name.titlecase
         @latitude = center[:latitude]
         @longitude = center[:longitude]
         @radius = options[:radius]
@@ -120,6 +146,8 @@ class Location
     state = State.find_by_name_or_abbreviation(obj.downcase)
     city = City.find_by_name(obj.downcase)
     
+    # TODO: Add another column to the cities table that lets us look up a city based on a nickname like 'san fran' which is translated into 'san francisco' which then does the normal location lookup
+    
     if state
       @state = state.name
       return
@@ -129,7 +157,7 @@ class Location
         center = find_center_point_of(zips)
         # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
         @city = zips[0].city
-        @state = zips[0].state
+        @state = State.find_by_abbreviation(zips[0].state.downcase).name.titlecase
         @latitude = center[:latitude]
         @longitude = center[:longitude]
         @radius = options[:radius]

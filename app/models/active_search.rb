@@ -48,7 +48,7 @@ class ActiveSearch < Gasohol
     # if there's no specified radius, set to the default in config/gasohol.yml
     if parts[:latitude] && parts[:longitude]
       if parts[:radius].nil? || parts[:radius].blank?
-        parts[:radius] = GASOHOL_CONFIG[:google][:default_radius].to_f
+        parts[:radius] = GASOHOL_CONFIG[:google][:default_radius]
       end
 
       # make sure the radius is floating point number
@@ -62,6 +62,9 @@ class ActiveSearch < Gasohol
       longitude2 = ((parts[:longitude] + (parts[:radius] / (69.1 * Math.cos(parts[:latitude]/57.3)))) * 10000).round.to_f / 10000
 
       query += " inmeta:latitude:#{latitude1}..#{latitude2} inmeta:longitude:#{longitude1}..#{longitude2}"
+    elsif parts[:state]
+      # otherwise there was a state
+      query += " inmeta:state~#{parts[:state]}"
     end
 
 =begin 

@@ -1,6 +1,6 @@
 <% unless @popular_local_searches.empty? %>
   <div id="popular">
-    <h3>Most popular <%= @location['city'] %> searches:</h3>
+    <h3>Most popular <%= @location.form_value %> searches:</h3>
     <ul>
       <% @popular_local_searches.each do |search| %>
         <% unless search.keywords.blank? %>

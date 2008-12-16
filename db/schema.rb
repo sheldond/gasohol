@@ -9,7 +9,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081208204713) do
+ActiveRecord::Schema.define(:version => 20081210231744) do
+
+  create_table "invites", :force => true do |t|
+    t.string   "code"
+    t.integer  "available",    :default => 0
+    t.integer  "used",         :default => 0
+    t.datetime "last_used_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "queries", :force => true do |t|
     t.string   "keywords"

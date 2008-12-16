@@ -1,29 +1,36 @@
+<% if params[:debug] %>
+  <%= debug location %>
+<% end %>
+
 <div id="search_location">
-  <% if location %>
-    Searching near 
-    <% if location.everywhere %>
-      <strong id="loc">everywhere</strong>
-    <% else %>
-      <strong id="loc"><%= "#{location.city}," if location.city %> <%= location.state %></strong> <%= link_to('change', { :action => 'set_location', :location => location.zip }, :id => 'change_location') %>
-    <% end %>
-    <input type="hidden" name="location" id="location" value="<%= "#{location.city}, #{location.state}" %>" />
-    <script type="text/javascript">
-      new Ajax.InPlaceEditor('loc', '<%= url_for(:action => 'set_location', :location => location.zip) %>',
-                              { 
-                                
-                                okText:'Save',
-                                externalControl:'change_location',
-                                ajaxOptions:{
-                                  onSuccess:function(r) {
-                                    $('location').value = r.responseText;
-                                  },
-                                  onFailure:function(r) {
-                                    alert('Please provide a valid zip code to change your location');
-                                  }
-                                }
-                              });
-    </script>
+  Searching
+  <% if location.everywhere? %>
+     <span id="loc"><strong>everywhere</strong></span>
+  <% elsif location.only_state? %>
+    <span id="loc">in <strong><%= location.state.titlecase %></strong></span>
   <% else %>
-    Hmmm... location error.
+    <span id="loc">near <strong><%= "#{location.city.titlecase}, #{location.state.titlecase}" %></strong></span>
   <% end %>
+  <%= link_to('change', { :action => 'set_location', :location => location.zip }, :id => 'change_location') %>
+  <input type="hidden" name="location" id="location" value="<%= location.form_value %>" />
+  <script type="text/javascript">
+    new Ajax.InPlaceEditor('loc', '<%= url_for(:action => 'set_location', :location => location.zip) %>',
+                            { okText:'Save',
+                              externalControl:'change_location',
+                              ajaxOptions:{
+                                onSuccess:function(r) {
+                                  $('location').value = r.responseText.match(/>(.*?)</)[1];
+                                  if(form = $('search_form2')) {
+                                    // don't let user click the edit location field anymore
+                                    $('loc').stopObserving('click'); $('change_location').remove();
+                                    // submit the form and disable the fields
+                                    form.submit(); form.disable();
+                                  }
+                                },
+                                onFailure:function(r) {
+                                  alert('Please provide a valid zip code to change your location');
+                                }
+                              }
+                            });
+  </script>
 </div>

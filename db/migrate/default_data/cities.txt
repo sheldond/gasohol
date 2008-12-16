@@ -1,1 +1,5 @@
 insert into cities (name, state_id) values ('boston',22);
+insert into cities (name, state_id) values ('san diego',5);
+insert into cities (name, state_id) values ('los angeles',5);
+insert into cities (name, state_id) values ('sacramento',5);
+insert into cities (name, state_id) values ('san francisco',5);

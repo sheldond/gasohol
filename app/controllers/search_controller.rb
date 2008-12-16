@@ -6,8 +6,10 @@ class SearchController < ApplicationController
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = true  # do all the related (ajax) searches for each and every result
+  DO_RELATED_SEARCH = false  # do all the related (ajax) searches for each and every result
+  DO_CONTEXT_SEARCH = false  # contextual search on the right
   SHOW_TIMESTAMPS = false   # show timestamps for various processes at the bottom of the page (can show anyway by adding debug=true to URL)
+  DEFAULT_LOCATION = 'San Diego,CA' # default location if geo-coding doesn't work
   
   @@gsa = ActiveSearch.new(GASOHOL_CONFIG[:google]) # instantiate an instance of gasohol (in this case our custom extension of it) as soon as this controller loads the first time
   
@@ -63,64 +65,31 @@ class SearchController < ApplicationController
   end
   
   # (/search/set_location)
-  # If called internally we can pass a string or location object as 'value', otherwise looks at the url for params[:value]
-  # and uses that instead. If passed a string it should be in the form 'city,state', 'state', or 'zip'
+  # If called internally we pass a location object as 'value'. If no object was passed then look for a params[:value] instead.
   def set_location(value=nil)
-    value = value || params[:value]
-    @location = value.is_a?(Hash) ? value : {}  # if the value is already a valid location hash, just set it, this other crap isn't needed
-
-    if value
-      if @location.empty?     # if @location doesn't already contain a valid location Hash object
-        @location = Location.new(value)
+    value ||= params[:value]
+    if value.is_a?(String)
+      begin
+        @location = Location.new(value, { :radius => GASOHOL_CONFIG[:google][:default_radius] })
+         cookies[:location] = { :value => @location.to_cookie, :expires => 1.year.from_now }
+      rescue  # any problems then immediately error out
+        render :text => "Please enter a valid city, state or zip"
+        return
       end
-      # set the cookie
-      cookies[:location] = { :value => @location.to_cookie, :expires => 1.year.from_now }
-    else
-      raise 'No location provided'
     end
-    
-    # render the name of the city,state or an error message if this was called via ajax
+ 
+    # render the name of the location
     if request.xhr?
-      unless @location.empty?
-        if @location.everywhere
-          render :text => "everywhere"
-        elsif @location.only_state?
-          render :text => @location.state.titlecase
-        else
-          render :text => "#{@location.city}, #{@location.state}"
-        end
+      output = "<strong>#{@location.form_value}</strong>"
+      case @location.type
+      when :everywhere
+        render :text => output
+      when :only_state
+        render :text => "in #{output}"
       else
-        render :text => "Please enter a valid city and state or zip"
+        render :text => "near #{output}"
       end
     end
-
-
-=begin    
-    if value
-      if @location.empty?     # if @location doesn't already contain a valid location Hash object
-        zip = find_zip_from_string(value)
-        unless zip.nil?
-          ['zip','city','state','latitude','longitude'].each do |el|
-            val = (el == 'state') ? { 'region' => State.find_by_name_or_abbreviation(zip.state).name.titlecase } : { el => zip.send(el).to_s.titlecase }
-            @location.merge!(val)
-          end
-        end
-      end
-      # set the cookie
-      cookies[:location] = { :value => @location.to_json, :expires => 1.year.from_now }
-    else
-      raise 'No location provided'
-    end
-    
-    # render the name of the city,state or an error message if this was called via ajax
-    if request.xhr?
-      unless @location.empty?
-        render :text => "#{@location['city']}, #{@location['region']}"
-      else
-        render :text => "Please enter a valid city and state or zip"
-      end
-    end
-=end
     
   end
   
@@ -153,9 +122,16 @@ class SearchController < ApplicationController
     @options = {}
     
     # add in the user's location
-    if params[:location]
+    if @location
+      if @location.everywhere
+        nil
+      elsif @location.only_state?
+        @options.merge!({ :state => @location.state })
+      else
+        @options.merge!({ :latitude => @location.latitude, :longitude => @location.longitude, :radius => @location.radius })
+      end
       # zip = find_zip_from_string(params[:location])
-      @options.merge!({ :latitude => @location.latitude, :longitude => @location.longitude })
+      # @options.merge!({ :latitude => @location.latitude, :longitude => @location.longitude })
     end
       
     # put any other URL params into a hash as long as they're not the rails 
@@ -175,52 +151,17 @@ class SearchController < ApplicationController
     
     if params[:location]    # if there's a location in the URL, use that above everything else
       @location = Location.new(params[:location])
-    else
-      if cookies[:location].nil?
-        begin
-          xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
-          @location = Location.new((xml/:location).at('zip').innerHTML)
-        rescue # any kind of error with the request, set to San Diego, CA
-          set_location("San Diego,CA")
-        end
-        
-        # assuming we found a location, set the cookie to it
-        unless @location.empty?
-          set_location(@location)
-        end
-      end
-
-      # if the cookie exists, and we didn't just find the location above, get it from the cookie
-      if cookies[:location] && @location.nil?
-        @location = Location.from_cookie(cookies[:location])
-      end
-    end
-    
-=begin  
-    if cookies[:location].nil?
-      @location = {}
+    elsif cookies[:location]   # if there's a location cookie
+      @location = Location.from_cookie(cookies[:location])
+    else  # otherwise try to geo-locate and either set the cookie to the result or set to a default location
       begin
         xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
-        (xml/:location).each do |loc| 
-          ['zip','city','region','latitude','longitude'].each do |el|
-            @location.merge!({ el => loc.at(el).innerHTML.titlecase })
-          end
-        end
+        @location = Location.new((xml/:location).at('zip').innerHTML, { :radius => GASOHOL_CONFIG[:google][:default_radius] })
       rescue # any kind of error with the request, set to San Diego, CA
-        set_location("San Diego,CA")
+        @location = Location.new(DEFAULT_LOCATION)
       end
-      # assuming we found a location, set the cookie to it
-      unless @location.empty?
-        # cookies[:location] = @location.to_json
-        set_location(@location)
-      end
+      set_location(@location)
     end
-  
-    # if the cookie exists, and we didn't just find the location above, get it from the cookie
-    if cookies[:location] && @location.nil?
-      @location = ActiveSupport::JSON.decode(cookies[:location])
-    end
-=end
 
   end
   
