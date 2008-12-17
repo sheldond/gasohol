@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
   
   def log_out_user
     session[:user] = nil
+    cookies.delete :location
   end
   
   def login_required

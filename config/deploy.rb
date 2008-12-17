@@ -129,4 +129,6 @@ namespace :deploy do
 end
 
 before 'deploy', 'deploy:web:disable'
+before 'deploy:migrations', 'deploy:web:disable'
 after 'deploy', 'deploy:web:enable'
+after 'deploy:migrations', 'deploy:web:enable'

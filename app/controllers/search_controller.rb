@@ -148,7 +148,13 @@ class SearchController < ApplicationController
     if params[:location]    # if there's a location in the URL, use that above everything else
       @location = Location.new(params[:location], { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
     elsif cookies[:location]   # if there's a location cookie
-      @location = Location.from_cookie(cookies[:location], { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
+      begin
+        @location = Location.from_cookie(cookies[:location], { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
+      rescue
+        # TODO: this is here in case the users have an 'old' cookie ... can remove after a couple months (added 12/17/08)
+        @location = Location.new(DEFAULT_LOCATION)
+        set_location(@location)
+      end
     else  # otherwise try to geo-locate and either set the cookie to the result or set to a default location
       begin
         xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
