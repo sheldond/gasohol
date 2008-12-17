@@ -3,6 +3,7 @@ class SessionController < ApplicationController
   layout 'users'
 
   def new
+    log_out_user
     redirect_back if logged_in?
   end
 
