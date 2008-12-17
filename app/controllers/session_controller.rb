@@ -3,7 +3,10 @@ class SessionController < ApplicationController
   layout 'users'
 
   def new
-    log_out_user
+    # TODO: Fix to get rid of old cookies
+    if cookies[:location] && cookies[:location].match(/region/)
+      log_out_user
+    end
     redirect_back if logged_in?
   end
 
