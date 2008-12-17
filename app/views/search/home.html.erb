@@ -23,7 +23,7 @@
     // moreOptions();
   </script>
   
-  <%= render :partial => 'popular_local_searches' %>
+  <%= render :partial => 'popular_local_searches', :locals => { :location_text => @location.form_value } unless @popular_local_searches.empty?%>
   
 </form>
 

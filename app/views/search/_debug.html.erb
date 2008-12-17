@@ -1,18 +1,18 @@
 <table id="debug_output" cellspacing="0>"
-  <% if time %>
+  <% if @time %>
     <tr>
-      <% time.each do |key,value| %>
+      <% @time.each do |key,value| %>
         <td class="label"><%= key %> response time</td> 
         <td><%= (value.to_f * 1000).round %> milliseconds</td>
       <% end %>
     </tr>
     <tr>
       <td class="label">Google Query String</td>
-      <td><%= google[:google][:google_query].gsub(/ /,"<br/>") %></td>
+      <td><%= @google[:google][:google_query].gsub(/ /,"<br/>") %></td>
     </tr>
     <tr>
       <td class="label">Google Search URL</td>
-      <td><%= link_to 'Open GSA result', google[:google][:full_query_path], :target => '_blank' %></td>
+      <td><%= link_to 'Open GSA result', @google[:google][:full_query_path], :target => '_blank' %></td>
     </tr>
     <tr>
       <td class="label">Location</td>

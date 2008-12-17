@@ -3,7 +3,7 @@
 
 <div id="keywords_container">
 	<label for="keywords">Keywords</label>
-	<input type="text" name="q" id="q2" value="<%= params[:q].match(/^(.*?)(inmeta.*)?$/)[1].strip %>" onkeypress="return handleEnter(this.form, event);" />
+	<input type="text" name="q" id="q2" value="<%= google_query_to_keywords params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
 </div>
 
 <div class="column">
@@ -12,22 +12,6 @@
 		<div><label for="start_date">from</label><%= calendar_date_select_tag "start_date", params[:start_date] %></div>
 		<div><label for="end_date">to</label><%= calendar_date_select_tag "end_date", params[:end_date] %></div>
 	</div>
-
-<!--
-	<label for="location">Location</label>
-	<input type="text" name="location" id="location" value="<%= params[:location] %>" class="default" onkeypress="return handleEnter(this.form, event);" />
-
-	<label for="radius">Radius</label>
-	<select name="radius" id="radius">
-	  <option value="any">Anywhere</option>
-		<option value="10">within 10 miles</option>
-		<option value="25">within 25 miles</option>
-		<option value="50">within 50 miles</option>
-		<option value="100">within 100 miles</option>
-		<option value="250">within 250 miles</option>
-		<option value="1000">within 1000 miles</option>
-	</select>
--->
 </div>
 
 <div class="column">
@@ -44,11 +28,6 @@
 	<div id="custom_container" style="display:none">
 		<label for="custom" id="custom_label"></label>
 		<select name="custom" id="custom"></select>
-	</div>
-
-	<div id="results_container" style="display:none;">
-		<input type="checkbox" name="results" id="results" />
-		<label for="results">Include Results/Rankings from previous events?</label>
 	</div>
 </div>
 

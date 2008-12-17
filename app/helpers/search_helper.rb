@@ -27,6 +27,10 @@ module SearchHelper
     
   end
   
+  def google_query_to_keywords(text)
+    h(text.match(/^(.*?)(inmeta.*)?$/)[1].strip)
+  end
+  
   # Create star rating images and surrounding <div> based on a number passed in
   def output_rating(num)
     output = '<div class="rating">'
@@ -41,10 +45,12 @@ module SearchHelper
     result[:meta][:category] && result[:meta][:category] == 'Activities'
   end
   
+  # Determines if the passed result is a training plan
   def training?(result)
     result[:meta][:media_types][0] && result[:meta][:media_types][0].value.match(/Training Plan/)
   end
   
+  # Determines if the passed result is an article
   def article?(result)
     result[:meta][:category] == 'Articles'
   end
@@ -65,7 +71,7 @@ module SearchHelper
     output << params[:custom].titlecase unless !params[:custom] or params[:custom].downcase == ''
     output << params[:location] unless !params[:location] or params[:location] == ''
     output << "within #{params[:radius]} miles" unless !params[:radius] or params[:radius].downcase == 'any'
-    output << "&apos;#{params[:q]}&apos;"
+    output << "#{google_query_to_keywords params[:q]}"
     output.join(' <span>&gt;</span> ')
   end
   

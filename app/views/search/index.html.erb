@@ -1,8 +1,3 @@
-<% if SearchController::DO_CONTEXT_SEARCH %>
-  <%# have to put the related context stuff here if we want these results to come back before the regular related searches for each and every event %>
-  <% @ajax += (ajax_for_context_related(:articles) + ajax_for_context_related(:discussions) + ajax_for_context_related(:training)) %>
-<% end %>
-
 <table id="search_table">
   <tr>
     <td id="refine">
@@ -48,7 +43,10 @@
     </td>
     <td id="context">
       <div style="overflow: hidden; width: 280px; visibility: hidden; height: 0pt;"></div>
-      <%= render :partial => 'context' %>
+      <% if SearchController::DO_CONTEXT_SEARCH %>
+        <%= render :partial => 'context' %>
+        <% @ajax = ajax_for_context_related(:articles) + ajax_for_context_related(:discussions) + ajax_for_context_related(:training) + @ajax %>
+      <% end %>
     </td>
   </tr>
 </table>
@@ -56,5 +54,5 @@
 <%= "<script type=\"text/javascript\">#{@ajax}</script>" %>
 
 <% if SearchController::DEBUG or params[:debug] %>
-  <%= render :partial => 'debug', :locals => { :time => @time, :google => @google } %>
+  <%= render :partial => 'debug' %>
 <% end %>

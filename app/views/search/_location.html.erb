@@ -10,9 +10,20 @@
   <%= link_to('change', { :action => 'set_location', :location => location.zip }, :id => 'change_location') %>
   <input type="hidden" name="location" id="location" value="<%= location.form_value %>" />
   <script type="text/javascript">
+    // extend the InPlaceEditor control to include a custom callback fired after the form is put on the page
+    Ajax.InPlaceEditor.prototype.__enterEditMode = Ajax.InPlaceEditor.prototype.enterEditMode;
+    Object.extend(Ajax.InPlaceEditor.prototype, {
+      enterEditMode:function(e) {
+        this.__enterEditMode(e);
+        this.triggerCallback('onFormReady',this._form);
+      }
+    });
     new Ajax.InPlaceEditor('loc', '<%= url_for(:action => 'set_location', :location => location.zip) %>',
                             { okText:'Save',
                               externalControl:'change_location',
+                              onFormReady: function(obj,form) {
+                                form.getInputs().first().value = '';
+                              },
                               ajaxOptions:{
                                 onSuccess:function(r) {
                                   $('location').value = r.responseText.match(/>(.*?)</)[1];

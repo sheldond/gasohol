@@ -5,28 +5,13 @@
       <%= render :partial => 'event_search' %>
     </form>
   </div>
-  
-  <%= render :partial => 'popular_local_searches' %>
-  
-  <%= render :partial => 'related_searches' unless @query == '' %>
-  
+  <%= render :partial => 'popular_local_searches' unless @popular_local_searches.empty? %>
+  <%= render :partial => 'related_searches' unless @query == '' || @related_searches.empty? %>
 </div>
 
 <script type="text/javascript">
-  // this can run as soon as the search options on the left exist on the page
-  // if we tie this to an onLoad event then it waits until flickr, youtube and twitter
-  // respond, and in the meantime the search is just sitting there on the left in
-  // a crappy state
-  
-  // which search to show
-  // (url.p && url.p == '1') ? switchSearch('activity') : switchSearch('keyword');
-  
-  // was there already a radius, sport or type in the query string?
-  // url.radius ? selectOption('radius',url.radius) : null;
-  url.sport ? selectOption('sport',url.sport) : null;
-  s.changeSport();
-  url.type ? selectOption('type',url.type) : null;
-  s.changeType();
+  url.sport ? selectOption('sport',url.sport) : null; s.changeSport();
+  url.type ? selectOption('type',url.type) : null; s.changeType();
   url.custom ? selectOption('custom',url.custom.replace(/\+/g,' ')) : null;
 </script>
 
