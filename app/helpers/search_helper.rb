@@ -194,7 +194,7 @@ END_OF_AJAX
     new Ajax.Request( "#{ajax}",
                       { evalscripts:true,
                         onSuccess:function(r) {
-                          total = r.responseText.evalJSON().results.length
+                          total = r.responseText.evalJSON().google.total_results
                           if(total > 0) {
                               $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
                             }
