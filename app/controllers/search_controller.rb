@@ -28,6 +28,7 @@ class SearchController < ApplicationController
     params[:q] ||= ''
     
     @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
+    @options.merge!({ :requiredfields => '-channel:Shooting' }) # exclude shooting results
 
     @time = {}
     @time[:google] = Time.now

@@ -49,7 +49,8 @@ class Gasohol
                       :client => 'default', 
                       :output => 'xml_no_dtd', 
                       :getfields => '*',
-                      :sort => '' }
+                      :sort => '',
+                      :requiredfields => '' }
   ALLOWED_PARAMS = DEFAULT_OPTIONS.keys
   DEFAULT_OUTPUT = {  :results => [], 
                       :featured => [], 
