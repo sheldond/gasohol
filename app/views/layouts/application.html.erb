@@ -4,6 +4,7 @@
 	<title>Active.com - Search</title>
 	
 	<%= stylesheet_link_tag 'reset','fonts','search', "skins/#{@skin}.css" %>
+	<%= stylesheet_link_tag 'debug' if SearchController::DEBUG || params[:debug] %>
 	<%= javascript_include_tag 'prototype','effects','search','controls','application' %>
 	<script src="/javascripts/calendar_date_select/calendar_date_select.js?1207035522" type="text/javascript"></script>
   <script src="/javascripts/calendar_date_select/format_american.js?1207035522" type="text/javascript"></script>

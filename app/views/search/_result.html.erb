@@ -73,27 +73,16 @@
               <li id="result_<%= result[:num] %>_links_training"></li>
             </ul>
             <img src="/images/indicator.gif" alt="Loading..." id="result_<%= result[:num] %>_indicator" />
+            <script type="text/javascript">
+              $('result_<%= result[:num] %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
+              $('result_<%= result[:num] %>_links_watching').update(Math.round(Math.random()*40)+' watching');
+            </script>
+            <% @ajax += ajax_for_result_related(result, :discussions) %>
+            <% @ajax += ajax_for_result_related(result, :articles) %>
+            <% @ajax += ajax_for_result_related(result, :training) if result[:meta][:media_types].find { |mt| mt.value =~ /\\/ } %>
           <% end %>
-          
         </div>
-        
-        <% if SearchController::DO_RELATED_SEARCH %>
-          <script type="text/javascript">
-            // generate a random number of registrants (turn off the clickable link for now)
-            $('result_<%= result[:num] %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
-            $('result_<%= result[:num] %>_links_watching').update(Math.round(Math.random()*40)+' watching');
-            
-            <%= ajax_for_result_related(result, :discussions) %>
-            <%= ajax_for_result_related(result, :articles) %>
-            <% if result[:meta][:media_types].find { |mt| mt.value =~ /\\/ } %>
-              <%= ajax_for_result_related(result, :training) %>
-            <% end %>
-          </script>
-        <% end %>
       <% end %>
-
     </div>
-    
   <% end %>
-  
 <% end %>

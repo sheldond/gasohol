@@ -9,7 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081210231744) do
+ActiveRecord::Schema.define(:version => 20081215212334) do
+
+  create_table "cities", :force => true do |t|
+    t.string  "name"
+    t.integer "state_id"
+  end
+
+  add_index "cities", ["name"], :name => "index_cities_on_name", :unique => true
 
   create_table "invites", :force => true do |t|
     t.string   "code"

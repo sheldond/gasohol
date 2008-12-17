@@ -246,7 +246,7 @@ strong {
 		}
 	
 	#activity_search {
-		overflow: auto;
+		overflow: hidden;
 	}
 	
 		#activity_search label {
@@ -287,6 +287,10 @@ strong {
 			#activity_search #search_location #change_location {
 				font-size: 85%;
 			}
+			
+		#activity_search #debug_options #num {
+			width: 2em;
+		}
 
 	#main {
 		padding: 0 0 1em;

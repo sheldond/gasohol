@@ -1,6 +1,7 @@
 # Any time we reference 'location' it should be an instance of this class.
 # 'location' refers to an area to search. That can be within the radius of a zip code, an entire state
-# or anything (the entire country)
+# or anywhere (the entire country)
+
 class Location
   
   include Exceptions
@@ -23,7 +24,8 @@ class Location
     end
   end
   
-  # Alias 'new' as 'from_cookie' if we are creating a new Location from a cookie (just looks nicer when called)
+  # Alias 'new' as 'from_cookie' if we are creating a new Location from a cookie 
+  # (looks more syntactically correct when called in the context of creating a Location object from a cookie)
   def self.from_cookie(obj,options={})
     new(obj,options)
   end
@@ -53,25 +55,36 @@ class Location
     return (@state && @city.nil? && @zip.nil?) ? true : false
   end
   
+  # Does this location represent everywhere?
   def everywhere?
-    @everywhere
+    return self.type == :everywhere ? true : false
+  end
+  
+  def only_state?
+    return self.type == :only_state ? true : false
+  end
+  
+  def city_state?
+    return self.type == :city_state ? true : false
   end
   
   # Outputs the proper string for the location input field in a search form
   def form_value
-    if @everywhere
+    case type
+    when :everywhere
       return 'everywhere'
-    elsif only_state?
+    when :only_state
       return @state.titlecase
     else
       return "#{@city.titlecase}, #{@state.titlecase}"
     end
   end
   
+  # Tells us what kind of Location this is
   def type
     if @everywhere
       return :everywhere
-    elsif only_state?
+    elsif @state && @zip.nil? && @city.nil?
       return :only_state
     else
       return :city_state
@@ -116,7 +129,7 @@ class Location
         @state = State.find_by_abbreviation(zip.state.downcase).name.titlecase
         @latitude = zip.latitude
         @longitude = zip.longitude
-        @radius = options[:radius]
+        @radius = options[:radius].to_i
         return
       else
         raise InvalidZip, "Zip code '#{obj}' was not found."
@@ -135,7 +148,7 @@ class Location
         @state = State.find_by_abbreviation(zips[0].state.downcase).name.titlecase
         @latitude = center[:latitude]
         @longitude = center[:longitude]
-        @radius = options[:radius]
+        @radius = options[:radius].to_i
         return
       else
         raise InvalidCityState, "No location was found matching '#{obj}'"
@@ -160,7 +173,7 @@ class Location
         @state = State.find_by_abbreviation(zips[0].state.downcase).name.titlecase
         @latitude = center[:latitude]
         @longitude = center[:longitude]
-        @radius = options[:radius]
+        @radius = options[:radius].to_i
         return
       end
     else

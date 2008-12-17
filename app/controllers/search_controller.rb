@@ -1,14 +1,14 @@
 class SearchController < ApplicationController
   
   before_filter :login_required, :except => [:location] # this page is locked down, only accessible if logged in
-  before_filter :get_location, :only => [:index, :home, :google]  # get location from user cookie
+  before_filter :get_location, :only => [:index, :home]  # get location from user cookie
   before_filter :get_options_from_query, :only => [:index, :google, :location] # format the query automatically for each request
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = false  # do all the related (ajax) searches for each and every result
-  DO_CONTEXT_SEARCH = false  # contextual search on the right
-  SHOW_TIMESTAMPS = false   # show timestamps for various processes at the bottom of the page (can show anyway by adding debug=true to URL)
+  DO_RELATED_SEARCH = true  # do all the related (ajax) searches for each and every result
+  DO_CONTEXT_SEARCH = true  # contextual search on the right
+  DEBUG = false   # show timestamps for various processes at the bottom of the page (can show anyway by adding debug=true to URL)
   DEFAULT_LOCATION = 'San Diego,CA' # default location if geo-coding doesn't work
   
   @@gsa = ActiveSearch.new(GASOHOL_CONFIG[:google]) # instantiate an instance of gasohol (in this case our custom extension of it) as soon as this controller loads the first time
@@ -23,7 +23,7 @@ class SearchController < ApplicationController
   
   # (/search or /search/index)
   # This is where all the good stuff happens. Send the Google class the query (@query) and all the URL
-  # variables (@options) and we'll ask the GSA and format the results into a simpler format that we use in our views.
+  # variables (@options) and we'll format the results into a simpler format that we use in our views.
   def index
     params[:q] ||= ''
     
@@ -39,6 +39,8 @@ class SearchController < ApplicationController
     @related_searches = Query.find_related_by_location(@query,@location,5)  # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
     
+    @ajax = ''
+    
     render :layout => 'application'
   end
   
@@ -52,7 +54,7 @@ class SearchController < ApplicationController
   end
   
   # (/search/location)
-  # API for getting location data based on a zip code and optional radius. Tack on .xml, .json, .yaml for various formats.
+  # API for access to the zips table. Takes a zip code and optional radius. Tack on .xml, .json, .yaml for various formats.
   # For the query string variables, 'zip' is required and 'radius' is optional.
   def location
     @result = []
@@ -123,15 +125,14 @@ class SearchController < ApplicationController
     
     # add in the user's location
     if @location
-      if @location.everywhere
+      case @location.type
+      when :everywhere
         nil
-      elsif @location.only_state?
+      when :only_state
         @options.merge!({ :state => @location.state })
       else
         @options.merge!({ :latitude => @location.latitude, :longitude => @location.longitude, :radius => @location.radius })
       end
-      # zip = find_zip_from_string(params[:location])
-      # @options.merge!({ :latitude => @location.latitude, :longitude => @location.longitude })
     end
       
     # put any other URL params into a hash as long as they're not the rails 
@@ -141,22 +142,17 @@ class SearchController < ApplicationController
     end
   end
   
-  # Slightly confusing...due to the way Rails handles cookies, you can't set one and read it in the same
-  # request. cookie[] represents the incoming cookies FROM the browser, cookie[]= sets the outgoing
-  # cookies TO the browser. So, to get around this weird fact, if the cookie doesn't exist we create
-  # it but don't rely on it existing to read back in -- we just set the @location variable directly 
-  # and use it for this request. Future requests will see that the cookie exists, and that we haven't 
-  # already set @location, and @location = cookie[:location]
+  # Get the location from either the query string, cookies or try to geo-locate
   def get_location
     
     if params[:location]    # if there's a location in the URL, use that above everything else
-      @location = Location.new(params[:location])
+      @location = Location.new(params[:location], { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
     elsif cookies[:location]   # if there's a location cookie
-      @location = Location.from_cookie(cookies[:location])
+      @location = Location.from_cookie(cookies[:location], { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
     else  # otherwise try to geo-locate and either set the cookie to the result or set to a default location
       begin
         xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
-        @location = Location.new((xml/:location).at('zip').innerHTML, { :radius => GASOHOL_CONFIG[:google][:default_radius] })
+        @location = Location.new((xml/:location).at('zip').innerHTML, { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
       rescue # any kind of error with the request, set to San Diego, CA
         @location = Location.new(DEFAULT_LOCATION)
       end
@@ -165,6 +161,7 @@ class SearchController < ApplicationController
 
   end
   
+  # Checks if a skin is either in the query_string or a cookie
   def check_skin
     @skin = 'default'
     if params[:skin]

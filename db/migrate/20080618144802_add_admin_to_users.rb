@@ -4,7 +4,7 @@ class AddAdminToUsers < ActiveRecord::Migration
     rename_column :users, 'banned', 'is_banned'
     
     user = User.find(1)
-    user.update_attributes(:is_admin => true)
+    user.update_attributes({:is_admin => true})
   end
 
   def self.down
