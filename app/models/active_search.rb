@@ -9,6 +9,9 @@ class ActiveSearch < Gasohol
   # 'parts' is just the default Rails params hash (minus Rails-specific params like :controller or :action)
   # 'query' looks like '?q=keywords' when we start. We append on to this with the parts of 'parts' that we care about.
   def googlize_params_into_query(parts,query)
+    
+    # exclude shooting results
+    query += ' -inmeta:channel=Shooting'
 
     # are we searching just a single url?
     if parts[:inurl] and !parts[:inurl].blank?

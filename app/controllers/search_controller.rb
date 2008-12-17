@@ -28,7 +28,6 @@ class SearchController < ApplicationController
     params[:q] ||= ''
     
     @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
-    @options.merge!({ :requiredfields => '-channel:Shooting' }) # exclude shooting results
 
     @time = {}
     @time[:google] = Time.now
@@ -125,7 +124,7 @@ class SearchController < ApplicationController
     @options = {}
     
     # add in the user's location
-    if @location
+    if params[:location]
       case @location.type
       when :everywhere
         nil
