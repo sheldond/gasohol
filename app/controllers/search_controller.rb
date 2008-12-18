@@ -8,7 +8,7 @@ class SearchController < ApplicationController
   
   DO_RELATED_SEARCH = true  # do all the related (ajax) searches for each and every result
   DO_CONTEXT_SEARCH = true  # contextual search on the right
-  DEBUG = false   # show timestamps for various processes at the bottom of the page (can show anyway by adding debug=true to URL)
+  DEBUG = false   # show debugging at the bottom of the page (can show anyway by adding debug=true to URL)
   DEFAULT_LOCATION = 'San Diego,CA' # default location if geo-coding doesn't work
   
   @@gsa = ActiveSearch.new(GASOHOL_CONFIG[:google]) # instantiate an instance of gasohol (in this case our custom extension of it) as soon as this controller loads the first time
@@ -74,9 +74,10 @@ class SearchController < ApplicationController
       begin
         @location = Location.new(value, { :radius => GASOHOL_CONFIG[:google][:default_radius] })
          cookies[:location] = { :value => @location.to_cookie, :expires => 1.year.from_now }
-      rescue  # any problems then immediately error out
+      rescue Exceptions::LocationError::InvalidZip
+        render :text => "Could not find zip - try city,state?"
+      rescue Exceptions::LocationError::InvalidLocation
         render :text => "Please enter a valid city, state or zip"
-        return
       end
     end
  

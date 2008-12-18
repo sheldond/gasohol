@@ -38,6 +38,8 @@ require 'core_extensions'
 
 class Gasohol
   
+  include Exceptions::GasoholError
+  
   attr_reader :config
   
   #URL = GASOHOL_CONFIG['google']['url']
@@ -113,12 +115,12 @@ class Gasohol
       @config.merge!(config)
       RAILS_DEFAULT_LOGGER.info("\n\n@config=\n#{@config.inspect}")
     else
-      raise 'Missing config - you must pass some configuration options to tell gasohol how to access your GSA. See Gasohol::initialize for configuration options'
+      raise MissingConfig, 'Missing config - you must pass some configuration options to tell gasohol how to access your GSA. See Gasohol::initialize for configuration options'
     end
     
     # make sure we have the minimum info we need to make a request
     if @config[:url].empty?
-      raise 'Missing GSA URL - you must provide the URL to your GSA, ie: http://127.0.0.1/search'
+      raise MissingURL, 'Missing GSA URL - you must provide the URL to your GSA, ie: http://127.0.0.1/search'
     end
     # @@options = DEFAULT_OPTIONS.merge(options)
   end
@@ -227,7 +229,6 @@ class Gasohol
     options.each do |option|
       if ALLOWED_PARAMS.include? option.first
         output += "&#{CGI::escape(option.first.to_s)}=#{CGI::escape(option.last.to_s)}"
-        # output += "&#{option.first.to_s}=#{option.last.to_s}"
       end
     end
     output

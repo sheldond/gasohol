@@ -4,7 +4,7 @@
 
 class Location
   
-  include Exceptions
+  include Exceptions::LocationError
   
   DEFAULT_OPTIONS = { :radius => 50 }
   ANYWHERE_PHRASES = ['anywhere','everywhere','any','us','usa','united states']
@@ -155,16 +155,17 @@ class Location
       end
     end
     
-    # if we got this far then this is plain text and either a city or state name
-    state = State.find_by_name_or_abbreviation(obj.downcase)
-    city = City.find_by_name(obj.downcase)
-    
+    # this is plain text, is it a state?
     # TODO: Add another column to the cities table that lets us look up a city based on a nickname like 'san fran' which is translated into 'san francisco' which then does the normal location lookup
-    
+    state = State.find_by_name_or_abbreviation(obj.downcase)
     if state
       @state = state.name
       return
-    elsif city
+    end
+    
+    # final check, is this a city?
+    city = City.find_by_name(obj.downcase)
+    if city
       zips = Zip.find_all_by_city_and_state(city.name.titlecase, city.state.abbreviation.upcase)
       if zips
         center = find_center_point_of(zips)
