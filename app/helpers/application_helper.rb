@@ -1,14 +1,17 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  # Shorter way to call CGI::unescapeHTML
   def un(text) 
     CGI::unescapeHTML(text)
   end
   
+  # Turns a string into a URL part, ie. I love url-encoding => i_love_url_encoding
   def urlize(text)
     text.downcase.gsub(/[^0-9a-z_]/,'_').gsub(/_+/,'_')
   end
   
+  # Is the currently logged in user an administrator?
   def is_admin?
     @current_user and @current_user.is_admin ? true : false
   end

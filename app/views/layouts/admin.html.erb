@@ -2,11 +2,15 @@
 <html>
 <head>	
 	<title>Active.com - Search</title>
-	<%= stylesheet_link_tag 'reset','fonts','user' %>
+	<%= stylesheet_link_tag 'reset','fonts','admin' %>
 	<%= javascript_include_tag 'prototype','effects' %>
 </head>
 
 <body>
+
+  <% unless params[:controller] == 'admin' %>
+    <div id="back"><%= link_to '&laquo; Back to Admin Home', :controller => 'admin' %></div>
+  <% end %>
 
   <div id="body">
     <% if flash[:notice] %><div id="notice"><%= flash[:notice] %></div><% end %>

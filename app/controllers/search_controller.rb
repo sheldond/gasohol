@@ -10,9 +10,7 @@ class SearchController < ApplicationController
   DO_CONTEXT_SEARCH = false  # contextual search on the right
   DEBUG = false   # show debugging at the bottom of the page (can show anyway by adding debug=true to URL)
   DEFAULT_LOCATION = 'San Diego,CA' # default location if geo-coding doesn't work
-  
-  @@gsa = ActiveSearch.new(GASOHOL_CONFIG[:google]) # instantiate an instance of gasohol (in this case our custom extension of it) as soon as this controller loads the first time
-  
+    
   # (/ or /search/home) 
   # homepage that just shows a search box and popular searches
   def home
@@ -122,9 +120,9 @@ class SearchController < ApplicationController
   def do_google
     # TODO: some way to get the query recorded here -- but would run for all related searches as well
     # Maybe a flag you pass, defaulted to true, telling the system to record the query to the database
-    
+    ActiveSearch.new(GASOHOL_CONFIG[:google]).search(@query, @options)
     # Query.record(@query,@options)
-    @@gsa.search(@query, @options)
+    #gsa.search(@query, @options)
   end
 
 

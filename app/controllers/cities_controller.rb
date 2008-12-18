@@ -1,6 +1,8 @@
 class CitiesController < ApplicationController
   
   before_filter :login_required, :admin_required
+  layout 'admin'
+  
   # GET /cities
   # GET /cities.xml
   def index

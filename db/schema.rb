@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081215212334) do
+ActiveRecord::Schema.define(:version => 20081218054842) do
 
   create_table "cities", :force => true do |t|
     t.string  "name"
@@ -26,6 +26,20 @@ ActiveRecord::Schema.define(:version => 20081215212334) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "overrides", :force => true do |t|
+    t.string   "keywords"
+    t.string   "location"
+    t.integer  "radius"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string   "sport"
+    t.string   "type"
+    t.string   "custom"
+    t.string   "url"
+  end
+
+  add_index "overrides", ["keywords"], :name => "index_overrides_on_keywords", :unique => true
 
   create_table "queries", :force => true do |t|
     t.string   "keywords"

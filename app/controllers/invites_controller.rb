@@ -1,6 +1,7 @@
 class InvitesController < ApplicationController
   
   before_filter :login_required, :admin_required
+  layout 'admin'
   
   def index
     @invites = Invite.find(:all)

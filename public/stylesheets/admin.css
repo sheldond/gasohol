@@ -1,0 +1,58 @@
+body {
+	font-family: Lucida Grande, Helvetica, Arial, sans-serif;
+	padding: 1em;
+	}
+	
+a {
+	color: #003e7e;
+}
+
+a:hover {
+	color: #000000;
+	text-decoration: none;
+}
+
+strong {
+	font-weight: bold;
+}
+
+h1 {
+	font-size: 174%;
+}
+
+#back {
+	margin: 0 0 1em;
+}
+
+#notice, #error {
+	padding: 1em;
+	color: #ffffff;
+	text-align: center;
+	width: 29em;
+	margin: 0 auto;
+	font-size: 116%;
+}
+
+#notice {
+	background-color: #009900;
+}
+
+#error {
+	background-color: #990000;
+}
+	
+
+table#list {
+}
+
+table td {
+	border-bottom: 1px solid #cccccc;
+	padding: .2em .5em;
+}
+
+table th {
+	border-bottom: 3px double #aaaaaa;
+	font-weight: bold;
+	padding: .2em .5em;
+	color: #999999;
+}

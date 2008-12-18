@@ -21,7 +21,7 @@
       </div>
       <ul id="logged_in_options">
         <li><%= link_to 'Logout', logout_path %></li>
-        <li><%= link_to('Admin', users_path) if is_admin? %></li>
+        <li><%= link_to('Admin', :controller => 'admin') if is_admin? %></li>
       </ul>
     </div>
     <img src="/images/beta_notice.png" alt="Remember, it's a beta!" id="beta_notice" />

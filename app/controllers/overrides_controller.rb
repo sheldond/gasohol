@@ -1,4 +1,8 @@
 class OverridesController < ApplicationController
+  
+  before_filter :login_required, :admin_required
+  layout 'admin'
+  
   # GET /overrides
   # GET /overrides.xml
   def index
