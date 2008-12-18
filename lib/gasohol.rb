@@ -50,7 +50,8 @@ class Gasohol
                       :output => 'xml_no_dtd', 
                       :getfields => '*',
                       :sort => '',
-                      :requiredfields => '' }
+                      :requiredfields => '',
+                      :partialfields => '' }
   ALLOWED_PARAMS = DEFAULT_OPTIONS.keys
   DEFAULT_OUTPUT = {  :results => [], 
                       :featured => [], 
@@ -140,6 +141,8 @@ class Gasohol
     # the full path to google including the options and hostname of the GSA (makes a easily clickable link for debugging)
     output[:google][:full_query_path] = query_path(output[:google][:google_query],options)
   
+    RAILS_DEFAULT_LOGGER.info("\n\noutput[:google][:full_query_path]=\n#{output[:google][:full_query_path]}")
+  
     begin
       # do the query and save the xml
       xml = Hpricot(open(output[:google][:full_query_path]))
@@ -224,6 +227,7 @@ class Gasohol
     options.each do |option|
       if ALLOWED_PARAMS.include? option.first
         output += "&#{CGI::escape(option.first.to_s)}=#{CGI::escape(option.last.to_s)}"
+        # output += "&#{option.first.to_s}=#{option.last.to_s}"
       end
     end
     output

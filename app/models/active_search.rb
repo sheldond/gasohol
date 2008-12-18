@@ -70,56 +70,6 @@ class ActiveSearch < Gasohol
       query += " inmeta:state~#{parts[:state]}"
     end
 
-=begin 
-    # location based on city,state or zip
-    if parts[:location] and !parts[:location].blank?
-      output = { :city => '', :state => '', :zip => ''}
-      # take the location and split on commas, removing extra whitespace and put into a new array
-      location_parts = parts[:location].split(',').collect { |part| part.strip }
-      # is there more than one part to the location?
-      if location_parts.length > 1
-
-        parts[:city] = location_parts.first
-        if STATES.has_key? location_parts.last.downcase
-          parts[:state] = STATES[location_parts.last.downcase]   # user entered abbreviation, replace with full state name
-        else
-          parts[:state] = location_parts.last                    # already had full state name
-        end
-
-      elsif parts[:location].to_i > 0    
-        if parts[:radius].downcase != 'any'                     # zip code, and there's a radius          
-          output[:zip] = Zip.find_within_radius(parts[:location],parts[:radius]).collect do |zip|
-            zip[:zip]
-          end
-        end
-      elsif STATES.has_value? parts[:location].downcase
-        output[:state] = parts[:location]                       # user entered full state only
-      elsif STATES.has_key? parts[:location].downcase
-        output[:state] = STATES[parts[:location].downcase]      # user entered state abbreviation
-      else
-        output[:city] = parts[:location]                        # user entered something we don't recognize, assume it's a city
-      end
-
-      # put city/state/zip into query string
-      output.each do |key,value|
-        if key == :zip and !value.blank?
-          # zips have special formatting -- looks like: inmeta:zip~12345 OR inmeta:zip~67890
-          value.each_with_index do |val,index|
-            query += " inmeta:zip=#{val}"
-            unless index == value.length-1
-              query += " OR"
-            end
-          end
-        else
-          unless value.blank?
-            query += " inmeta:#{key.to_s}~#{value}"
-          end
-        end
-      end
-
-    end
-=end
-
     return query
   end
   

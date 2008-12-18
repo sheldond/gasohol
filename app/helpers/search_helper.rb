@@ -132,9 +132,10 @@ module SearchHelper
       unless options[:q]
         # add on inmeta values and OR them together so we get training plans for all media types, not just the first or last
         result[:meta][:media_types].each_with_index do |mt,i|
+          parts[:partialfields] ||= ''
           if mt.value.match(/\\/)
-            parts[:q] += "inmeta:mediaType~#{mt.value.split('\\').last}" if mt.value.match(/\\/)
-            parts[:q] += ' OR ' if result[:meta][:media_types].length-1 != i
+            parts[:partialfields] += "mediaType:#{mt.value.split('\\').last}"
+            parts[:partialfields] += '|' if result[:meta][:media_types].length-1 != i
           end
         end
       end
@@ -148,8 +149,7 @@ module SearchHelper
     end
     
     url = path + '?' + parts.to_query
-    return url.gsub(/%2B/,'+')  # to_query escapes our pluses into %2B so we need to change them back)
-  
+    
   end
   
   # Outputs the javascript for an ajax call to get related contextual links (currently shown in the right column)
