@@ -29,11 +29,10 @@ class SearchController < ApplicationController
     
     @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
 
-    # Sometimes we want to override the user's default settings if they did a simple keyword search
-    # but we think we can get better results by knowing what they really want
-    if (@options[:sport].nil? || @options[:sport] == 'Any') && (@options[:type].nil? || @options[:type] == 'Any') && @options[:custom].nil?
-      @override = Override.find_by_keywords(@query)
-      if @override
+    # Sometimes we want to override the user's filter settings if they did a simple keyword search
+    # but we think we can get better results by injecting some extra pizzaz into the query to the GSA
+    if simple_search?(@options)
+      if @override = Override.find_by_keywords(@query)
         @options.merge!(@override.to_options)
       end
     end
@@ -85,8 +84,10 @@ class SearchController < ApplicationController
          cookies[:location] = { :value => @location.to_cookie, :expires => 1.year.from_now }
       rescue Exceptions::LocationError::InvalidZip
         render :text => "Could not find zip - try city,state?"
-      rescue Exceptions::LocationError::InvalidLocation
+        return
+      rescue Exceptions::LocationError::InvalidLocation, Exceptions::LocationError::InvalidCityState
         render :text => "Please enter a valid city, state or zip"
+        return
       end
     end
  
@@ -186,6 +187,11 @@ class SearchController < ApplicationController
     elsif cookies[:skin]
       @skin = cookies[:skin]
     end
+  end
+  
+  # Determines whether this is search that uses only keywords
+  def simple_search?(options)
+    (options[:sport].nil? || options[:sport].downcase == 'any') && (options[:type].nil? || options[:type].downcase == 'any') && (options[:custom].nil? || options[:custom].downcase == 'any')
   end
   
 end

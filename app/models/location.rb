@@ -122,8 +122,7 @@ class Location
     
     # zip code
     if obj.to_i > 0
-      zip = Zip.find_by_zip(obj)
-      if zip
+      if zip = Zip.find_by_zip(obj)
         @zip = zip.zip
         @city = zip.city
         @state = State.find_by_abbreviation(zip.state.downcase).name.titlecase
@@ -139,17 +138,19 @@ class Location
     # city or state or city,state
     if obj.split(',').length > 1   # in the form of city,state
       city,state = obj.split(',').each { |part| part.strip! }
-      state = State.find_by_name_or_abbreviation(state)
-      zips = Zip.find_all_by_city_and_state(city.titlecase, state.abbreviation.upcase)
-      if zips
-        center = find_center_point_of(zips)
-        # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
-        @city = zips[0].city
-        @state = State.find_by_abbreviation(zips[0].state.downcase).name.titlecase
-        @latitude = center[:latitude]
-        @longitude = center[:longitude]
-        @radius = options[:radius].to_i
-        return
+      if state = State.find_by_name_or_abbreviation(state) 
+        if zips = Zip.find_all_by_city_and_state(city.titlecase, state.abbreviation.upcase)
+          center = find_center_point_of(zips)
+          # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
+          @city = zips[0].city
+          @state = State.find_by_abbreviation(zips[0].state.downcase).name.titlecase
+          @latitude = center[:latitude]
+          @longitude = center[:longitude]
+          @radius = options[:radius].to_i
+          return
+        else
+          raise InvalidCityState, "No location was found matching '#{obj}'"
+        end
       else
         raise InvalidCityState, "No location was found matching '#{obj}'"
       end
@@ -157,17 +158,14 @@ class Location
     
     # this is plain text, is it a state?
     # TODO: Add another column to the cities table that lets us look up a city based on a nickname like 'san fran' which is translated into 'san francisco' which then does the normal location lookup
-    state = State.find_by_name_or_abbreviation(obj.downcase)
-    if state
+    if state = State.find_by_name_or_abbreviation(obj.downcase)
       @state = state.name
       return
     end
     
     # final check, is this a city?
-    city = City.find_by_name(obj.downcase)
-    if city
-      zips = Zip.find_all_by_city_and_state(city.name.titlecase, city.state.abbreviation.upcase)
-      if zips
+    if city = City.find_by_name(obj.downcase)
+      if zips = Zip.find_all_by_city_and_state(city.name.titlecase, city.state.abbreviation.upcase)
         center = find_center_point_of(zips)
         # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
         @city = zips[0].city
