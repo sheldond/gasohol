@@ -1,0 +1,36 @@
+<h1>Listing overrides</h1>
+
+<table>
+  <tr>
+    <th>Keywords</th>
+    <th>Location</th>
+    <th>Radius</th>
+    <th>Start date</th>
+    <th>End date</th>
+    <th>Sport</th>
+    <th>Type</th>
+    <th>Custom</th>
+    <th>Url</th>
+  </tr>
+
+<% for override in @overrides %>
+  <tr>
+    <td><%=h override.keywords %></td>
+    <td><%=h override.location %></td>
+    <td><%=h override.radius %></td>
+    <td><%=h override.start_date %></td>
+    <td><%=h override.end_date %></td>
+    <td><%=h override.sport %></td>
+    <td><%=h override.type %></td>
+    <td><%=h override.custom %></td>
+    <td><%=h override.url %></td>
+    <td><%= link_to 'Show', override %></td>
+    <td><%= link_to 'Edit', edit_override_path(override) %></td>
+    <td><%= link_to 'Destroy', override, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New override', new_override_path %>

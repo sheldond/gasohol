@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  keywords: MyString
+  location: MyString
+  radius: 1
+  start_date: 2008-12-17 21:48:42
+  end_date: 2008-12-17 21:48:42
+  sport: MyString
+  type: MyString
+  custom: MyString
+  url: MyString
+
+two:
+  keywords: MyString
+  location: MyString
+  radius: 1
+  start_date: 2008-12-17 21:48:42
+  end_date: 2008-12-17 21:48:42
+  sport: MyString
+  type: MyString
+  custom: MyString
+  url: MyString

@@ -23,5 +23,15 @@
         <% end %>
       </td>
     </tr>
+    <tr>
+      <td class="label">@options</td>
+      <td><%= @options.inspect %></td>
+    </tr>
+    <% if @override %>
+      <tr>
+        <td class="label">@override</td>
+        <td><%= debug @override %></td>
+      </tr>
+    <% end %>
   <% end %>
 </table>

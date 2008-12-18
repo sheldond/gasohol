@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :cities
+
+  map.resources :overrides
+
   map.resources :invites
 
   map.resources :users

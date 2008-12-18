@@ -29,6 +29,15 @@ class SearchController < ApplicationController
     
     @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
 
+    # Sometimes we want to override the user's default settings if they did a simple keyword search
+    # but we think we can get better results by knowing what they really want
+    if (@options[:sport].nil? || @options[:sport] == 'Any') && (@options[:type].nil? || @options[:type] == 'Any') && @options[:custom].nil?
+      @override = Override.find_by_keywords(@query)
+      if @override
+        @options.merge!(@override.to_options)
+      end
+    end
+
     @time = {}
     @time[:google] = Time.now
       Query.record(@query,@options)
