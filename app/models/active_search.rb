@@ -34,8 +34,6 @@ class ActiveSearch < Gasohol
       query += " inmeta:mediaType~#{parts[:type]}"
       if parts[:custom] and !parts[:custom].blank?
         query += " inmeta:mediaType~#{parts[:custom]}"
-      #else
-       #query += " inmeta:mediaType~#{parts[:type]}"
       end
     end
 

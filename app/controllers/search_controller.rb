@@ -6,8 +6,8 @@ class SearchController < ApplicationController
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = true  # do all the related (ajax) searches for each and every result
-  DO_CONTEXT_SEARCH = true  # contextual search on the right
+  DO_RELATED_SEARCH = false  # do all the related (ajax) searches for each and every result
+  DO_CONTEXT_SEARCH = false  # contextual search on the right
   DEBUG = false   # show debugging at the bottom of the page (can show anyway by adding debug=true to URL)
   DEFAULT_LOCATION = 'San Diego,CA' # default location if geo-coding doesn't work
   
@@ -27,7 +27,7 @@ class SearchController < ApplicationController
   def index
     params[:q] ||= ''
     
-    # @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
+    @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
 
     @time = {}
     @time[:google] = Time.now
