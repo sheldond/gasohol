@@ -20,7 +20,7 @@
               </div>
             <% end %>
 
-            <%# render :partial => 'sort' %>
+            <%= render :partial => 'sort' %>
             
             <% do_separator = (params[:category] && params[:category].downcase == 'activities') ? true : false %>
             <%= render :partial => 'result', :collection => @google[:results], :locals => { :do_separator => do_separator } %>

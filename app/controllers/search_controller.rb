@@ -27,7 +27,7 @@ class SearchController < ApplicationController
   def index
     params[:q] ||= ''
     
-    @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
+    # @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
 
     @time = {}
     @time[:google] = Time.now
