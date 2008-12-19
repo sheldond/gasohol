@@ -120,9 +120,19 @@ class SearchController < ApplicationController
   def do_google
     # TODO: some way to get the query recorded here -- but would run for all related searches as well
     # Maybe a flag you pass, defaulted to true, telling the system to record the query to the database
-    ActiveSearch.new(GASOHOL_CONFIG[:google]).search(@query, @options)
-    # Query.record(@query,@options)
-    #gsa.search(@query, @options)
+    # caching time
+    begin
+      cache = MemCache.new('127.0.0.1')
+      this_query_md5 = Digest::MD5.hexdigest("#{@query.to_s}_#{@options.to_s}")
+      unless output = cache.get(this_query_md5) 
+        output = ActiveSearch.new(GASOHOL_CONFIG[:google]).search(@query, @options)
+        cache.set(this_query_md5, output)
+      end
+    #rescue MemCache::MemCacheError  # memcache server isn't running
+    #  output = ActiveSearch.new(GASOHOL_CONFIG[:google]).search(@query, @options)
+    end
+    
+    return output
   end
 
 
