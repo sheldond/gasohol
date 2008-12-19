@@ -126,7 +126,7 @@ class SearchController < ApplicationController
       this_query_md5 = Digest::MD5.hexdigest("#{@query.to_s}_#{@options.to_s}")
       unless output = cache.get(this_query_md5) 
         output = ActiveSearch.new(GASOHOL_CONFIG[:google]).search(@query, @options)
-        cache.set(this_query_md5, output)
+        cache.set(this_query_md5, output, 4.hours)
       end
     #rescue MemCache::MemCacheError  # memcache server isn't running
     #  output = ActiveSearch.new(GASOHOL_CONFIG[:google]).search(@query, @options)
