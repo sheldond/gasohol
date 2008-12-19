@@ -116,19 +116,20 @@ class SearchController < ApplicationController
     end
   end
   
-  # Actually does the work of calling the 'search' method of the Google class, passing in the query and options
+  # Actually does the work of searching the GSA
   def do_google
     # TODO: some way to get the query recorded here -- but would run for all related searches as well
     # Maybe a flag you pass, defaulted to true, telling the system to record the query to the database
     # caching time
     begin
-      this_query_md5 = Digest::MD5.hexdigest("#{@query.to_s}_#{@options.to_s}")
-      unless output = CACHE.get(this_query_md5) 
+      md5 = Digest::MD5.hexdigest("#{@query.to_s}_#{@options.to_s}")
+      unless output = CACHE.get(md5) 
         output = SEARCH.search(@query, @options)
-        CACHE.set(this_query_md5, output, 4.hours)
+        CACHE.set(md5, output, 4.hours)
       end
-    #rescue MemCache::MemCacheError  # memcache server isn't running
-    #  output = SEARCH.search(@query, @options)
+    rescue MemCache::MemCacheError
+      logger.error('Hitting CACHE failed: memcached server not running or not responding')
+      output = SEARCH.search(@query, @options)
     end
     
     return output

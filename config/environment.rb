@@ -67,7 +67,14 @@ temp_config.symbolize_keys!
 temp_config.each { |key,value| value.symbolize_keys! }
 GASOHOL_CONFIG = temp_config
 
-CACHE = MemCache.new('127.0.0.1')
+# get the cache server ready
+begin
+  CACHE = MemCache.new('127.0.0.1')
+rescue MemCache::MemCacheError
+  RAILS_DEFAULT_LOGGER.error('Initializing CACHE failed: memcached server not running or not responding')
+end
+
+# get the search service ready
 SEARCH = ActiveSearch.new(GASOHOL_CONFIG[:google])
 
 require 'core_extensions'

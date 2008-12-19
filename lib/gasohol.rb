@@ -113,7 +113,6 @@ class Gasohol
     unless config.nil?
       # merge in passed values
       @config.merge!(config)
-      RAILS_DEFAULT_LOGGER.info("\n\n@config=\n#{@config.inspect}")
     else
       raise MissingConfig, 'Missing config - you must pass some configuration options to tell gasohol how to access your GSA. See Gasohol::initialize for configuration options'
     end
@@ -122,7 +121,6 @@ class Gasohol
     if @config[:url].empty?
       raise MissingURL, 'Missing GSA URL - you must provide the URL to your GSA, ie: http://127.0.0.1/search'
     end
-    # @@options = DEFAULT_OPTIONS.merge(options)
   end
   
   # Assembles the query and options into a big query string and sends over to your GSA.
@@ -142,8 +140,6 @@ class Gasohol
     output[:google][:google_query] = googlize_params_into_query(options,output[:google][:query])
     # the full path to google including the options and hostname of the GSA (makes a easily clickable link for debugging)
     output[:google][:full_query_path] = query_path(output[:google][:google_query],options)
-  
-    RAILS_DEFAULT_LOGGER.info("\n\noutput[:google][:full_query_path]=\n#{output[:google][:full_query_path]}")
   
     begin
       # do the query and save the xml
