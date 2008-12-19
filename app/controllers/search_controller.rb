@@ -122,14 +122,13 @@ class SearchController < ApplicationController
     # Maybe a flag you pass, defaulted to true, telling the system to record the query to the database
     # caching time
     begin
-      cache = MemCache.new('127.0.0.1')
       this_query_md5 = Digest::MD5.hexdigest("#{@query.to_s}_#{@options.to_s}")
-      unless output = cache.get(this_query_md5) 
-        output = ActiveSearch.new(GASOHOL_CONFIG[:google]).search(@query, @options)
-        cache.set(this_query_md5, output, 4.hours)
+      unless output = CACHE.get(this_query_md5) 
+        output = SEARCH.search(@query, @options)
+        CACHE.set(this_query_md5, output, 4.hours)
       end
     #rescue MemCache::MemCacheError  # memcache server isn't running
-    #  output = ActiveSearch.new(GASOHOL_CONFIG[:google]).search(@query, @options)
+    #  output = SEARCH.search(@query, @options)
     end
     
     return output

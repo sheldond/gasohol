@@ -67,4 +67,7 @@ temp_config.symbolize_keys!
 temp_config.each { |key,value| value.symbolize_keys! }
 GASOHOL_CONFIG = temp_config
 
+CACHE = MemCache.new('127.0.0.1')
+SEARCH = ActiveSearch.new(GASOHOL_CONFIG[:google])
+
 require 'core_extensions'
