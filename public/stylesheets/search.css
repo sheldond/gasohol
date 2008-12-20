@@ -91,7 +91,7 @@ strong {
 
 #home_search {
 	text-align: left;
-	margin: 100px auto;
+	margin: 100px auto 300px;
 	width: 32em;
 }
 
@@ -748,3 +748,30 @@ strong {
   			height: 21px;
   			margin: 1em auto 0;
   			}
+
+#screencast {
+	width: 1000px;
+	margin: 7em auto;
+}
+
+#footer {
+	margin: 1em 0 0;
+	padding: 1em;
+	background-color: #eeeeee;
+	text-align: right;
+	color: #333333;
+}
+
+	#footer span {
+		display: block;
+	}
+	
+		#footer #copyright {
+			float: right;
+			font-size: 85%;
+		}
+		
+		#footer #screencast {
+			width: 10em;
+			margin: 0 auto;
+		}

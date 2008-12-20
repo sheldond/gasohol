@@ -30,6 +30,13 @@
   <div id="body">
     <% if flash[:notice] %><div id="notice"><%= flash[:notice] %></div><% end %>
     <%= yield %>
+    
+    <div id="skin_logo"></div>
+
+    <div id="footer">
+      <span id="copyright">Copyright &copy;2009 <%= link_to 'Active Network', 'http://activenetwork.com' %>.</span>
+      <span id="screencast"><%= link_to "Watch a Screencast", :controller => 'screencast' %></span>
+    </div>
   </div>
   
   <!-- feedback -->
@@ -46,8 +53,6 @@
     } 
     catch(err) {}
   </script>
-  
-  <div id="skin_logo"></div>
   
 </body>
 </html>

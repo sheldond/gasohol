@@ -211,9 +211,34 @@ class Gasohol
   # * 'query' is the keyword(s) query terms
   #
   # On most implementations that offer more than straight keyword matches you're going to want additional
-  # parameters, like meta searches, to appear in the browser's URL. These will not be formatted correctly
-  # for Google. That's what this method will do. Extend the Gasohol class with your own and then override 
-  # this method so you can build a query string specific to your implementation.
+  # parameters, like meta searches, to appear in the browser's URL so that the search can be uniquely identified
+  # and ran again. These parameters will not be formatted correctly for Google. That's what this method will do. 
+  # Extend the Gasohol class with your own and then override this method so you can build a query string specific 
+  # to your implementation.
+  #
+  # == Example
+  # You have an application that searches for pizzas. You want your URL to look something like:
+  #
+  #   http://pizzafinder.com/search?keyword=deep+dish&size=16&toppings=cheese
+  #
+  # Google doesn't know what to do with 'keyword,' 'size,' or 'toppings' so you need to turn those into something
+  # it does understand. So you might extend this method to look like:
+  #
+  #   class PizzaFinder > Gasohol
+  #     def googlize_params_into_query(parts,query)
+  #       return "#{query} inmeta:panSize=#{parts[:size]} inmeta:toppings~#{parts[:toppings]"
+  #     end
+  #   end
+  #
+  # That string is appeneded to the GSA url and now it knows how to search:
+  #
+  #   http://gsa.pizzafinder.com/search?q=deep+dish+inmeta:panSize=16+inmeta:toppings~cheese&collection=etc,etc,etc
+  #
+  # And to get this whole process started:
+  #
+  #   finder = PizzaFinder.new(config)  # where 'config' is your hash of options to get the search engine ready (see above)
+  #   finder.search(parts,query)        # where 'parts' is a hash of params in the URL not including the keywords
+  #                                     # and 'query' is the actual keyword query
   def googlize_params_into_query(parts,query)
     return ''
   end

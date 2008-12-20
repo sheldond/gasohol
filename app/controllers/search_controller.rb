@@ -1,4 +1,5 @@
 class SearchController < ApplicationController
+  # caches_action :home
   
   before_filter :login_required, :except => [:location] # this page is locked down, only accessible if logged in
   before_filter :get_location, :only => [:index, :home]  # get location from user cookie
@@ -15,6 +16,8 @@ class SearchController < ApplicationController
   # homepage that just shows a search box and popular searches
   def home
     params[:q] ||= ''
+    # TODO: move popular searches into Ajax call so we can cache this page
+    # TODO: move population of the 'Searching in' area to Ajax so we can cache
     @popular_local_searches = Query.find_popular_by_location(@location,10)
     render :layout => 'application'
   end
@@ -123,9 +126,12 @@ class SearchController < ApplicationController
     # caching time
     begin
       md5 = Digest::MD5.hexdigest("#{@query.to_s}_#{@options.to_s}")
-      unless output = CACHE.get(md5) 
+      if output = CACHE.get(md5) 
+        logger.debug("Search result cache hit: #{md5}")
+      else
         output = SEARCH.search(@query, @options)
         CACHE.set(md5, output, 4.hours)
+        logger.debug("Search result cache miss: #{md5}")
       end
     rescue MemCache::MemCacheError
       logger.error('Hitting CACHE failed: memcached server not running or not responding')
