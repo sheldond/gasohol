@@ -22,8 +22,7 @@
 
             <%# render :partial => 'sort' %>
             
-            <% do_separator = (params[:category] && params[:category].downcase == 'activities') ? true : false %>
-            <%= render :partial => 'result', :collection => @google[:results], :locals => { :do_separator => do_separator } %>
+            <%= render :partial => 'result', :collection => @google[:results], :locals => { :do_separator => @do_separator } %>
 
             <% if @google[:google][:total_results] > GASOHOL_CONFIG[:google][:num] %>
               <div id="paging">

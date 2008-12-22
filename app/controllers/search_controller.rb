@@ -28,8 +28,11 @@ class SearchController < ApplicationController
   def index
     params[:q] ||= ''
     
-    @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
-
+    # sort by date if the user has specified one
+    if @options[:start_date] && !@options[:start_date].empty?
+      @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
+    end
+    
     # Sometimes we want to override the user's filter settings if they did a simple keyword search
     # but we think we can get better results by injecting some extra pizzaz into the query to the GSA
     if simple_search?(@options)
@@ -47,6 +50,7 @@ class SearchController < ApplicationController
     @popular_local_searches = Query.find_popular_by_location(@location,5)   # most frequent keyword searches in same location
     @related_searches = Query.find_related_by_location(@query,@location,5)  # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
+    @do_separator = (@options[:start_date] && !@options[:start_date].empty? && @options[:category] && @options[:category].downcase == 'activities') ? true : false
     
     @ajax = ''
     

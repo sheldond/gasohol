@@ -1,4 +1,5 @@
-<table id="debug_output" cellspacing="0>"
+<table id="debug_output" cellspacing="0">
+  
   <% if @time %>
     <tr>
       <% @time.each do |key,value| %>
@@ -33,5 +34,9 @@
         <td><%= debug @override %></td>
       </tr>
     <% end %>
+    <tr>
+      <td class="label">Sort</td>
+      <td><%= @options[:sort] %></td>
+    </tr>
   <% end %>
 </table>
