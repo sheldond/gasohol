@@ -91,7 +91,7 @@ strong {
 
 #home_search {
 	text-align: left;
-	margin: 100px auto 300px;
+	margin: 100px auto 200px;
 	width: 32em;
 }
 
@@ -156,6 +156,15 @@ strong {
 			line-height: 1.5;
 			white-space: nowrap;
 		}
+		
+/********************/
+/* User Voice Top 3 */
+/********************/
+
+#uservoice_top3 {
+	border: 1px solid #cccccc;
+	margin-top: 5em;
+}
 
 #search_table {
 	width: 100%;
@@ -167,15 +176,15 @@ strong {
 	}
 	
 #refine {
-	width: 240px;
-	border-right: 1px solid #cccccc;
+	width: 210px;
+
 }
 
 	#refine_container {
 		position: fixed;
 		margin-top: -40px;
-		padding: 60px 10px 10px 40px;
-		background: transparent url('/images/search_refine_active_logo.png') 20px 0 no-repeat;
+		padding: 60px 10px 10px 10px;
+		background: transparent url('/images/search_refine_active_logo.png') 10px 0 no-repeat;
 		width: 190px;
 	}
 
@@ -276,6 +285,10 @@ strong {
 				width: auto;
 			}
 			
+		#activity_search #search_location {
+			margin: 1em 0 2em;
+		}
+			
 		#activity_search #search_location #loc strong {
 			
 		}
@@ -286,6 +299,7 @@ strong {
 		
 			#activity_search #search_location #change_location {
 				font-size: 85%;
+				display: block;
 			}
 			
 		#activity_search #debug_options #num {
@@ -297,7 +311,7 @@ strong {
 	}
 	
 	#results_container {
-		margin: 0 1em;
+		margin: 0 1em 0 .2em;
 	}
 
 	#results {
@@ -313,18 +327,21 @@ strong {
 	
 	#context {
 		width: 280px;
-		border-left: 1px solid #999999;
-		padding-top: 70px;
+		padding: 80px 0 0;
+		background-color: #f6f6f6;
 	}
 	
 		#context .related {
 			display: block;
-			margin: 0 0 2em;
+			margin: 0 0 1em;
+			padding: 0 30px 1em 1em;
+			border-bottom: 1px dashed #cccccc;
 		}
 		
 			#context .related h4 {
 				display: block;
 				float: none;
+				color: #555555;
 			}
 	
 		#context .result {
@@ -340,6 +357,10 @@ strong {
 		}
 			#context .result .title a {
 				border: none;
+				color: #888888;
+			}
+			#context .result .title a:hover {
+				color: #003e7e;
 			}
 
 		#context .result h3 {
@@ -367,17 +388,18 @@ strong {
 			
 		#context .more {
 			display: block;
-			text-align: center;
-			margin: 1em 0 0;
+			text-align: left;
+			margin: .5em 0 0;
 			text-decoration: none;
-			color: #5091CD;
+			color: #333333;
+			font-weight: bold;
 		}
 			#context .more:hover {
-				color:#D06F1A;
+				color:#d06f1a;
 			}
 	
 		#context_container {
-			margin: 1em;
+			margin: 0;
 		}
 	
 		#context h4 {
