@@ -74,7 +74,7 @@ a:hover {
 }
 
 #context {
-
+  background-color: #222222;
 }
 
 #context .related h4 {
@@ -111,3 +111,7 @@ width:600px;
 z-index:99;
 }
 */
+
+#footer {
+	display: none;
+}
