@@ -229,7 +229,7 @@ strong {
 		margin: .5em 0;
 	}
 	
-	#refine h3, #popular h3 {
+	h3 {
 		font-weight: bold;
 		margin: 1em 0 .5em;
 		color: #d06f1a;
@@ -290,7 +290,7 @@ strong {
 		}
 			
 		#activity_search #search_location #loc strong {
-			
+			display: block;
 		}
 			
 		#activity_search #search_location #loc-inplaceeditor input {
@@ -301,6 +301,50 @@ strong {
 				font-size: 85%;
 				display: block;
 			}
+			
+				#activity_search #location_changer {
+			    position: absolute;
+		      top: 50px;
+		      left: .5em;
+				}
+				
+				#home_search #location_changer {
+					position: absolute;
+				}
+				
+				#location_changer {
+		      width: 24em;
+		      border: 2px solid #cccccc;
+		      border-color: #cccccc #999999 #999999 #cccccc;
+		      background-color: #ffffff;
+		      padding: 0 1em 1em;
+		    }
+		      #location_changer p {
+		        font-size: 93%;
+		      }
+		      #location_changer ul {
+		        margin: 0 1em;
+		        padding: 1em;
+		        font-size: 93%;
+		      }
+		      #location_changer li {
+		        list-style-type: disc;
+		      }
+		      #location_changer span.example {
+		        color: #aaaaaa;
+		        font-style: italic;
+		        padding-left: .5em;
+		        font-size: 93%;
+		      }
+		      #location_changer span#location_cancel_container {
+		        font-size: 85%;
+		      }
+		      #location_changer input {
+		        display: inline;
+		      }
+					#location_error {
+						color: #990000;
+					}
 			
 		#activity_search #debug_options #num {
 			width: 2em;
@@ -346,13 +390,13 @@ strong {
 	
 		#context .result {
 			margin: 0;
-			padding: .1em 0;
+			padding: .2em 0;
 			overflow: hidden;
 		}
 
 		#context .result .title {
 			float: left;
-			margin: 0 0 .4em;
+			margin: 0 0 .3em;
 			line-height: 1.1;
 		}
 			#context .result .title a {
@@ -536,7 +580,7 @@ strong {
 		padding: .7em 0;
 		overflow: hidden;
 	}
-		
+
 		.result.sub {
 			margin-left: 2em;
 		}
@@ -585,6 +629,8 @@ strong {
 			.result h3 {
 				font-size: 108%;
 				display: inline;
+				font-weight: normal;
+				color: #333333;
 			}
 		
 			.result .save {

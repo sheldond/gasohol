@@ -88,10 +88,10 @@ class SearchController < ApplicationController
         @location = Location.new(value, { :radius => GASOHOL_CONFIG[:google][:default_radius] })
          cookies[:location] = { :value => @location.to_cookie, :expires => 1.year.from_now }
       rescue Exceptions::LocationError::InvalidZip
-        render :text => "Could not find zip - try city,state?"
+        render :text => "Could not find zip - try city,state?", :status => 500
         return
       rescue Exceptions::LocationError::InvalidLocation, Exceptions::LocationError::InvalidCityState
-        render :text => "Please enter a valid city, state or zip"
+        render :text => "Please enter a valid city, state or zip", :status => 500
         return
       end
     end
@@ -129,7 +129,7 @@ class SearchController < ApplicationController
     # Maybe a flag you pass, defaulted to true, telling the system to record the query to the database
     # caching time
     begin
-      md5 = Digest::MD5.hexdigest("#{@query.to_s}_#{@options.to_s}")
+      md5 = Digest::MD5.hexdigest("#{request.path_info}?#{@query.to_s}_#{@options.to_s}")
       if output = CACHE.get(md5) 
         logger.debug("Search result cache hit: #{md5}")
       else
@@ -209,7 +209,7 @@ class SearchController < ApplicationController
   
   # Determines whether this is search that uses only keywords
   def simple_search?(options)
-    (options[:sport].nil? || options[:sport].downcase == 'any') && (options[:type].nil? || options[:type].downcase == 'any') && (options[:custom].nil? || options[:custom].downcase == 'any')
+    (options[:category] && options[:category].downcase == 'activities') && (options[:sport].nil? || options[:sport].downcase == 'any') && (options[:type].nil? || options[:type].downcase == 'any') && (options[:custom].nil? || options[:custom].downcase == 'any')
   end
   
 end
