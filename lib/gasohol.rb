@@ -64,7 +64,8 @@ class Gasohol
                         :next => 0, 
                         :prev => 0, 
                         :google_query => '', 
-                        :full_query_path => '' } 
+                        :full_query_path => '',
+                        :total_featured_results => 0 } 
                       }
   DEFAULT_RESULT = {  :num => 0, 
                       :mime => '', 
@@ -155,12 +156,14 @@ class Gasohol
   
       # if there was at least one result, parse the xml
       if output[:google][:total_results] > 0
+        
+        output[:google][:total_featured_results] = xml.search(:gm).size
 
         # get featured results (called 'sponsored links' on the results page, displayed at the top)
-        output[:featured] = xml.search(:gm).collect do |xml_result|
+        output[:featured] = xml.search(:gm).collect do |xml_featured|
           result = Marshal.load(Marshal.dump(DEFAULT_FEATURED_RESULT))
-          result[:url] = xml.at(:gl) ? xml.at(:gl).inner_html : ''
-          result[:title] = xml.at(:gd) ? xml.at(:gd).inner_html : ''
+          result[:url] = xml_featured.at(:gl) ? xml_featured.at(:gl).inner_html : ''
+          result[:title] = xml_featured.at(:gd) ? xml_featured.at(:gd).inner_html : ''
           result
         end
 

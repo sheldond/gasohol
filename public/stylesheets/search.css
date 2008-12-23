@@ -481,19 +481,24 @@ strong {
 	#featured {
 		margin: 1em 0;
 		padding: 0 1em;
-		background-color: #b5d5f0;
+		background-color: #B4D88B;
 		overflow: auto;
 	}
 	
 		#featured h3 {
 			float: right;
-			color: #5091cd;
-			margin: 1em 0 0;
+			color: #006225;
+			margin: .5em 0 0;
 		}
 		
 		#featured .result {
-			float: left;
+			padding: .5em 0;
 		}
+		
+			#featured .result a {
+				color: #006225;
+				border-color: #6cb33f;
+			}
 		
 		#featured .result:hover {
 			background-image: none;
