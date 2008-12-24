@@ -3,6 +3,7 @@
 
 class ApplicationController < ActionController::Base
   before_filter :load_user
+  # before_filter :adjust_format_for_iphone
   helper :all
 
   # See ActionController::RequestForgeryProtection for details
@@ -53,4 +54,15 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || root_path)
     session[:return_to] = nil
   end
+  
+  def iphone_request?
+    request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"][/(Mobile\/.+Safari)/]
+  end
+  
+  # Set iPhone format if request to iphone.trawlr.com
+  def adjust_format_for_iphone    
+    request.format = :iphone if iphone_request?
+  end
+  
+  
 end
