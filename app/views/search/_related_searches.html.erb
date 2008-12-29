@@ -3,7 +3,7 @@
   <ul>
     <% @related_searches.each do |search| %>
       <% unless search.keywords.blank? %>
-        <li><%= link_to(search.keywords.gsub(/(#{@query})/i,'<strong>\1</strong>'), { :action => 'index', :location => search.location, :q => search.keywords, :sport => search.sport, :type => search.type, :custom => search.custom }) %></li>
+        <li><%= link_to(search.keywords.gsub(/(#{@query})/i,'<strong>\1</strong>'), { :action => 'index', :location => search.location, :q => search.keywords, :sport => search.sport, :type => search.type, :custom => search.custom, :category => search.category }) %></li>
       <% end %>
     <% end %>
   </ul>

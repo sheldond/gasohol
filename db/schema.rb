@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20081218054842) do
     t.string   "type"
     t.string   "custom"
     t.integer  "count",      :default => 0
+    t.integer  "user_id",    :default => 0
   end
 
   add_index "queries", ["location"], :name => "index_queries_on_location"
