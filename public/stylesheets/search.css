@@ -551,11 +551,15 @@ strong {
 	#sort {
 		font-size: 93%;
 		margin: 1em 0 1em;
+		text-align: right;
 	}
 	
 		#sort a {
-			text-decoration: none;
+			text-decoration: underline;
 		}
+			#sort li.selected a {
+				text-decoration: none;
+			}
 	
 		#sort ul {
 			display: inline;

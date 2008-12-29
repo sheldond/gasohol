@@ -16,7 +16,7 @@
     
     <%# full length results, ?style=long or no style in URL %>
 
-    <% if do_separator %>
+    <% if do_date_separators %>
       <% if result[:meta][:start_date] && @month_separator_check != "#{result[:meta][:start_date].month.to_s}/#{result[:meta][:start_date].year.to_s}" %>
         <div class="month_separator">
           <%= result[:meta][:start_date].to_s(:month_year) %>

@@ -1,12 +1,10 @@
-<% if params[:p] == '1' %>
-  <div id="sort">
-    <strong>Sort:</strong>
-    <ul>
-      <li <%= 'class="selected"' unless params[:sort] %>><a href="#" onclick="sort('relevant'); return false;">Most Relevant</a></li>
-      <li <%= 'class="selected"' if params[:sort] == 'date:A:S:d1' %>><a href="#" onclick="sort('date:A:S:d1'); return false;">Date (Soonest)</a></li>
-      <!-- <li <%= 'class="selected"' if params[:sort] == 'name' %>><a href="#" onclick="sort('name'); return false;">Name (A-Z)</a></li> -->
-      <!-- <li <%= 'class="selected"' if params[:sort] == 'location' %>><a href="#" onclick="sort('location'); return false;">Location</a><li> -->
-      <!-- <li <%= 'class="selected"' if params[:sort] == 'rating' %>><a href="#" onclick="sort('rating'); return false;">Rating (Best)</a></li> -->
-    </ul>
-  </div>
-<% end %>
+<div id="sort">
+  <strong>Sort:</strong>
+  <ul>
+    <li <%= 'class="selected"' if @sort == 'relevance' %>><a href="<%= request.path_info %>?<%= request.query_string.gsub(/(&sort=.*?)(&|$)/,'\2') %>&sort=relevance">Most Relevant</a></li>
+    <li <%= 'class="selected"' if @sort == 'date' %>><a href="<%= request.path_info %>?<%= request.query_string.gsub(/(&sort=.*?)(&|$)/,'\2') %>&sort=date">Date (Soonest)</a></li>
+    <!-- <li <%= 'class="selected"' if params[:sort] == 'name' %>><a href="#" onclick="sort('name'); return false;">Name (A-Z)</a></li> -->
+    <!-- <li <%= 'class="selected"' if params[:sort] == 'location' %>><a href="#" onclick="sort('location'); return false;">Location</a><li> -->
+    <!-- <li <%= 'class="selected"' if params[:sort] == 'rating' %>><a href="#" onclick="sort('rating'); return false;">Rating (Best)</a></li> -->
+  </ul>
+</div>

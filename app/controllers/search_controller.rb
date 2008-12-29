@@ -27,10 +27,13 @@ class SearchController < ApplicationController
   # variables (@options) and we'll format the results into a simpler format that we use in our views.
   def index
     params[:q] ||= ''
+    @do_date_separators = false
     
-    # sort by date if the user has specified one
-    if @options[:start_date] && !@options[:start_date].empty?
-      @options.merge!({ :sort => 'date:A:S:d1'})  # default to sorting by date
+    # what should we sort by?
+    @sort = do_sort
+    if @sort == 'date'
+      @options.merge!( {:sort => 'date:A:S:d1'} )
+      @do_date_separators = true
     end
     
     # Sometimes we want to override the user's filter settings if they did a simple keyword search
@@ -50,7 +53,6 @@ class SearchController < ApplicationController
     @popular_local_searches = Query.find_popular_by_location(@location,5)   # most frequent keyword searches in same location
     @related_searches = Query.find_related_by_location(@query,@location,5)  # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
-    @do_separator = (@options[:start_date] && !@options[:start_date].empty? && @options[:category] && @options[:category].downcase == 'activities') ? true : false
     
     @ajax = ''
     
@@ -143,6 +145,40 @@ class SearchController < ApplicationController
     end
     
     return output
+  end
+  
+  # Figure out what we should sort on based on various parameters
+  def do_sort
+    # if there's a 'sort' parameter in the URL it's because the user set it manually so save to cookie
+    if params[:sort]
+      cookies[:sort] = params[:sort]
+      logger.info("Setting sort cookie")
+    end
+    
+    # because of the way cookies behave in Rails, we can set and read in the same request, so if params[:sort]
+    # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out and set it
+    # to params[:sort] so that it's the only thing we have to worry about in the checks below
+    if !params[:sort] && cookies[:sort]
+      params[:sort] = cookies[:sort]
+    end
+    
+    # should we automatically sort by date? (if the user doesn't have a cookie set, but they have chosen to filter by date, then yes)
+    if !params[:sort] && @options[:start_date] && !@options[:start_date].empty?
+      params[:sort] = 'date'
+      logger.info("Sort by date - user has no cookie and set a start date")
+    end
+    
+    # sort by date if - it's in the URL of if there's a cookie stored
+    if params[:sort] == 'date'
+      logger.info("Returning date")
+      return 'date'
+    else
+      logger.info("Returning relevance")
+      return 'relevance'
+    end
+    
+    return params[:sort]
+    
   end
 
 

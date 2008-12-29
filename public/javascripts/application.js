@@ -37,10 +37,7 @@ function switchSearch(type) {
 
 function sort(sort_by) {
   var query_string = '?'
-  
-  if(sort_by != 'relevant') {
-    query_string += 'sort=' + sort_by;
-  }
+  query_string += 'sort=' + sort_by;
   
   $H(url).each(function(pair) {
     if(pair.first() != 'sort') {

@@ -12,6 +12,8 @@
         <div id="results">
                   
           <% unless @google[:results].blank? %>
+          
+            <%= render :partial => 'sort', :locals => { :sort => @sort } %>
         
             <% unless @google[:featured].empty? %>
               <div id="featured">
@@ -19,10 +21,8 @@
                 <%= render :partial => 'featured', :collection => @google[:featured] %>
               </div>
             <% end %>
-
-            <%# render :partial => 'sort' %>
             
-            <%= render :partial => 'result', :collection => @google[:results], :locals => { :do_separator => @do_separator } %>
+            <%= render :partial => 'result', :collection => @google[:results], :locals => { :do_date_separators => @do_date_separators } %>
 
             <% if @google[:google][:total_results] > GASOHOL_CONFIG[:google][:num] %>
               <div id="paging">
