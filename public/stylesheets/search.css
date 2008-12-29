@@ -91,7 +91,7 @@ strong {
 
 #home_search {
 	text-align: left;
-	margin: 100px auto 200px;
+	margin: 100px auto 0;
 	width: 32em;
 }
 
@@ -141,29 +141,42 @@ strong {
 		color: #999999;
 	}
 	
-	#home_search #popular {
-		margin-top: 5em;
+	#search_home #popular {
+		margin: 5em auto;
 		overflow: hidden;
+		width: 32em;
 	}
 	
-		#home_search #popular ul {
+		#search_home #popular ul {
 			text-align: center;
 		}
 	
-		#home_search #popular li {
+		#search_home #popular li {
 			display: inline;
 			padding: 0 1em 0 0;
 			line-height: 1.5;
 			white-space: nowrap;
 		}
 		
+		
+#first_time {
+	text-align: center;
+	margin: 5em 0;
+}
 /********************/
 /* User Voice Top 3 */
 /********************/
 
+#uservoice_top3_container {
+	background-color: #eeeeee;
+	padding: 1em 0 0;
+	margin: 8em 0 0;
+}
+
 #uservoice_top3 {
-	border: 1px solid #cccccc;
-	margin-top: 5em;
+	width: 32em;
+	margin: 1em auto 0;
+	display: block;
 }
 
 #search_table {
@@ -839,16 +852,11 @@ strong {
 	color: #333333;
 }
 
-	#footer span {
-		display: block;
+	#search_home #footer {
+		margin: 0;
 	}
 	
 		#footer #copyright {
-			float: right;
 			font-size: 85%;
 		}
 		
-		#footer #screencast {
-			width: 10em;
-			margin: 0 auto;
-		}

@@ -11,6 +11,7 @@ class SearchController < ApplicationController
   DO_CONTEXT_SEARCH = true  # contextual search on the right
   DEBUG = false   # show debugging at the bottom of the page (can show anyway by adding debug=true to URL)
   DEFAULT_LOCATION = 'San Diego,CA' # default location if geo-coding doesn't work
+  DEFAULT_SORT = 'relevance'  # default sort method
     
   # (/ or /search/home) 
   # homepage that just shows a search box and popular searches
@@ -152,7 +153,6 @@ class SearchController < ApplicationController
     # if there's a 'sort' parameter in the URL it's because the user set it manually so save to cookie
     if params[:sort]
       cookies[:sort] = params[:sort]
-      logger.info("Setting sort cookie")
     end
     
     # because of the way cookies behave in Rails, we can set and read in the same request, so if params[:sort]
@@ -165,20 +165,14 @@ class SearchController < ApplicationController
     # should we automatically sort by date? (if the user doesn't have a cookie set, but they have chosen to filter by date, then yes)
     if !params[:sort] && @options[:start_date] && !@options[:start_date].empty?
       params[:sort] = 'date'
-      logger.info("Sort by date - user has no cookie and set a start date")
     end
+    
+    # if nothing set the sort yet, default to relevance
+    params[:sort] ||= DEFAULT_SORT
     
     # sort by date if - it's in the URL of if there's a cookie stored
-    if params[:sort] == 'date'
-      logger.info("Returning date")
-      return 'date'
-    else
-      logger.info("Returning relevance")
-      return 'relevance'
-    end
-    
     return params[:sort]
-    
+
   end
 
 

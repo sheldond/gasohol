@@ -23,12 +23,18 @@
     // moreOptions();
   </script>
   
-  <%= render :partial => 'popular_local_searches', :locals => { :location_text => @location.form_value } unless @popular_local_searches.empty?%>
-  
-  <!-- feedback -->
-  <script src="http://active.uservoice.com/pages/search_beta/widgets/top3.js" type="text/javascript"></script>
-  
 </form>
+
+<%= render :partial => 'popular_local_searches', :locals => { :location_text => @location.form_value } unless @popular_local_searches.empty?%>
+
+<div id="first_time">
+  <h3>First time here? <%= link_to 'Watch a screencast', :controller => 'screencast' %></h3>
+</div>
+
+<!-- feedback -->
+<div id="uservoice_top3_container">
+  <script src="http://active.uservoice.com/pages/search_beta/widgets/top3.js" type="text/javascript"></script>
+</div>
 
 <% if params[:id] == 'amg' %>
   <div class="ads">

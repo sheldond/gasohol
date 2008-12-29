@@ -22,6 +22,7 @@
         <%= link_to('<h1><span>Active.com</span></h1>', root_path) %>
       </div>
       <ul id="logged_in_options">
+        <li><%= link_to 'Watch a Screencast', :controller => 'screencast' %></li>
         <li><%= link_to 'Logout', logout_path %></li>
         <li><%= link_to('Admin', :controller => 'admin') if is_admin? %></li>
       </ul>
@@ -36,8 +37,7 @@
     <div id="skin_logo"></div>
 
     <div id="footer">
-      <span id="copyright">Copyright &copy;2009 <%= link_to 'Active Network', 'http://activenetwork.com' %>.</span>
-      <span id="screencast"><%= link_to "Watch a Screencast", :controller => 'screencast' %></span>
+      <div id="copyright">Copyright &copy;2009 <%= link_to 'Active Network', 'http://activenetwork.com' %>.</div>
     </div>
   </div>
     

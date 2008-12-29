@@ -13,7 +13,7 @@
                   
           <% unless @google[:results].blank? %>
           
-            <%= render :partial => 'sort', :locals => { :sort => @sort } %>
+            <%= render :partial => 'sort', :locals => { :sort => @sort } if params[:category] && params[:category].downcase == 'activities' %>
         
             <% unless @google[:featured].empty? %>
               <div id="featured">
