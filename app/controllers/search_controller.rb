@@ -1,7 +1,7 @@
 class SearchController < ApplicationController
   # caches_action :home
   
-  before_filter :login_required, :except => [:location] # this page is locked down, only accessible if logged in
+  before_filter :login_required, :except => [:location,:google] # this page is locked down, only accessible if logged in
   before_filter :get_location, :only => [:index, :home, :google]  # get location from user cookie
   before_filter :get_options_from_query, :only => [:index, :google, :location] # format the query automatically for each request
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
