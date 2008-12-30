@@ -1,6 +1,8 @@
 xml.instruct! :xml, :version=>"1.0" 
-xml.rss(:version=>"2.0"){
+xml.rss(:version=>"2.0", 'xmlns:atom' =>"http://www.w3.org/2005/Atom") {
   xml.channel{
+    #"<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://#{request.host}#{request.request_uri}?#{request.query_string}\" />"
+    # xml.atom(:namespace=>'link',:rel=>'self',:type=>'application/rss+xml',:href=>"http://#{request.host}#{request.request_uri}?#{request.query_string}")
     xml.title("Active.com Beta Search Results")
     xml.link("http://labs.active.com/search?q=#{@query}&#{@options.to_query}")
     xml.description("Active.com Beta search results for keyword(s) '#{@query}' in #{@options[:location]}")
@@ -19,9 +21,9 @@ xml.rss(:version=>"2.0"){
       desc += "</ul>"
       
       xml.item do
-        xml.title(format_title(result[:title]))
+        xml.title(format_title(un(result[:title])))
         xml.description(desc)
-        xml.author("active.com")               
+        # xml.author("active.com")               
         xml.pubDate(result[:meta][:start_date].strftime("%a, %d %b %Y %H:%M:%S %z"))
         xml.link(result[:url])
         xml.guid(result[:url])
