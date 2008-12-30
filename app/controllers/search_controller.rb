@@ -2,12 +2,12 @@ class SearchController < ApplicationController
   # caches_action :home
   
   before_filter :login_required, :except => [:location] # this page is locked down, only accessible if logged in
-  before_filter :get_location, :only => [:index, :home]  # get location from user cookie
+  before_filter :get_location, :only => [:index, :home, :google]  # get location from user cookie
   before_filter :get_options_from_query, :only => [:index, :google, :location] # format the query automatically for each request
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = true  # do all the related (ajax) searches for each and every result
+  DO_RELATED_SEARCH = false  # do all the related (ajax) searches for each and every result
   DO_CONTEXT_SEARCH = true  # contextual search on the right
   DEBUG = false   # show debugging at the bottom of the page (can show anyway by adding debug=true to URL)
   DEFAULT_LOCATION = 'San Diego,CA' # default location if geo-coding doesn't work
@@ -123,6 +123,7 @@ class SearchController < ApplicationController
       format.xml  { render :xml => output.to_xml }
       format.json { render :text => output.to_json }
       format.yaml { render :text => output.to_yaml }
+      format.rss
     end
   end
   

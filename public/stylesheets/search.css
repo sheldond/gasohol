@@ -844,6 +844,10 @@ strong {
 	margin: 7em auto;
 }
 
+	#screencast_index #beta_notice {
+		display: none;
+	}
+
 #footer {
 	margin: 1em 0 0;
 	padding: 1em;
