@@ -123,7 +123,7 @@ class SearchController < ApplicationController
       format.xml  { render :xml => output.to_xml }
       format.json { render :text => output.to_json }
       format.yaml { render :text => output.to_yaml }
-      format.rss
+      format.rss { render :content_type => 'application/rss+xml' }
     end
   end
   

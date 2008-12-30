@@ -133,7 +133,7 @@ class Gasohol
     options = @config.merge(options)
     
     # the struct we're going to output
-    output = DEFAULT_OUTPUT
+    output = Marshal.load(Marshal.dump(DEFAULT_OUTPUT))
 
     # the keyword string that was searched for
     output[:google][:query] = query
