@@ -42,7 +42,6 @@ class Gasohol
   
   attr_reader :config
   
-  #URL = GASOHOL_CONFIG['google']['url']
   DEFAULT_OPTIONS = { :url => '',
                       :num => 10, 
                       :start => 0, 
@@ -174,9 +173,20 @@ class Gasohol
           result[:mime] = xml.attributes['mime'] || 'text/html'
           result[:level] = xml.attributes['l'].to_i > 0 ? xml.attributes['l'].to_i : 1
           result[:url] = xml.at(:u) ? xml.at(:u).inner_html : ''
+          result[:url_encoded] = xml.at(:ue) ? xml.at(:ue).inner_html : ''
           result[:title] = xml.at(:t) ? xml.at(:t).inner_html : ''
+          result[:language] = xml.at(:lang) ? xml.at(:lang).inner_html : ''
           result[:abstract] = xml.at(:s) ? xml.at(:s).inner_html.gsub(/&lt;br&gt;/i,'').gsub(/\.\.\./,'') : ''
-          result[:date] = xml.at(:fs) ? Chronic.parse(xml.at(:fs)[:value]) : ''
+          # result[:date] = xml.at(:fs) ? Chronic.parse(xml.at(:fs)[:value]) : ''
+          result[:crawl_date] = xml.at(:crawldate) ? Chronic.parse(xml.at(:crawldate).inner_html) : ''
+          if xml.at(:has)
+            if xml.at(:has).at(:c)
+              result[:cache] = {}
+              result[:cache][:size] = xml.at(:has).at(:c).attributes['sz']
+              result[:cache][:cid] = xml.at(:has).at(:c).attributes['cid']
+              result[:cache][:encoding] = xml.at(:has).at(:c).attributes['enc']
+            end
+          end
           result[:meta][:media_types] = []
           xml.search(:mt).each do |meta|
             tag = { meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s }
