@@ -6,7 +6,7 @@ class Location
   
   include Exceptions::LocationError
   
-  DEFAULT_OPTIONS = { :radius => 50 }
+  DEFAULT_OPTIONS = { :radius => GASOHOL_CONFIG[:google][:default_radius] }
   ANYWHERE_PHRASES = ['anywhere','everywhere','any','us','usa','united states']
   
   attr_reader :zip, :city, :state, :latitude, :longitude, :radius, :everywhere
