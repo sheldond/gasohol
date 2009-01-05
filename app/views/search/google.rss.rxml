@@ -1,7 +1,7 @@
 xml.instruct! :xml, :version=>"1.0" 
 xml.rss(:version=>"2.0", 'xmlns:atom' =>"http://www.w3.org/2005/Atom") {
   xml.channel{
-    xml.tag!("atom:link", :rel=>'self', :type=>'application/rss+xml', :href=>"http://#{request.host}#{request.request_uri}?#{request.query_string}")
+    xml.tag!("atom:link", :rel=>'self', :type=>'application/rss+xml', :href=>"http://#{request.host}#{request.request_uri}")
     xml.title("Active.com Beta Search Results")
     xml.link("http://labs.active.com/search?q=#{@query}&#{@options.to_query}")
     xml.description("Active.com Beta search results for keyword(s) '#{@query}' in #{@options[:location]}")

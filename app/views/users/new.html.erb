@@ -1,1 +1,5 @@
-<%= render :partial => 'form', :locals => { :button_label => 'Invitation, please!', :show_admin_functions => false } %>
+<% unless logged_in? %>
+  <h1>Request Access to our Beta Search</h1>
+<% end %>
+
+<%= render :partial => 'form', :locals => { :button_label => 'Sign me up!', :show_admin_functions => false } %>

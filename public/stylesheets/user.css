@@ -18,6 +18,9 @@ strong {
 
 h1 {
 	font-size: 174%;
+	font-weight: bold;
+	color: #003e7e;
+	text-align: center;
 }
 
 #notice, #error {
