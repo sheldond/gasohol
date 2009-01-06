@@ -176,6 +176,7 @@ class Location
     end
     
     # final check, is this a city?
+    # TODO: Lowercase all city and state names so we can compare correctly
     if city = City.find_by_name(obj.downcase)
       if zips = Zip.find_all_by_city_and_state(city.name.titlecase, city.state.abbreviation.upcase)
         center = find_center_point_of(zips)
@@ -195,16 +196,18 @@ class Location
   
   # Returns a Hash with the center latitude and longitude given an array of Zip ActiveRecords
   def find_center_point_of(zips)
-    average_latitude = 0
-    average_longitude = 0
-    zips.each do |zip| 
-      average_latitude += zip.latitude
-      average_longitude += zip.longitude
-    end
-    center_latitude = ((average_latitude / zips.length) * 10000).round / 10000
-    center_longitude = ((average_longitude / zips.length) * 10000).round / 10000
+    unless zips.empty?
+      average_latitude = 0
+      average_longitude = 0
+      zips.each do |zip| 
+        average_latitude += zip.latitude
+        average_longitude += zip.longitude
+      end
+      center_latitude = (((average_latitude / zips.length) * 10000).round / 10000).to_f
+      center_longitude = (((average_longitude / zips.length) * 10000).round / 10000).to_f
     
-    return { :latitude => center_latitude, :longitude => center_longitude }
+      return { :latitude => center_latitude, :longitude => center_longitude }
+    end
   end
 
 end
