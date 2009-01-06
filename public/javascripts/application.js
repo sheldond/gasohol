@@ -2,6 +2,22 @@
 var url = {};
 window.location.search.replace(/([^?=&]+)(=([^&]*))?/g, function($0,$1,$2,$3) { url[$1] = $3 });
 
+// Add an array of outstanding requests to the Ajax object
+Ajax.uniqueIdentifiers = 0;
+Ajax.currentRequests = $A([]);
+
+Ajax.Responders.register({
+  // when a request goes out, add it to the array
+  onCreate: function(request) {
+    request.id = Ajax.uniqueIdentifiers++;
+		Ajax.currentRequests[request.id] = request;
+	},
+	// when a request returns, null it out
+	onComplete:function(request) {
+	  Ajax.currentRequests[request.id] = null;
+  }
+});
+
 function handleEnter(form,e) {
 	var keycode;
 	if (window.event) {

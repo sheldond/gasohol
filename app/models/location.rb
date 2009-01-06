@@ -68,6 +68,17 @@ class Location
     return self.type == :city_state ? true : false
   end
   
+  # Tells us what kind of Location this is
+  def type
+    if @everywhere
+      return :everywhere
+    elsif @state && @zip.nil? && @city.nil?
+      return :only_state
+    else
+      return :city_state
+    end
+  end
+  
   # Outputs the proper string for the location input field in a search form
   def form_value
     case type
@@ -80,14 +91,15 @@ class Location
     end
   end
   
-  # Tells us what kind of Location this is
-  def type
-    if @everywhere
-      return :everywhere
-    elsif @state && @zip.nil? && @city.nil?
-      return :only_state
+  # outputs the correct modifier and place name for display
+  def display_value
+    case type
+    when :everywhere
+      return 'everywhere'
+    when :only_state
+      return "in #{@state}"
     else
-      return :city_state
+      return "near #{@city.titlecase}, #{@state.titlecase}"
     end
   end
   

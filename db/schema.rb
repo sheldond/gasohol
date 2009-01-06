@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081218054842) do
+ActiveRecord::Schema.define(:version => 20081229213413) do
 
   create_table "cities", :force => true do |t|
     t.string  "name"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20081218054842) do
     t.string   "type"
     t.string   "custom"
     t.integer  "count",      :default => 0
+    t.string   "category"
   end
 
   add_index "queries", ["location"], :name => "index_queries_on_location"

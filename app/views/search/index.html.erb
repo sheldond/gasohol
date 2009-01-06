@@ -50,7 +50,10 @@
   </tr>
 </table>
 
-<%= "<script type=\"text/javascript\">#{@ajax}</script>" %>
+<script type="text/javascript">
+  Ajax.currentRequests = $A([]);
+  <%= @ajax %>
+</script>
 
 <% if SearchController::DEBUG or params[:debug] %>
   <%= render :partial => 'debug' %>

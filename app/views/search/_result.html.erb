@@ -72,14 +72,16 @@
               <li id="result_<%= result[:num] %>_links_articles"></li>
               <li id="result_<%= result[:num] %>_links_training"></li>
             </ul>
-            <img src="/images/indicator.gif" alt="Loading..." id="result_<%= result[:num] %>_indicator" />
             <script type="text/javascript">
               $('result_<%= result[:num] %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
               $('result_<%= result[:num] %>_links_watching').update(Math.round(Math.random()*40)+' watching');
             </script>
-            <% @ajax += ajax_for_result_related(result, :discussions) %>
-            <% @ajax += ajax_for_result_related(result, :articles) %>
-            <% @ajax += ajax_for_result_related(result, :training) if result[:meta][:media_types].find { |mt| mt.value =~ /\\/ } %>
+            <% if @ajax %>
+              <img src="/images/indicator.gif" alt="Loading..." id="result_<%= result[:num] %>_indicator" />
+              <% @ajax += ajax_for_result_related(result, :discussions) %>
+              <% @ajax += ajax_for_result_related(result, :articles) %>
+              <% @ajax += ajax_for_result_related(result, :training) if result[:meta][:media_types].find { |mt| mt.value =~ /\\/ } %>
+            <% end %>
           <% end %>
         </div>
       <% end %>

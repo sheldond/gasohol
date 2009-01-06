@@ -22,13 +22,24 @@
   </div>
   
   <script type="text/javascript">
+    var submit_on_location_change = <%= params[:action] == 'home' ? false : true %>;
     $('change_location').observe('click', function() { $('location_changer').toggle(); $('location').focus(); });
-    $('location_update').observe('click', function() { changeLocation($F('location')); });
+    $('location_update').observe('click', function(e) { changeLocation(e,submit_on_location_change); });
     $('location_cancel').observe('click', function() { $('location_changer').toggle() });
     $('location').observe('focus', function() { $('location').select(); });
-    $('location_anywhere').observe('click', function() { $('location').value = 'anywhere'; changeLocation($F('location')) });
-    $('location').observe('keypress', function(e) { e.keyCode == 13 ? changeLocation() : null });
-    function changeLocation() {
+    $('location_anywhere').observe('click', function(e) { $('location').value = 'anywhere'; changeLocation(e,submit_on_location_change) });
+    $('location').observe('keypress', function(e) { e.keyCode == 13 ? changeLocation(e,submit_on_location_change) : null });
+    function changeLocation(e,submit) {
+      // cancel the bubble so the form doesn't get submitted
+      e.stop();
+      
+      // cancel any outstanding ajax requests
+      /*
+      Ajax.currentRequests.each(function(req) { 
+        req ? req.transport.abort() : null
+      });
+      */
+      
       var value = $F('location');
       $('location').disable();
       $('location_update_indicator').show();
@@ -44,8 +55,10 @@
                        $('location').value = r.responseText.match(/>(.*?)</)[1];
                        $('loc').update(r.responseText);
                        $('location_error') ? $('location_error').remove() : null;
-                       form = $('search_form2');
-                       form.submit(); form.disable();
+                       if(submit) {
+                         var form = $('search_form2');
+                         form.submit(); form.disable();
+                       }
                      },
                      onComplete:function() {
                        $('location_update').show();
@@ -59,37 +72,4 @@
                     });
     }
   </script>
-  <!--
-  <script type="text/javascript">
-    // extend the InPlaceEditor control to include a custom callback fired after the form is put on the page
-    Ajax.InPlaceEditor.prototype.__enterEditMode = Ajax.InPlaceEditor.prototype.enterEditMode;
-    Object.extend(Ajax.InPlaceEditor.prototype, {
-      enterEditMode:function(e) {
-        this.__enterEditMode(e);
-        this.triggerCallback('onFormReady',this._form);
-      }
-    });
-    new Ajax.InPlaceEditor('loc', '<%= url_for(:action => 'set_location', :location => location.zip) %>',
-                            { okText:'Save',
-                              externalControl:'change_location',
-                              onFormReady: function(obj,form) {
-                                form.getInputs().first().value = '';
-                              },
-                              ajaxOptions:{
-                                onSuccess:function(r) {
-                                  $('location').value = r.responseText.match(/>(.*?)</)[1];
-                                  if(form = $('search_form2')) {
-                                    // don't let user click the edit location field anymore
-                                    $('loc').stopObserving('click'); $('change_location').remove();
-                                    // submit the form and disable the fields
-                                    form.submit(); form.disable();
-                                  }
-                                },
-                                onFailure:function(r) {
-                                  alert('Please provide a valid zip code to change your location');
-                                }
-                              }
-                            });
-  </script>
-  -->
 </div>
