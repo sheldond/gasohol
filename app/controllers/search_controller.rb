@@ -173,23 +173,46 @@ class SearchController < ApplicationController
   
   # This gets a bang (!) because it will change params based on whether or not a location was found in the passed text string 
   def test_keywords_for_location!(text)
-    # did they actually put a location into they keywords box?
-    if params[:q].split(' near ').length > 1
-      keywords, location = params[:q].split(' near ')     # "running near atlanta, ga"
-    elsif params[:q].split(' in ').length > 1
-      keywords, location = params[:q].split(' in ')       # "running in california"
-    elsif params[:q].split(' ').length > 1
-      keywords = params[:q].split(' ')[0..-2].join(' ')   # "ironman georgia"
-      location = params[:q].split(' ').last
-    else
-      keywords = ''
-      location = params[:q]
-    end
-    # take this string and parse with the Location model and see if it's valid
+    
+    # Try the whole keyword block first
+    keywords = ''
+    location = params[:q]
     begin
-      found_location = Location.new(location)
-    rescue  # keywords did not contain a valid location
+      found_location = Location.new(params[:q])
+    rescue
     end
+    
+    # if the whole keyword didn't match, how about various parts of it?
+    unless found_location
+      if params[:q].split(' near ').length > 1
+        keywords, location = params[:q].split(' near ')     # "running near atlanta, ga"
+        begin
+          found_location = Location.new(location)
+        rescue
+        end
+      elsif params[:q].split(' in ').length > 1
+        keywords, location = params[:q].split(' in ')       # "running in california"
+        begin
+          found_location = Location.new(location)
+        rescue
+        end
+      elsif params[:q].split(' ').length > 1                # "running atlanta"  or  "running san diego"  but not  "running san diego, ca" (ca is the valid location, "running san diego" becomes the keywords)
+        parts = params[:q].split(' ').reverse
+        from = 0
+        to = parts.length
+        until from == to
+          location = parts[0..from].reverse.join(' ')
+          keywords = parts[from+1..to].reverse.join(' ')
+          begin
+            found_location = Location.new(location)
+          rescue
+          end
+          break if found_location
+          from += 1
+        end
+      end
+    end
+      
     # if it was found, reset the params
     if found_location
       params[:q] = keywords
