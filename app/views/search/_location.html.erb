@@ -43,7 +43,7 @@
       var value = $F('location');
       $('location').disable();
       $('location_update_indicator').show();
-      $('location_update').hide();
+      // $('location_update').hide();
       $('location_cancel_container').hide();
       new Ajax.Request('/search/set_location',
                    { asynchronous:false,
