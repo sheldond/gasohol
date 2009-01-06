@@ -3,13 +3,10 @@
   <% if params[:style] == 'short' %>
   
     <%# mini results, ?style=short %>
-    
     <div class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
-
-        <div class="title <%= "sport #{result[:meta][:channel].downcase}" if result[:meta] && result[:meta][:channel] %>">
-          <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
-        </div>
-
+      <div class="title <%= "sport #{result[:meta][:channel].downcase}" if result[:meta] && result[:meta][:channel] %>">
+        <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
+      </div>
     </div>
       
   <% else %>
@@ -27,13 +24,13 @@
   
     <div id="result_<%= result[:num] %>" class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
 
-        <div class="title <%= "sport #{result[:meta][:channel].downcase}" if activity?(result) && result[:meta] && result[:meta][:channel] %>">
-          <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
-          <%= output_rating(rand(6)) %>
-        </div>
-        <% if result[:abstract] && !activity?(result) %>
-          <span class="abstract"><%= un result[:abstract] %></span>
-        <% end %>
+      <div class="title <%= "sport #{result[:meta][:channel].downcase}" if activity?(result) && result[:meta] && result[:meta][:channel] %>">
+        <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
+        <%= output_rating(rand(6)) %>
+      </div>
+      <% if result[:abstract] && !activity?(result) %>
+        <span class="abstract"><%= un result[:abstract] %></span>
+      <% end %>
 
       <ul class="meta">
         <% if result[:meta][:channel] %>
