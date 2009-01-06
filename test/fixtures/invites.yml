@@ -1,13 +1,2 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  code: MyString
-  available: 1
-  used: 1
-  last_used_at: 2008-12-10 15:17:44
-
-two:
-  code: MyString
-  available: 1
-  used: 1
-  last_used_at: 2008-12-10 15:17:44

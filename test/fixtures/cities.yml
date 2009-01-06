@@ -1,9 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  name: MyString
-  state_id: 1
+san_diego:
+  name: san diego
+  state_id: ca
 
-two:
-  name: MyString
-  state_id: 1
+los_angeles:
+  name: los angeles
+  state_id: ca

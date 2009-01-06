@@ -1,6 +1,3 @@
--- Based on top 50 states in the country
--- http://www.infoplease.com/ipa/A0763098.html
-
 insert into cities (name, state_id) values ('los angeles',5);
 insert into cities (name, state_id) values ('chicago',14);
 insert into cities (name, state_id) values ('houston',44);

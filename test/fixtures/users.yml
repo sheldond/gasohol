@@ -1,17 +1,2 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  name: MyString
-  login: MyString
-  password: MyString
-  last_login_at: MyString
-  last_login_ip: MyString
-  can_log_in: false
-
-two:
-  name: MyString
-  login: MyString
-  password: MyString
-  last_login_at: MyString
-  last_login_ip: MyString
-  can_log_in: false
