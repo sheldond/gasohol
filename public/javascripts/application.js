@@ -92,36 +92,27 @@ var assets = [
 		types: [
 		  { text:'Any' },
 			{	text:'Camp' },
-			{	text:'Tournament',
-				custom: {
-					name:'Age Group', values: [
-						{ text:'Any', value:'' },
-						{	text:'6 and Under' },
-						{	text:'7 and Under' },
-						{	text:'8 and Under' },
-						{	text:'9 and Under' },
-						{	text:'10 and Under' },
-						{	text:'11 and Under' },
-						{	text:'12 and Under' },
-						{	text:'13 and Under' },
-						{	text:'14 and Under' },
-						{	text:'15 and Under' },
-						{	text:'16 and Under' },
-						{	text:'17 and Under' },
-						{	text:'18 and Under' },
-						{	text:'High School' },
-						{	text:'College' },
-						{	text:'Adult' },
-						{	text:'Senior' }
-					]
-				}
-			}
+			{	text:'Event' },
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
 		]
 	},
 	{	text:'Basketball',
 		types: [
 		  { text:'Any' },
 			{	text:'Camp' },
+			{	text:'Event' },
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
+		]
+	},
+	{	text:'Camping',
+		types: [
+		  { text:'Any' },
+			{	text:'Camp' },
+			{ text:'Event' },
 			{	text:'Tournament' }
 		]
 	},
@@ -129,13 +120,14 @@ var assets = [
 		types: [
 		  { text:'Any' },
 			{	text:'Camp' },
-			{	text:'Tournament' }
+			{ text:'Event' },
+			{	text:'Membership' }
 		]
 	},
-	{	text:'Fitness & Nutrition',
+	{	text:'Fishing',
 		types: [
 		  { text:'Any' },
-			{	text:'Camp' },
+			{	text:'Event' },
 			{	text:'Tournament' }
 		]
 	},
@@ -143,34 +135,46 @@ var assets = [
 		types: [
 		  { text:'Any' },
 			{	text:'Camp' },
-			{	text:'Tournament' }
+			{	text:'Event' },
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
 		]
 	},
 	{	text:'Golf',
 		types: [
 		  { text:'Any' },
-		  { text:'Event'},
-			{	text:'Tee Time' },
-			{	text:'Tournament' }
+			{	text:'Camp' },
+			{	text:'Event' },
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
 		]
 	},
-	{	text:'Mind & Body',
+	{	text:'Hockey',
 		types: [
 		  { text:'Any' },
 			{	text:'Camp' },
-			{	text:'Tournament' }
+			{	text:'Event' },
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
 		]
 	},
-	{	text:'Outdoors',
+	{	text:'Lacrosse',
 		types: [
 		  { text:'Any' },
 			{	text:'Camp' },
-			{	text:'Event' }
+			{	text:'Event' },
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
 		]
 	},		
 	{	text:'Running',
 		types: [
 		  { text:'Any' },
+			{	text:'Camp' },
 			{	text:'Event', hasResults:true,
 				custom:	{	
 					name:'Distance', values: [
@@ -192,63 +196,58 @@ var assets = [
 						{	text:'Olympic/International' }
 					]
 				}
-			}
+			},
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
 		]
 	},
 	{	text:'Soccer',
 		types: [
 		  { text:'Any' },
 			{	text:'Camp' },
-			{	text:'Tournament' }
+			{	text:'Event' },
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
 		]
 	},
 	{	text:'Softball',
 		types: [
 		  { text:'Any' },
 			{	text:'Camp' },
-			{	text:'Tournament' }
+			{	text:'Event' },
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
+		]
+	},
+	{	text:'Swimming',
+		types: [
+		  { text:'Any' },
+			{	text:'Camp' },
+			{	text:'Event' },
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
 		]
 	},
 	{	text:'Tennis',
 		types: [
 		  { text:'Any' },
 			{	text:'Camp' },
-			{ text:'Event'},
-			{	text:'Tournament' }
-		]
-	},
-	{	text:'Travel',
-		types: [
-		  { text:'Any' },
-			{	text:'Camp' },
-			{	text:'Tournament' }
+			{	text:'Event' },
+			{	text:'League' },
+			{	text:'Membership' },
+			{	text:'Tournament'	}
 		]
 	},
 	{	text:'Triathlon',
 		types: [
 		  { text:'Any' },
 			{	text:'Camp' },
-			{	text:'Tournament' }
-		]
-	},
-	{	text:'Women',
-		types: [
-		  { text:'Any' },
-			{	text:'Camp' },
-			{	text:'Tournament' }
-		]
-	},
-	{	text:'Others',
-		types: [
-		  { text:'Any' },
-			{	text:'Camp' },
-			{	text:'Class' },
-			{	text:'Conference' },
 			{	text:'Event' },
-			{	text:'Membership' },
-			{	text:'Program' },
-			{	text:'Tee Time' },
-			{	text:'Tournament' }
+			{	text:'Membership' }
 		]
 	}
 ];
