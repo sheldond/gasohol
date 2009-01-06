@@ -96,9 +96,7 @@ class SearchController < ApplicationController
   # (/search/set_location)
   # If called internally we pass a location object as 'value'. If no object was passed then look for a params[:value] instead.
   # This method will always set a cookie, assuming a location was found
-  def set_location(value=nil)
-    logger.info("\n\nset_location: start, value=#{value}\n\n")
-    
+  def set_location(value=nil)    
     value ||= params[:value]
     
     if value.is_a?(Location)
@@ -158,11 +156,11 @@ class SearchController < ApplicationController
     begin
       md5 = Digest::MD5.hexdigest("#{request.path_info}?#{@query.to_s}_#{@options.to_s}")
       if output = CACHE.get(md5) 
-        logger.debug("Search result cache hit: #{md5}")
+        logger.debug("Search result cache HIT: #{md5}")
       else
         output = SEARCH.search(@query, @options)
         CACHE.set(md5, output, 4.hours)
-        logger.debug("Search result cache miss: #{md5}")
+        logger.debug("Search result cache MISS: #{md5}")
       end
     rescue MemCache::MemCacheError
       logger.error('Hitting CACHE failed: memcached server not running or not responding')
@@ -177,9 +175,12 @@ class SearchController < ApplicationController
   def test_keywords_for_location!(text)
     # did they actually put a location into they keywords box?
     if params[:q].split(' near ').length > 1
-      keywords, location = params[:q].split(' near ')
+      keywords, location = params[:q].split(' near ')     # "running near atlanta, ga"
     elsif params[:q].split(' in ').length > 1
-      keywords, location = params[:q].split(' in ')
+      keywords, location = params[:q].split(' in ')       # "running in california"
+    elsif params[:q].split(' ').length > 1
+      keywords = params[:q].split(' ')[0..-2].join(' ')   # "ironman georgia"
+      location = params[:q].split(' ').last
     else
       keywords = ''
       location = params[:q]
@@ -193,6 +194,7 @@ class SearchController < ApplicationController
     if found_location
       params[:q] = keywords
       params[:location] = found_location.form_value
+      logger.debug("Location found in keywords '#{params[:q]}'")
     end
   end
   
@@ -220,6 +222,7 @@ class SearchController < ApplicationController
     params[:sort] ||= DEFAULT_SORT
     
     # at this point whatever we should sort by has been set as params[:sort] so just return it
+    logger.debug("Sorting by #{params[:sort]}")
     return params[:sort]
   end
 
@@ -278,39 +281,6 @@ class SearchController < ApplicationController
     return location
   end
 
-=begin  
-  # Get the location from either the query string, cookies or try to geo-locate
-  def get_location
-    logger.info('  ACTION: get_location')
-    
-    if params[:location]    # if there's a location in the URL, use that above everything else
-      logger.info('  get_location: Found in params, done.')
-      @location = Location.new(params[:location], { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
-    elsif cookies[:location]   # if there's a location cookie
-      logger.info('  get_location: Cookie exists, attempting geolocate...')
-      begin
-        @location = Location.from_cookie(cookies[:location], { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
-      rescue
-        logger.info('  get_location: Error setting location from cookie, setting to default')
-        # TODO: this is here in case the users have an 'old' cookie ... can remove after a couple months (added 12/17/08)
-        @location = Location.new(DEFAULT_LOCATION)
-        set_location(@location)
-      end
-    else  # otherwise try to geo-locate and either set the cookie to the result or set to a default location
-      logger.info('  get_location: Location not found, attempting geolocate')
-      begin
-        xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
-        @location = Location.new((xml/:location).at('zip').innerHTML, { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
-      rescue # any kind of error with the request, set to San Diego, CA
-        logger.info('  get_location: Error with geolocate, setting to default')
-        @location = Location.new(DEFAULT_LOCATION)
-      end
-      set_location(@location)
-    end
-
-  end
-  
-=end
   
   # Checks if a skin is either in the query_string or a cookie
   def check_skin

@@ -7,7 +7,7 @@ class CreateCities < ActiveRecord::Migration
     
     add_index :cities, 'name', :unique => true
     
-    File.open(File.join(File.dirname(__FILE__), 'default_data/cities.txt'),'r').each_line do |line|
+    File.open(File.join(File.dirname(__FILE__), 'default_data/cities.sql'),'r').each_line do |line|
       City.connection.insert(line)
     end.close
     

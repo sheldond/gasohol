@@ -14,7 +14,7 @@ class CreateOverrides < ActiveRecord::Migration
     
     add_index :overrides, 'keywords', :unique => true
     
-    File.open(File.join(File.dirname(__FILE__), 'default_data/overrides.txt'),'r').each_line do |line|
+    File.open(File.join(File.dirname(__FILE__), 'default_data/overrides.sql'),'r').each_line do |line|
       Override.connection.insert(line)
     end.close
     

@@ -8,7 +8,7 @@ class CreateStates < ActiveRecord::Migration
     add_index :states, 'name', :unique => true
     add_index :states, 'abbreviation', :unique => true
     
-    File.open(File.join(File.dirname(__FILE__), 'default_data/states.txt'),'r').each_line do |line|
+    File.open(File.join(File.dirname(__FILE__), 'default_data/states.sql'),'r').each_line do |line|
       State.connection.insert(line)
     end.close
     
