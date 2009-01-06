@@ -25,6 +25,9 @@
     <div id="result_<%= result[:num] %>" class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
 
       <div class="title <%= "sport #{result[:meta][:channel].downcase}" if activity?(result) && result[:meta] && result[:meta][:channel] %>">
+        <% if activity?(result) && result[:meta] && result[:meta][:channel] %>
+          <a class="sport_icon" href="#" onclick="$('sport').value = '<%= result[:meta][:channel].titlecase %>'; $('search_form2').submit(); return false;"><img src="/images/sport_icon_<%= result[:meta][:channel].downcase %>.png" alt="<%= result[:meta][:channel].downcase[0..2] %>" /></a>
+        <% end %>
         <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
         <%= output_rating(rand(6)) %>
       </div>

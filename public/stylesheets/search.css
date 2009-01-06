@@ -608,6 +608,11 @@ strong {
 		}
 	*/
 		
+		.result a.sport_icon {
+			text-decoration: none;
+			border-bottom: none !important;
+		}
+		
 		.result .title {
 			float: left;
 			margin: 0 0 .2em;
@@ -616,6 +621,7 @@ strong {
 				text-decoration: none;
 				border-bottom: 1px solid #5091CD;
 			}
+			
 			.result .title a:hover {
 				text-decoration: none;
 				border-bottom: 1px solid #d06f1a;
@@ -628,6 +634,7 @@ strong {
 			}
 		
 			/* sport icons next to titles */
+			/*
 			.result .title.running {
 				padding-left: 34px;
 				background-image: url('/images/sport_icon_running.png');
@@ -642,6 +649,7 @@ strong {
 				padding-left: 34px;
 				background-image: url('/images/sport_icon_cycling.png');
 			}
+			*/
 		
 			.result h3 {
 				font-size: 108%;
