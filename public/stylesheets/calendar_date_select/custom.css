@@ -132,3 +132,11 @@ iframe.ie6_blocker {
 .fieldWithErrors .calendar_date_select {
   border: 2px solid red;
 }
+
+.calendar_date_select .tips {
+	color: #003e7e;
+	padding: .5em;
+	background-color: #d7e8f7;
+	border-top: 1px dashed #003e7e;
+	font-size: 85%;
+}

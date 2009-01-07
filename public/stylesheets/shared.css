@@ -94,9 +94,9 @@ strong {
 /* Footer */
 
 #footer {
-	margin: 1em 0 0;
+	margin: 0;
 	padding: 1em;
-	background-color: #eeeeee;
+	background-color: #f6f6f6;
 	text-align: right;
 	color: #333333;
 }

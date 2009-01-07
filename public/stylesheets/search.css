@@ -153,10 +153,15 @@
 		#refine #form_contents {
 			margin: 0 10px 0;
 		}
+		
+		#refine label span.optional {
+			font-size: 85%;
+			color: #aaaaaa;
+		}
 	
 	#refine input {
 		display: block;
-	} 
+	}
 
 	#refine input#q {
 		border: 1px solid #aaaaaa;
@@ -207,8 +212,8 @@
 	
 		#activity_search label {
 			display: block;
-			margin: .7em 0 .2em;
-			color: #666666;
+			margin: 1em 0 .2em;
+			color: #555555;
 			clear: left;
 		}
 		

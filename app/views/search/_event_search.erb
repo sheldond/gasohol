@@ -3,7 +3,7 @@
   <input type="hidden" name="p" id="p" value="1" />
 
   <div id="keywords_container">
-  	<label for="keywords">Keywords</label>
+  	<label for="keywords">Keywords <span class="optional">(optional)</span></label>
   	<input type="text" name="q" id="q2" value="<%= google_query_to_keywords params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
   </div>
 
@@ -20,7 +20,7 @@
   	<select name="sport" id="sport"></select>
 
   	<div id="type_container">
-  		<label for="type">Type</label>
+  		<label for="type">Activity Type</label>
   		<select name="type" id="type">
   		  <option value="any">Any</option>
   		</select>
