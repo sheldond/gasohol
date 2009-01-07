@@ -61,7 +61,7 @@
 	
 	#home_search a#change_location {
 		font-size: 85%;
-		color: #999999;
+		color: #990000;
 	}
 	
 	#search_home #popular {
@@ -119,9 +119,9 @@
 	#refine_container {
 		position: fixed;
 		margin-top: -40px;
-		padding: 60px 10px 10px 10px;
-		background: transparent url('/images/search_refine_active_logo.png') 10px 0 no-repeat;
-		width: 190px;
+		padding: 40px 0 10px;
+		background: transparent url('/images/search_refine_active_logo.png') 5px 0 no-repeat;
+		width: 210px;
 	}
 
 	#refine #search_tabs {
@@ -149,6 +149,10 @@
 	#refine form {
 		overflow: hidden;
 	}
+	
+		#refine #form_contents {
+			margin: 0 10px 0;
+		}
 	
 	#refine input {
 		display: block;
@@ -187,6 +191,13 @@
 		
 		#refine #popular {
 			margin-top: 1em;
+			padding-left: 1em;
+			overflow: auto;
+		}
+		
+		#refine #related {
+			margin-top: 1em;
+			padding-left: 1em;
 			overflow: auto;
 		}
 	
@@ -222,7 +233,11 @@
 			}
 			
 		#activity_search #search_location {
-			margin: 1em 0 2em;
+			margin: 1em 1em 1em 0em;
+			padding: .5em .5em .5em 1em;
+			background-color: #d7e8f7;
+			border: 1px solid #b5d5f0;
+			border-left: none;
 		}
 			
 		#activity_search #search_location #loc strong {
@@ -236,6 +251,7 @@
 			#activity_search #search_location #change_location {
 				font-size: 85%;
 				display: block;
+				color: #990000;
 			}
 			
 				#activity_search #location_changer {
@@ -651,6 +667,13 @@
 				color: #aaaaaa;
 				text-decoration: none;
 				border-bottom: 1px solid #aaaaaa;
+				margin: 0 .5em 0 0;
+			}
+			
+			.result .related_links a:hover {
+				color: #666666;
+				text-decoration: none;
+				border-bottom: 1px solid #666666;
 			}
 			
 			.result a.flag {

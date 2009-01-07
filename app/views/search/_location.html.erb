@@ -15,7 +15,7 @@
       <li>City, State <span class="example">(San Diego, CA)</span></li>
       <li>Zip <span class="example">(92121)</span></li>
       <li>State <span class="example">(California)</span></li>
-      <li><a href="#" onclick="return false;" id="location_anywhere">Everywhere</a></li>
+      <li><a href="#" onclick="return false;" id="location_everywhere">Everywhere</a></li>
     </ul>
     <input type="text" name="location" id="location" value="<%= location.form_value %>" />
     <img src="/images/indicator.gif" alt="Loading..." id="location_update_indicator" style="display:none;" /><input type="button" id="location_update" value="Update" /><span id="location_cancel_container"> or <a href="#" id="location_cancel">Cancel</a></span>
@@ -27,7 +27,7 @@
     $('location_update').observe('click', function(e) { changeLocation(e,submit_on_location_change); });
     $('location_cancel').observe('click', function() { $('location_changer').toggle() });
     $('location').observe('focus', function() { $('location').select(); });
-    $('location_anywhere').observe('click', function(e) { $('location').value = 'anywhere'; changeLocation(e,submit_on_location_change) });
+    $('location_everywhere').observe('click', function(e) { $('location').value = 'everywhere'; changeLocation(e,submit_on_location_change) });
     $('location').observe('keypress', function(e) { e.keyCode == 13 ? changeLocation(e,submit_on_location_change) : null });
     function changeLocation(e,submit) {
       // cancel the bubble so the form doesn't get submitted

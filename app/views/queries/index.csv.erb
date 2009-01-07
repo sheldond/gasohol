@@ -1,0 +1,3 @@
+id|<% for column in Query.content_columns %><%= column.human_name %>|<% end %>
+<% for query in @queries %><%= query.id %>|<% for column in Query.content_columns %><%= h query.send(column.name) %>|<% end %>
+<% end %>

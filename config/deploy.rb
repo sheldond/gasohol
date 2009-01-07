@@ -61,7 +61,7 @@ set :ec2onrails_config, {
   # Any extra RubyGems to install if desired: can be "gemname" or if a 
   # particular version is desired "gemname -v 1.0.1"
   # If you don't want to install extra rubygems then remove this
-  # :rubygems => ["hpricot","chronic"],
+  # :rubygems => ["hpricot","chronic","mislav-will_paginate"],
   
   # Defines the web proxy that will be used.  Choices are :apache or :nginx
   :web_proxy_server => :apache,

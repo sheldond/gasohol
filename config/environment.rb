@@ -78,3 +78,4 @@ end
 SEARCH = ActiveSearch.new(GASOHOL_CONFIG[:google])
 
 require 'core_extensions'
+require 'will_paginate'
