@@ -1,0 +1,24 @@
+<h1>Flag this Event as 'Miscategorized'</h1>
+
+<p>Did we put an event in the wrong place? Let us know and we'll clean it up ASAP!</p>
+<% form_for(@flag) do |f| %>
+  <%= f.error_messages %>
+  <%= f.hidden_field :asset_id %>
+  <%= f.hidden_field :user_id %>
+  <%= f.hidden_field :status %>
+  
+  <% if params[:title] %>
+    <label>Name</label>
+    <span class="value"><%= format_title(params[:title]) %></span>
+  <% end %>
+  
+  <% if params[:id] %>
+    <label>Event ID</label>
+    <span class="value"><%= params[:id] %></span>
+  <% end %>
+  
+  <%= f.label :comments %>
+  <%= f.text_area :comments %>
+
+  <button value="Search" class="a1" type="submit"><span>Submit</span></button>
+<% end %>

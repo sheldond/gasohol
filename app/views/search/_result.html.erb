@@ -26,7 +26,7 @@
 
       <div class="title <%= "sport #{result[:meta][:channel].downcase}" if activity?(result) && result[:meta] && result[:meta][:channel] %>">
         <% if activity?(result) && result[:meta] && result[:meta][:channel] %>
-          <a class="sport_icon" href="#" onclick="$('sport').value = '<%= result[:meta][:channel].titlecase %>'; $('search_form2').submit(); return false;"><img src="/images/sport_icon_<%= result[:meta][:channel].downcase %>.png" alt="<%= result[:meta][:channel].downcase[0..2] %>" /></a>
+          <a class="sport_icon" href="#" onclick="$('sport').value = '<%= result[:meta][:channel].titlecase %>'; $('search_form2').submit(); return false;"><img src="/images/sport_icon_<%= result[:meta][:channel].downcase %>.png" alt="" /></a>
         <% end %>
         <h3><%= link_to un(result[:title].split('|').first.strip), result[:url] %></h3>
         <%= output_rating(rand(6)) %>
@@ -61,6 +61,10 @@
           
           <% if result[:meta][:online_registration_available] %>
             <%= link_to('Register Now', result[:url], :class => 'register_link') %>
+          <% end %>
+          
+          <% if activity?(result) %>
+            <%= link_to('Flag', new_flag_path(:id => result[:meta][:asset_id], :title => format_title(result[:title])), :class => 'flag') %>
           <% end %>
           
           <% if SearchController::DO_RELATED_SEARCH %>

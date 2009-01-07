@@ -1,3 +1,16 @@
+<ul>
+  <li>Name:<%= @user.name %>
+  <li>Email: <%= @user.email %>
+  <li>Login: <%= @user.login %>
+  <li>Password: <% (1).upto(@user.password.length) do %>*<% end %>
+  <li>Created at: <%= @user.created_at.to_s(:long) %>
+  <li>Last Login at: <%= @user.last_login_at.to_s(:long) if @user.last_login_at %>
+  <li>Last Login IP: <%= @user.last_login_ip if @user.last_login_ip %>
+  <li>Can log in? <%= @user.can_log_in %>
+  <li>Is banned? <%= @user.is_banned %>
+  <li>Is admin? <%= @user.is_admin? %>
+</ul>
 
+<%= link_to 'Destroy', @user, :confirm => 'Are you sure?', :method => :delete %>
 <%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%= link_to 'All Users', users_path %>

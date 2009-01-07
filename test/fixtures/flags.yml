@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  asset_id: MyString
+  comments: MyText
+  user_id: 1
+  status: MyString
+
+two:
+  asset_id: MyString
+  comments: MyText
+  user_id: 1
+  status: MyString

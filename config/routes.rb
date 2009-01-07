@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :flags
+
   map.resources :cities
 
   map.resources :overrides

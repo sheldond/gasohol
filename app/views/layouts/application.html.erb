@@ -17,12 +17,21 @@
 </head>
 
 <body id="<%= "#{params[:controller]}_#{params[:action]}" %>">
+
+  <% if flash[:notice] %>
+    <div id="notice" style="display:none;"><%= flash[:notice] %></div>
+    <script type="text/javascript">
+      $('notice').appear({delay:1,duration:1});
+      $('notice').fade({delay:6});
+    </script>
+  <% end %>
   
   <div id="header">
     <div id="active">
       <div id="active_left">
         <%= link_to('<h1><span>Active.com</span></h1>', root_path) %>
       </div>
+
       <ul id="logged_in_options">
         <li><%= link_to 'Watch a Screencast', :controller => 'screencast' %></li>
         <li><%= link_to 'Logout', logout_path %></li>
@@ -33,7 +42,7 @@
   </div>
 
   <div id="body">
-    <% if flash[:notice] %><div id="notice"><%= flash[:notice] %></div><% end %>
+
     <%= yield %>
     
     <div id="skin_logo"></div>
@@ -55,7 +64,7 @@
     catch(err) {}
   </script>
   
-  <% if params[:action] == 'index' %>
+  <% if params[:controller] == 'search' && params[:action] == 'index' %>
     <script type="text/javascript">
       pageTracker._trackEvent("keywords","<%= params[:q] || '' %>");
       pageTracker._trackEvent("sport","<%= params[:sport] || '' %>");
