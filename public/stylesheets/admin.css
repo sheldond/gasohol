@@ -59,7 +59,14 @@ ul.list, ol.list {
 #error {
 	background-color: #990000;
 }
-	
+
+#downloads {
+	text-align: right;
+}
+
+	#downloads img {
+		vertical-align: middle;
+	}
 
 table#list {
 }
