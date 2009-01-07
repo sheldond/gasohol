@@ -1,5 +1,7 @@
 class Invite < ActiveRecord::Base
   
+  has_many :users
+  
   validates_presence_of :code, :available
   validates_uniqueness_of :code
   validates_numericality_of :available, :used

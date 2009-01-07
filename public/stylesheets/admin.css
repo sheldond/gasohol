@@ -20,6 +20,25 @@ h1 {
 	font-size: 174%;
 }
 
+h2 {
+	font-size: 146.5%;
+	margin: 1em 0;
+}
+
+h3 {
+	font-size: 123.1%;
+	font-weight: bold;
+}
+
+ul.list, ol.list {
+	margin: 1em 1em;
+	padding: 0 1em;
+}
+
+	ol.list li {
+		list-style-type: decimal;
+	}
+
 #back {
 	margin: 0 0 1em;
 }

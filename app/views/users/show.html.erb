@@ -1,14 +1,15 @@
 <ul>
-  <li>Name:<%= @user.name %>
-  <li>Email: <%= @user.email %>
-  <li>Login: <%= @user.login %>
-  <li>Password: <% (1).upto(@user.password.length) do %>*<% end %>
-  <li>Created at: <%= @user.created_at.to_s(:long) %>
-  <li>Last Login at: <%= @user.last_login_at.to_s(:long) if @user.last_login_at %>
-  <li>Last Login IP: <%= @user.last_login_ip if @user.last_login_ip %>
-  <li>Can log in? <%= @user.can_log_in %>
-  <li>Is banned? <%= @user.is_banned %>
-  <li>Is admin? <%= @user.is_admin? %>
+  <li><strong>Name:</strong> <%= @user.name %>
+  <li><strong>Email:</strong> <%= @user.email %>
+  <li><strong>Login:</strong> <%= @user.login %>
+  <li><strong>Password:</strong> <% (1).upto(@user.password.length) do %>*<% end %>
+  <li><strong>Created at:</strong> <%= @user.created_at.to_s(:long) %>
+  <li><strong>Last Login at:</strong> <%= @user.last_login_at.to_s(:long) if @user.last_login_at %>
+  <li><strong>Last Login IP:</strong> <%= @user.last_login_ip if @user.last_login_ip %>
+  <li><strong>Can log in?</strong> <%= @user.can_log_in %>
+  <li><strong>Is banned?</strong> <%= @user.is_banned %>
+  <li><strong>Is admin?</strong> <%= @user.is_admin? %>
+  <li><strong>Invite Code:</strong> <%= @user.invite ? @user.invite.code : '' %>
 </ul>
 
 <%= link_to 'Destroy', @user, :confirm => 'Are you sure?', :method => :delete %>

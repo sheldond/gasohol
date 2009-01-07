@@ -13,7 +13,7 @@
   <tr>
     <td><%=h invite.code %></td>
     <td><%=h invite.available %></td>
-    <td><%=h invite.used %></td>
+    <td><%= link_to(invite.used, users_path(:invite => invite.id)) %></td>
     <td>
       <% if invite.last_used_at %>
         <%=h invite.last_used_at.to_s(:long) %>

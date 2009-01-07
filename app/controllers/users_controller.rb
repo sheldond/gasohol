@@ -5,7 +5,12 @@ class UsersController < ApplicationController
   layout 'admin', :except => [:new, :create]
   
   def index
-    @users = User.find(:all)
+    if params[:invite]
+      @invite = Invite.find(params[:invite])
+      @users = User.find_all_by_invite_id(@invite)
+    else
+      @users = User.find(:all)
+    end
   end
 
   def show
@@ -37,6 +42,7 @@ class UsersController < ApplicationController
         invite.last_used_at = Time.now.to_s(:db)
         invite.save
         @user.can_log_in = true
+        @user.invite = invite
       else
         flash[:notice] = "Your invite code has expired or was invalid! We will email you an invite soon."
       end
