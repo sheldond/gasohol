@@ -35,6 +35,11 @@ ul.list, ol.list {
 	padding: 0 1em;
 }
 
+	ul.list li {
+		list-style-type: disc;
+		margin: .5em 0 0;
+	}
+
 	ol.list li {
 		list-style-type: decimal;
 	}
