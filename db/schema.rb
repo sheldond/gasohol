@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090107003606) do
+ActiveRecord::Schema.define(:version => 20090107224940) do
 
   create_table "cities", :force => true do |t|
     t.string  "name"
@@ -58,8 +58,13 @@ ActiveRecord::Schema.define(:version => 20090107003606) do
     t.string   "sport"
     t.string   "type"
     t.string   "custom"
-    t.integer  "count",      :default => 0
+    t.integer  "count",             :default => 0
     t.string   "category"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.string   "original_keywords"
+    t.string   "original_location"
+    t.integer  "total_results"
   end
 
   add_index "queries", ["location"], :name => "index_queries_on_location"

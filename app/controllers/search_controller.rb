@@ -29,6 +29,9 @@ class SearchController < ApplicationController
     params[:q] ||= ''
     @do_date_separators = false
     
+    # record original params as the query came in
+    query_record = Query.new(:original_keywords => params[:q], :original_location => params[:location] || '')
+    
     # did they type location-type things into the keywords box?
     test_keywords_for_location!(params[:q])
     
@@ -51,11 +54,14 @@ class SearchController < ApplicationController
     end
     
     # time how long it takes to hear back from the GSA
+    query_record.update_with_options(@query,@options)
     @time = {}
     @time[:google] = Time.now
-      Query.record(@query,@options)
       @google = do_google
     @time[:google] = Time.now - @time[:google]
+    query_record.total_results = @google[:google][:total_results]
+    query_record.user = @current_user
+    query_record.save
     
     # get various related queries on the page
     @location = get_location_from_params
@@ -74,7 +80,8 @@ class SearchController < ApplicationController
   # By default will output HTML formatted for our search results. Passing in ?style=short
   # to the HTML version will display the title only
   def google
-    test_keywords_for_location!(params[:q])
+    # we probably only want the keywords to location lookup if we're using the regular search front end
+    # test_keywords_for_location!(params[:q])
     get_options_from_query
     @google = do_google
     standard_response(@google)

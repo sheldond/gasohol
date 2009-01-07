@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   
   belongs_to :invite
+  has_many :queries, :order => 'created_at desc'
   
   validates_presence_of :name, :login, :password, :email
   validates_uniqueness_of :login, :email

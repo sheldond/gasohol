@@ -18,7 +18,7 @@
 <% users.each_with_index do |user,i| %>
   <tr>
     <td><h3><%= i+1 %></h3></td>
-    <td><%= user.name %></td>
+    <td><%= link_to(user.name, user_path(user.id)) %></td>
     <td><%= user.email %></td>
     <td><%= user.login %></td>
     <td>
@@ -32,6 +32,7 @@
     <td><%= user.is_admin? %></td>
     <td><%= user.invite ? link_to(user.invite.code, invite_path(user.invite.id)) : '' %></td>
     <td><%= link_to 'Send Invite', "mailto:#{user.email}?subject=Invitation%20to%20the%20new%20Active.com%20beta%20search&body=You%20can%20now%20access%20our%20beta%20search!%0A%0Ahttp://#{request.env['HTTP_HOST']}/login%0A%0ALet%20me%20know%20if%20you%20have%20any%20questions%20or%20feedback!%0A%0AThanks,%0AJeremy%20Thomas" %></td>
+    <td><%= link_to 'Show', user_path(user) %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

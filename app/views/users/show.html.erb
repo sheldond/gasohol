@@ -15,3 +15,7 @@
 <%= link_to 'Destroy', @user, :confirm => 'Are you sure?', :method => :delete %>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'All Users', users_path %>
+
+<h2>All queries by this user:</h2>
+<%= render :partial => 'queries/list', :locals => { :queries => @user.queries } %>
+
