@@ -2,6 +2,7 @@ module SearchHelper
   
   # Output the page links for a given number of results
   def output_pages(from,to,total,results_per_page,query)
+    results_per_page = results_per_page.to_i
     
     current_page = to / results_per_page
     total_pages = total / results_per_page

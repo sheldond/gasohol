@@ -29,7 +29,7 @@
                 <%= render :partial => 'paging', :locals => { :from => @google[:results].first[:num], 
                                                               :to => @google[:results].last[:num], 
                                                               :total => @google[:google][:total_results],
-                                                              :results_per_page => params[:num].to_i || GASOHOL_CONFIG[:google][:num],
+                                                              :results_per_page => params[:num] || GASOHOL_CONFIG[:google][:num],
                                                               :query => @google[:google][:query] } %>
               </div>
             <% end %>
