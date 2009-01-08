@@ -129,9 +129,7 @@ class Gasohol
   
   def search(query,options={})    
     options = @config.merge(options)
-    
-    RAILS_DEFAULT_LOGGER.info("\n-----\ngasohol.rb - received options: #{options.inspect}\n-----\n")
-    
+ 
     google_query = googlize_params_into_query(options,query)  # creates the q= part of the google search
     full_query_path = query_path(google_query,options)        # creates the full URL to the GSA
     
@@ -147,11 +145,8 @@ class Gasohol
       # the struct we're going to output
       output = Marshal.load(Marshal.dump(DEFAULT_OUTPUT))
       
-      # the keyword string that was searched for
       output[:google][:query] = query
-      # the query that we send to the GSA, not the complete query string
       output[:google][:google_query] = google_query
-      # the full path to google including the options and hostname of the GSA (makes a easily clickable link for debugging)
       output[:google][:full_query_path] = full_query_path
       
       # total number of results
@@ -169,6 +164,8 @@ class Gasohol
         output[:featured] = xml.search(:gm).collect { |xml_featured| parse_featured_result(xml_featured) }
         # get regular results
         output[:results] = xml.search(:r).collect { |xml_result| parse_result(xml_result) }
+        # TODO: Parse results into an object instead of hash
+        # TODO: Add required will_paginate methods to automatically handle paging
       end
       
     rescue => e
