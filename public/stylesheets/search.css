@@ -320,11 +320,35 @@
 		width: 100%;
 	}
 	
+	  #results #event_directors {
+	    background-color: #ffffcc;
+	    margin: 1em 0;
+	    padding: .5em;
+    }
+	
 		.no_results {
 			min-height: 400px;
 			padding: .7em 0;
-			font-size: 116%;
 		}
+		
+		.no_results p {
+		  font-size: 116%;
+	    }
+		
+		.no_results h4 {
+		  margin: 1em 0 0;
+		  font-weight: bold;
+		  color: #003e7e;
+	  }
+		
+		.no_results ul {
+		  margin: 0 1em;
+		  padding: 1em;
+	  }
+	    .no_results li {
+	      list-style-type: disc;
+	      margin: .5em 0;
+      }
 	
 	#context {
 		width: 280px;
