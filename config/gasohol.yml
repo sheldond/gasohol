@@ -7,3 +7,5 @@ google:
   filter: p
   output: xml_no_dtd
   getfields: *
+cache:
+  timeout: 86400

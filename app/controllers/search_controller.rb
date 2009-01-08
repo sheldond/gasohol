@@ -166,7 +166,7 @@ class SearchController < ApplicationController
         logger.debug("Search result cache HIT: #{md5}")
       else
         output = SEARCH.search(@query, @options)
-        CACHE.set(md5, output, 4.hours)
+        CACHE.set(md5, output, GASOHOL_CONFIG[:cache][:timeout])
         logger.debug("Search result cache MISS: #{md5}")
       end
     rescue MemCache::MemCacheError
