@@ -2,20 +2,16 @@
 
 #container {
 	margin: 1em;
-}
-
-
-	h1 {
-		font-size: 131%;
-		font-weight: bold;
-		color: #d06f1a;
-		margin: 0 0 .5em;
 	}
-
-	form {
-		margin: 1em;
+h1 {
+	font-size: 131%;
+	font-weight: bold;
+	color: #d06f1a;
+	margin: 0 0 .5em;
 	}
-	
+form {
+	margin: 1em;
+	}
 	label {
 		display: block;
 	}
@@ -25,7 +21,6 @@
 		margin: 0;
 		padding: 0;
 	}
-	
 	span.value {
 		display: block;
 		margin: 0 0 1.5em;
@@ -33,7 +28,6 @@
 		font-size: 116%;
 		color: #003e7e;
 	}
-	
 	button {
 		display: block;
 	}
