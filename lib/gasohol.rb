@@ -105,13 +105,12 @@ class Gasohol
   # For a simple search now you go:
   #   @results = @google.search('pizza')
   #
-  # What you'll get back in @results is a nicely formatted version of Google's results.
+  # What you'll get back in @results is a nicely formatted version of Google's response.
   
   def initialize(config=nil)
     # start with default values
     @config = DEFAULT_OPTIONS
     unless config.nil?
-      # merge in passed values
       @config.merge!(config)
     else
       raise MissingConfig, 'Missing config - you must pass some configuration options to tell gasohol how to access your GSA. See Gasohol::initialize for configuration options'
@@ -131,91 +130,106 @@ class Gasohol
   def search(query,options={})    
     options = @config.merge(options)
     
-    # the struct we're going to output
-    output = Marshal.load(Marshal.dump(DEFAULT_OUTPUT))
-
-    # the keyword string that was searched for
-    output[:google][:query] = query
-    # the query that we send to the GSA, not the complete query string
-    output[:google][:google_query] = googlize_params_into_query(options,output[:google][:query])
-    # the full path to google including the options and hostname of the GSA (makes a easily clickable link for debugging)
-    output[:google][:full_query_path] = query_path(output[:google][:google_query],options)
-  
+    RAILS_DEFAULT_LOGGER.info("\n-----\ngasohol.rb - received options: #{options.inspect}\n-----\n")
+    
+    google_query = googlize_params_into_query(options,query)  # creates the q= part of the google search
+    full_query_path = query_path(google_query,options)        # creates the full URL to the GSA
+    
     begin
       # do the query and save the xml
-      xml = Hpricot(open(output[:google][:full_query_path]))
-    
-      # save params from the results
+      xml = Hpricot(open(full_query_path))
+  
+      # if all we really care about is the count of records from google, return just that number and get the heck outta here
+      if options[:count_only] == 'true'
+        return xml.search(:m).inner_html.to_i || 0
+      end
+      
+      # the struct we're going to output
+      output = Marshal.load(Marshal.dump(DEFAULT_OUTPUT))
+      
+      # the keyword string that was searched for
+      output[:google][:query] = query
+      # the query that we send to the GSA, not the complete query string
+      output[:google][:google_query] = google_query
+      # the full path to google including the options and hostname of the GSA (makes a easily clickable link for debugging)
+      output[:google][:full_query_path] = full_query_path
+      
+      # total number of results
+      output[:google][:total_results] = xml.search(:m).inner_html.to_i || 0
+      
+      # save params
       xml.search(:param).each do |param|
         output[:google][:params].merge!({param.attributes['name'].to_sym => param.attributes['value'].to_s})
       end
   
-      # total number of results
-      output[:google][:total_results] = xml.search(:m).inner_html.to_i || 0
-  
       # if there was at least one result, parse the xml
       if output[:google][:total_results] > 0
-        
         output[:google][:total_featured_results] = xml.search(:gm).size
-
         # get featured results (called 'sponsored links' on the results page, displayed at the top)
-        output[:featured] = xml.search(:gm).collect do |xml_featured|
-          result = Marshal.load(Marshal.dump(DEFAULT_FEATURED_RESULT))
-          result[:url] = xml_featured.at(:gl) ? xml_featured.at(:gl).inner_html : ''
-          result[:title] = xml_featured.at(:gd) ? xml_featured.at(:gd).inner_html : ''
-          result
-        end
-
+        output[:featured] = xml.search(:gm).collect { |xml_featured| parse_featured_result(xml_featured) }
         # get regular results
-        output[:results] = xml.search(:r).collect do |xml|
-          result = Marshal.load(Marshal.dump(DEFAULT_RESULT))
-          result[:num] = xml.attributes['n'].to_i
-          result[:mime] = xml.attributes['mime'] || 'text/html'
-          result[:level] = xml.attributes['l'].to_i > 0 ? xml.attributes['l'].to_i : 1
-          result[:url] = xml.at(:u) ? xml.at(:u).inner_html : ''
-          result[:url_encoded] = xml.at(:ue) ? xml.at(:ue).inner_html : ''
-          result[:title] = xml.at(:t) ? xml.at(:t).inner_html : ''
-          result[:language] = xml.at(:lang) ? xml.at(:lang).inner_html : ''
-          result[:abstract] = xml.at(:s) ? xml.at(:s).inner_html.gsub(/&lt;br&gt;/i,'').gsub(/\.\.\./,'') : ''
-          # result[:date] = xml.at(:fs) ? Chronic.parse(xml.at(:fs)[:value]) : ''
-          result[:crawl_date] = xml.at(:crawldate) ? Chronic.parse(xml.at(:crawldate).inner_html) : ''
-          if xml.at(:has)
-            if xml.at(:has).at(:c)
-              result[:cache] = {}
-              result[:cache][:size] = xml.at(:has).at(:c).attributes['sz']
-              result[:cache][:cid] = xml.at(:has).at(:c).attributes['cid']
-              result[:cache][:encoding] = xml.at(:has).at(:c).attributes['enc']
-            end
-          end
-          result[:meta][:media_types] = []
-          xml.search(:mt).each do |meta|
-            tag = { meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s }
-            
-            if tag.key.to_s.match(/date/i)
-              result[:meta].merge!({ tag.key => Time.parse(tag.value) })
-            else
-              # if this is a media_type then append to an array, otherwise just set the key/value
-              if tag.key == :media_type
-                result[:meta][:media_types] << tag
-              else
-                result[:meta].merge!(tag)
-              end
-            end
-          end
-          result[:featured] = false
-          result
-        end
+        output[:results] = xml.search(:r).collect { |xml_result| parse_result(xml_result) }
       end
       
     rescue => e
-      # error with results
+      # error with results (the GSA barfed?)
       RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
     end
     
     return output
   end
 
+
   private
+  
+  # a regular result
+  def parse_result(xml)
+    result = Marshal.load(Marshal.dump(DEFAULT_RESULT))
+    result[:num] = xml.attributes['n'].to_i
+    result[:mime] = xml.attributes['mime'] || 'text/html'
+    result[:level] = xml.attributes['l'].to_i > 0 ? xml.attributes['l'].to_i : 1
+    result[:url] = xml.at(:u) ? xml.at(:u).inner_html : ''
+    result[:url_encoded] = xml.at(:ue) ? xml.at(:ue).inner_html : ''
+    result[:title] = xml.at(:t) ? xml.at(:t).inner_html : ''
+    result[:language] = xml.at(:lang) ? xml.at(:lang).inner_html : ''
+    result[:abstract] = xml.at(:s) ? xml.at(:s).inner_html.gsub(/&lt;br&gt;/i,'').gsub(/\.\.\./,'') : ''
+    # result[:date] = xml.at(:fs) ? Chronic.parse(xml.at(:fs)[:value]) : ''
+    result[:crawl_date] = xml.at(:crawldate) ? Chronic.parse(xml.at(:crawldate).inner_html) : ''
+    if xml.at(:has)
+      if xml.at(:has).at(:c)
+        result[:cache] = {}
+        result[:cache][:size] = xml.at(:has).at(:c).attributes['sz']
+        result[:cache][:cid] = xml.at(:has).at(:c).attributes['cid']
+        result[:cache][:encoding] = xml.at(:has).at(:c).attributes['enc']
+      end
+    end
+    result[:meta][:media_types] = []
+    xml.search(:mt).each do |meta|
+      tag = { meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s }
+      # if this meta tag contgains 'date' in the name somewhere, parse it
+      if tag.key.to_s.match(/date/i)
+        result[:meta].merge!({ tag.key => Time.parse(tag.value) })
+      else
+        # if this is a media_type then append to an array, otherwise just set the key/value
+        if tag.key == :media_type
+          result[:meta][:media_types] << tag
+        else
+          result[:meta].merge!(tag)
+        end
+      end
+    end
+    result[:featured] = false
+    return result
+  end
+  
+  # a featured result
+  def parse_featured_result(xml)
+    result = Marshal.load(Marshal.dump(DEFAULT_FEATURED_RESULT))
+    result[:url] = xml.at(:gl) ? xml.at(:gl).inner_html : ''
+    result[:title] = xml.at(:gd) ? xml.at(:gd).inner_html : ''
+    return result
+  end
+  
   # This method is only concerned with turning the query and all of the params into the Google query variable (q).
   # The options (collection, client, etc.) are defined in @config, which is used as a local 
   # variable 'options' in various places above.
@@ -256,7 +270,7 @@ class Gasohol
     return ''
   end
   
-  # This method creates the combination of the query and options into one big query string
+  # This method creates the combination of the url, query and options into one big URI
   def query_path(query,options)
     url = options.delete(:url)  # sets url to the value of options[:url] and then removes it from the hash
     output = url + '?q=' + CGI::escape(query)

@@ -695,6 +695,7 @@
 			.result .related_links li {
 				display: inline;
 				margin: 0 .5em 0 0;
+				white-space: nowrap;
 			}
 		
 #paging {

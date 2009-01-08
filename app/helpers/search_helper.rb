@@ -105,10 +105,10 @@ module SearchHelper
   #
   # If one day all content, including discussions, are indexed and given the same meta data as events and
   # articles then this code can become much simpler and prettier.
-  def related_search_url_for(result,options)
+  def related_search_url_for(result,options,additional_parts={})
     
     path = ''
-    parts = {}
+    parts = {}.merge!(additional_parts)
     
     # what kind of URL are we looking for?
     case options[:type]
@@ -177,7 +177,7 @@ END_OF_AJAX
   
   # Outputs the javascript for an ajax call to get related content for each search result.
   def ajax_for_result_related(result, type)
-    ajax = related_search_url_for(result, { :type => :count_only, :category => type })
+    ajax = related_search_url_for(result, { :type => :count_only, :category => type }, :count_only => true )
     link = related_search_url_for(result, { :type => :full, :category => type })
     
     # the actual noun of what this is so we can show proper singular/plural version depending on how many results we get back
@@ -194,7 +194,7 @@ END_OF_AJAX
     new Ajax.Request( "#{ajax}",
                       { evalscripts:true,
                         onSuccess:function(r) {
-                          total = r.responseText.evalJSON().google.total_results
+                          total = r.responseText;
                           if(total > 0) {
                               $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
                             }
