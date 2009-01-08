@@ -5,6 +5,13 @@ module ApplicationHelper
     !session[:user].nil?
   end
   
+  # duplicates the application controller's current_user
+  def current_user
+    if logged_in?
+      User.find(session[:user])
+    end
+  end
+  
   # Request from an iPhone or iPod touch? (Mobile Safari user agent)
   def iphone_user_agent?
     request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"][/(Mobile\/.+Safari)/]
@@ -22,7 +29,7 @@ module ApplicationHelper
   
   # Is the currently logged in user an administrator?
   def is_admin?
-    @current_user and @current_user.is_admin ? true : false
+    current_user and current_user.is_admin ? true : false
   end
   
   # The title of an event usually looks something like: "Carlsbad <b>5000</b> | Carlsbad, CA 92081"

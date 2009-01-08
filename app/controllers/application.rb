@@ -2,7 +2,7 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  before_filter :load_user
+  # before_filter :load_user
   # before_filter :adjust_format_for_iphone
   helper :all
 
@@ -14,6 +14,12 @@ class ApplicationController < ActionController::Base
   def load_user
     if logged_in?
       @current_user = User.find(session[:user])
+    end
+  end
+  
+  def current_user
+    if logged_in?
+      User.find(session[:user])
     end
   end
   
@@ -48,7 +54,7 @@ class ApplicationController < ActionController::Base
   end
   
   def is_admin?
-    logged_in? and @current_user.is_admin ? true : false
+    logged_in? and current_user.is_admin ? true : false
   end
   
   def redirect_back

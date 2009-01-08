@@ -17,7 +17,7 @@ class FlagsController < ApplicationController
 
 
   def new
-    @flag = Flag.new(:asset_id => params[:id], :user => @current_user, :status => 'miscategorized')
+    @flag = Flag.new(:asset_id => params[:id], :user => current_user, :status => 'miscategorized')
     session[:return_to] = request.referer
   end
 

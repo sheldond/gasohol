@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-  # caches_action :home
+  # caches_page :google
   
   before_filter :login_required, :except => [:location,:google] # this page is locked down, only accessible if logged in
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
@@ -60,7 +60,7 @@ class SearchController < ApplicationController
       @google = do_google
     @time[:google] = Time.now - @time[:google]
     query_record.total_results = @google[:google][:total_results]
-    query_record.user = @current_user
+    query_record.user = current_user
     query_record.save
     
     # get various related queries on the page
