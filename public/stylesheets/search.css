@@ -120,7 +120,7 @@
 		position: fixed;
 		margin-top: -40px;
 		padding: 40px 0 10px;
-		background: transparent url('/images/search_refine_active_logo.png') 5px 0 no-repeat;
+		background: #ffffff url('/images/search_refine_active_logo.png') 5px 0 no-repeat;
 		width: 210px;
 	}
 
@@ -327,7 +327,7 @@
     }
 	
 		.no_results {
-			min-height: 400px;
+			min-height: 600px;
 			padding: .7em 0;
 		}
 		

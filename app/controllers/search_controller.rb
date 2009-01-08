@@ -5,11 +5,10 @@ class SearchController < ApplicationController
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = true  # do all the related (ajax) searches for each and every result
-  DO_CONTEXT_SEARCH = true  # contextual search on the right
-  DEBUG = false   # show debugging at the bottom of the page (can show anyway by adding debug=true to URL)
+  DO_RELATED_SEARCH = true          # do all the related (ajax) searches for each and every result
+  DO_CONTEXT_SEARCH = true          # contextual search on the right
   DEFAULT_LOCATION = 'San Diego,CA' # default location if geo-coding doesn't work
-  DEFAULT_SORT = 'relevance'  # default sort method
+  DEFAULT_SORT = 'relevance'        # default sort method
     
   # (/ or /search/home) 
   # homepage that just shows a search box and popular searches
@@ -27,17 +26,17 @@ class SearchController < ApplicationController
   # variables (@options) and we'll format the results into a simpler format that we use in our views.
   def index
     params[:q] ||= ''
-    @do_date_separators = false
-    
+
     # record original params as the query came in
-    query_record = Query.new(:original_keywords => params[:q], :original_location => params[:location] || '')
+    query_record = Query.new_with_original_params(params)
     
     # did they type location-type things into the keywords box?
     test_keywords_for_location!(params[:q])
     
     # turn the query string parts into options that the GSA understands
-    get_options_from_query
+    @query, @options = get_options_from_query
     
+    @do_date_separators = false
     # what should we sort by?
     @sort = figure_sort
     if @sort == 'date'
@@ -53,8 +52,10 @@ class SearchController < ApplicationController
       end
     end
     
-    # time how long it takes to hear back from the GSA
+    # now update query record with the calculated values for keywords, location, etc.
     query_record.update_with_options(@query,@options)
+    
+    # time how long it takes to hear back from the GSA
     @time = {}
     @time[:google] = Time.now
       @google = do_google
@@ -69,7 +70,7 @@ class SearchController < ApplicationController
     @related_searches = Query.find_related_by_location(@query,@location,5)  # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
     
-    # the result partials will populate this with related query ajax calls
+    # the result partials will populate this with related query ajax calls and then output at the end of the page
     @ajax = ''
     
     render :layout => 'application'
@@ -77,12 +78,13 @@ class SearchController < ApplicationController
   
   # (/search/google)
   # API for getting Google results. Tack on .xml, .json, .yaml for various formats.
-  # By default will output HTML formatted for our search results. Passing in ?style=short
-  # to the HTML version will display the title only
+  # By default will output HTML formatted for our search results. Some modifiers:
+  # ?style=short     => Displays only the title of the result, not the full result with related queries and such
+  # ?count_only=true => Returns only the count of total records, nothing else
   def google
     # we probably only want the keywords to location lookup if we're using the regular search front end
     # test_keywords_for_location!(params[:q])
-    get_options_from_query
+    @query, @options = get_options_from_query
     @google = do_google
     standard_response(@google)
   end
@@ -112,7 +114,7 @@ class SearchController < ApplicationController
     elsif value.is_a?(String)
       # this is just a string, so try to parse it
       begin
-        logger.info("\n\nset_location: creating new location from string #{value}\n\n")
+        logger.info("\nset_location: creating new location from string '#{value}'\n\n")
         location = Location.new(value, { :radius => GASOHOL_CONFIG[:google][:default_radius] })
       rescue Exceptions::LocationError::InvalidZip
         render :text => "Could not find zip - try city,state?", :status => 500
@@ -123,24 +125,15 @@ class SearchController < ApplicationController
       end
     end
     
+    # if a location was found, set a cookie
     if location
       cookies[:location] = { :value => location.to_cookie, :expires => 1.year.from_now }
     end
  
     # render the name of the location
-    if request.xhr?
-      output = "<strong>#{location.form_value}</strong>"
-      case @location.type
-      when :everywhere
-        render :text => output
-      when :only_state
-        render :text => "in #{output}"
-      else
-        render :text => "near #{output}"
-      end
-    end
-    
+    render :text => location.display_value if request.xhr?
   end
+  
   
   private
 
@@ -155,6 +148,7 @@ class SearchController < ApplicationController
     end
   end
   
+  
   # Actually does the work of searching the GSA
   def do_google
     # TODO: some way to get the query recorded here -- but would run for all related searches as well
@@ -163,11 +157,11 @@ class SearchController < ApplicationController
     begin
       md5 = Digest::MD5.hexdigest("#{request.path_info}?#{@query.to_s}_#{@options.to_s}")
       if output = CACHE.get(md5) 
-        logger.debug("Search result cache HIT: #{md5}")
+        logger.info("Search result cache HIT: #{md5}")
       else
         output = SEARCH.search(@query, @options)
         CACHE.set(md5, output, GASOHOL_CONFIG[:cache][:timeout])
-        logger.debug("Search result cache MISS: #{md5}")
+        logger.info("Search result cache MISS: #{md5}")
       end
     rescue MemCache::MemCacheError
       logger.error('Hitting CACHE failed: memcached server not running or not responding')
@@ -236,7 +230,7 @@ class SearchController < ApplicationController
       cookies[:sort] = params[:sort]
     end
     
-    # because of the way cookies behave in Rails, we can set and read in the same request, so if params[:sort]
+    # because of the way cookies behave in Rails, we can't set and read in the same request, so if params[:sort]
     # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out and set it
     # to params[:sort] so that it's the only thing we have to worry about in the checks below
     if !params[:sort] && cookies[:sort]
@@ -260,8 +254,8 @@ class SearchController < ApplicationController
   # Gets the query terms out of the query string and puts it in '@query'. Takes the remaining query string variables
   # and puts them into a hash called '@options'
   def get_options_from_query
-    @query = params[:q] || ''
-    @options = {}
+    query = params[:q] || ''
+    options = {}
     location = get_location_from_params
     
     # add in the user's location
@@ -270,17 +264,19 @@ class SearchController < ApplicationController
       when :everywhere
         nil
       when :only_state
-        @options.merge!({ :state => location.state })
+        options.merge!({ :state => location.state })
       else
-        @options.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
+        options.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
       end
     end
       
     # put any other URL params into a hash as long as they're not the rails 
     # defaults (controller, action, format) or the query itself (that goes in @query)
     params.each do |key,value|
-      @options.merge!({ key.to_sym => value.to_s }) if key != 'controller' && key != 'action' && key != 'q' && key != 'format'
+      options.merge!({ key.to_sym => value.to_s }) if key != 'controller' && key != 'action' && key != 'q' && key != 'format'
     end
+    
+    return [query,options]
   end
 
 
@@ -322,6 +318,7 @@ class SearchController < ApplicationController
       @skin = cookies[:skin]
     end
   end
+  
   
   # Determines whether this is search that uses only keywords
   def simple_search?(options)

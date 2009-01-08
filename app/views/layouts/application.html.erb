@@ -6,7 +6,7 @@
 	<title>Active.com - Search</title>
 	
 	<%= stylesheet_link_tag 'reset','fonts','search', "skins/#{@skin}.css" %>
-	<%= stylesheet_link_tag 'debug' if SearchController::DEBUG || params[:debug] %>
+	<%= stylesheet_link_tag 'debug' if params[:debug] %>
 	<%= javascript_include_tag 'prototype','effects','search','controls','calendar_date_select/calendar_date_select','calendar_date_select/format_american.js','application' %>
   <link href="/stylesheets/calendar_date_select/custom.css?1229036774" media="screen" rel="stylesheet" type="text/css" />
   <% if params[:controller] == 'search' && params[:action] == 'index' %>

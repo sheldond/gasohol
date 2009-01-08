@@ -5,6 +5,14 @@ class Query < ActiveRecord::Base
   self.inheritance_column = 'none'
   belongs_to :user
   
+  def self.new_with_original_params(params)
+     Query.new( :original_keywords => params[:q], 
+                :original_location => params[:location] || '',
+                :start => params[:start] || 1,
+                :original_start_date => params[:start_date] || '',
+                :original_end_date => params[:end_date] || '')
+  end
+  
   def update_with_options(query=nil,options=nil)
     
     self.keywords = query

@@ -61,7 +61,7 @@
   <%= @ajax %>
 </script>
 
-<% if SearchController::DEBUG or params[:debug] %>
+<% if params[:debug] %>
   <%= render :partial => 'debug' %>
 <% end %>
 

@@ -93,13 +93,14 @@ class Location
   
   # outputs the correct modifier and place name for display
   def display_value
+    output = "<strong>#{form_value}</strong>"
     case type
     when :everywhere
-      return 'everywhere'
+      return output
     when :only_state
-      return "in #{@state}"
+      return "in #{output}"
     else
-      return "near #{@city.titlecase}, #{@state.titlecase}"
+      return "near #{output}"
     end
   end
   
