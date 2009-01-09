@@ -117,10 +117,10 @@
 }
 
 	#refine_container {
-		position: fixed;
-		margin-top: -40px;
-		padding: 40px 0 10px;
-		background: #ffffff url('/images/search_refine_active_logo.png') 5px 0 no-repeat;
+
+
+		padding: 0 0 1em;
+		background-color: #ffffff;
 		width: 210px;
 	}
 
