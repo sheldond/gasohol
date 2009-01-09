@@ -66,10 +66,24 @@ class ApplicationController < ActionController::Base
     request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"][/(Mobile\/.+Safari)/]
   end
   
-  # Set iPhone format if request to iphone.trawlr.com
+  # set default request format if request comes from an iphone
   def adjust_format_for_iphone    
     request.format = :iphone if iphone_request?
   end
   
+  # Cache anything! Pass a block of what to cache if a lookup for passed +key+ isn't found. Usage:
+  #   output = cache('foo') { 'hello, world' }
+  # Looks for something in memcache with the +key+ 'foo' and returns it if found. If not found, then store 'hello, world' 
+  # with the +key+ 'foo' and return to the caller. ie. +output+ will always equal the value of the block.
+  def cache(key, &block)
+    unless output = CACHE.get(key)
+      output = yield
+      CACHE.set(key, output, 60)
+      logger.info("Cache MISS and STORE: #{key}")
+    else
+      logger.info("Cache HIT: #{key}")
+    end
+    return output
+  end
   
 end

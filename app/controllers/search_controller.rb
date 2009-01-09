@@ -156,20 +156,11 @@ class SearchController < ApplicationController
     # caching time
     begin
       md5 = Digest::MD5.hexdigest("#{request.path_info}?#{@query.to_s}_#{@options.to_s}")
-      # this doesn't work but should - if the key wasn't found, set the key to the result of the block and return it
-      # output = CACHE.get(md5, GASOHOL_CONFIG[:cache][:timeout]) { SEARCH.search(@query, @options) }
-      if output = CACHE.get(md5) 
-        logger.info("Search result cache HIT: #{md5}")
-      else
-        output = SEARCH.search(@query, @options)
-        CACHE.set(md5, output, GASOHOL_CONFIG[:cache][:timeout])
-        logger.info("Search result cache MISS: #{md5}")
-      end
+      output = cache(md5) { SEARCH.search(@query, @options) }
     rescue MemCache::MemCacheError
       logger.error('Hitting CACHE failed: memcached server not running or not responding')
       output = SEARCH.search(@query, @options)
     end
-    
     return output
   end
   
