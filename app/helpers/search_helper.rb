@@ -205,6 +205,7 @@ END_OF_AJAX
                           total = r.responseText;
                           if(total > 0) {
                               $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
+                              !$('result_#{result[:num]}_links').visible() ? $('result_#{result[:num]}_links').show() : null;
                             }
                           $('result_#{result[:num]}_indicator') ? $('result_#{result[:num]}_indicator').remove() : null;
                           }
@@ -232,6 +233,7 @@ END_OF_AJAX
                           total = r.responseText.evalJSON().photos.total;
                           if(total > 0) {
                             $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
+                            !$('result_#{result[:num]}_links').visible() ? $('result_#{result[:num]}_links').show() : null;
                           }
                           $('result_#{result[:num]}_indicator') ? $('result_#{result[:num]}_indicator').remove() : null;
                         }
@@ -258,6 +260,7 @@ END_OF_AJAX
                           total = r.responseText.evalJSON().feed.openSearch$totalResults.$t;
                           if(total > 0) {
                               $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
+                              !$('result_#{result[:num]}_links').visible() ? $('result_#{result[:num]}_links').show() : null;
                             }
                           $('result_#{result[:num]}_indicator') ? $('result_#{result[:num]}_indicator').remove() : null;
                           }
@@ -285,6 +288,7 @@ END_OF_AJAX
                           if(total > 0) {
                               total = (total == 15) ? '15+' : total;
                               $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
+                              !$('result_#{result[:num]}_links').visible() ? $('result_#{result[:num]}_links').show() : null;
                             }
                           $('result_#{result[:num]}_indicator') ? $('result_#{result[:num]}_indicator').remove() : null;
                           }

@@ -674,6 +674,10 @@
 			vertical-align: middle;
 		}
 		
+		.result .related_links_container {
+			height: 1em;
+		}
+		
 		.result .related_links, .result .action_links {
 			display: block;
 			clear: both;
@@ -717,7 +721,7 @@
 			}
 			
 			.result .related_links ul, .result .action_links ul {
-				margin: 0 0 0 .em;
+				margin: 0 0 0 1em;
 				display: inline;
 			}
 		
