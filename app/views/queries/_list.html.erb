@@ -12,7 +12,11 @@
       <td><%= query.id %></td>
       <td><%= link_to(query.user.name, user_path(query.user.id)) %></td>
       <% for column in Query.content_columns %>
-        <td><%= h query.send(column.name) %></td>
+        <% if query.send(column.name).is_a? Time %>
+          <td><%= h query.send(column.name).to_s(:db) %></td>
+        <% else %>
+          <td><%= h query.send(column.name) %></td>
+        <% end %>
       <% end %>
     </tr>
   <% end %>
