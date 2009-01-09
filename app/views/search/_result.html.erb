@@ -57,8 +57,7 @@
         <% end %>
       </ul>
       <% if activity?(result) %>
-        <div id="result_<%= result[:num] %>_links" class="related_links">
-          
+        <div id="result_<%= result[:num] %>_actions" class="action_links">
           <% if result[:meta][:online_registration_available] %>
             <%= link_to('Register Now', result[:url], :class => 'register_link') %>
           <% end %>
@@ -67,14 +66,22 @@
             <%= link_to('Flag', new_flag_path(:id => result[:meta][:asset_id], :title => format_title(result[:title])), :class => 'flag') %>
           <% end %>
           
+          <ul>
+            <li id="result_<%= result[:num] %>_links_registrants"></li>
+            <li id="result_<%= result[:num] %>_links_watching"></li>
+          </ul>
+        </div>
+        
+        <div id="result_<%= result[:num] %>_links" class="related_links">
           <% if SearchController::DO_RELATED_SEARCH %>
             <strong>Related:</strong>
             <ul>
-              <li id="result_<%= result[:num] %>_links_registrants"></li>
-              <li id="result_<%= result[:num] %>_links_watching"></li>
               <li id="result_<%= result[:num] %>_links_discussions"></li>
               <li id="result_<%= result[:num] %>_links_articles"></li>
               <li id="result_<%= result[:num] %>_links_training"></li>
+              <li id="result_<%= result[:num] %>_links_photos"></li>
+              <li id="result_<%= result[:num] %>_links_videos"></li>
+              <li id="result_<%= result[:num] %>_links_tweets"></li>
             </ul>
             <script type="text/javascript">
               $('result_<%= result[:num] %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
@@ -85,6 +92,9 @@
               <% @ajax += ajax_for_result_related(result, :discussions) %>
               <% @ajax += ajax_for_result_related(result, :articles) %>
               <% @ajax += ajax_for_result_related(result, :training) if result[:meta][:media_types].find { |mt| mt.value =~ /\\/ } %>
+              <% @ajax += ajax_for_result_related(result, :photos) %>
+              <% @ajax += ajax_for_result_related(result, :videos) %>
+              <% @ajax += ajax_for_result_related(result, :tweets) %>
             <% end %>
           <% end %>
         </div>

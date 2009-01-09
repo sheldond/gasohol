@@ -9,3 +9,10 @@ google:
   getfields: *
 cache:
   timeout: 86400
+flickr:
+  url: http://api.flickr.com/services/rest
+  key: 4998fab76787cf39383c563b32ce4b8f
+  results: 6
+youtube:
+  url: http://gdata.youtube.com/feeds/api/videos
+  results: 6

@@ -178,9 +178,7 @@ END_OF_AJAX
   
   # Outputs the javascript for an ajax call to get related content for each search result.
   def ajax_for_result_related(result, type)
-    ajax = related_search_url_for(result, { :type => :count_only, :category => type }, :count_only => true )
-    link = related_search_url_for(result, { :type => :full, :category => type })
-    
+
     # the actual noun of what this is so we can show proper singular/plural version depending on how many results we get back
     case type
     when :training
@@ -189,7 +187,16 @@ END_OF_AJAX
       noun = 'discussion'
     when :articles
       noun = 'article'
+    when :photos
+      return ajax_for_photo_search(result)
+    when :videos
+      return ajax_for_video_search(result)
+    when :tweets
+      return ajax_for_twitter_search(result)
     end
+    
+    ajax = related_search_url_for(result, { :type => :count_only, :category => type }, :count_only => true )
+    link = related_search_url_for(result, { :type => :full, :category => type })
 
     output = <<END_OF_AJAX
     new Ajax.Request( "#{ajax}",
@@ -197,6 +204,86 @@ END_OF_AJAX
                         onSuccess:function(r) {
                           total = r.responseText;
                           if(total > 0) {
+                              $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
+                            }
+                          $('result_#{result[:num]}_indicator') ? $('result_#{result[:num]}_indicator').remove() : null;
+                          }
+                      });
+END_OF_AJAX
+  end
+  
+  
+  # photo search
+  def ajax_for_photo_search(result)
+    
+    # simplify title by removing anything that isn't a letter or number, remove anything after a dash and anything that's encoded
+    formatted_title = format_title(result[:title]).gsub(/&.*?;/,'').gsub(/-.*$/,'').gsub(/[^\w ]/,'')
+    
+    type = 'photos'
+    noun = 'photo'
+    ajax = "http://api.flickr.com/services/rest?text=#{CGI::escape(formatted_title)}&api_key=4998fab76787cf39383c563b32ce4b8f&method=flickr.photos.search&sort=relevance&format=json&nojsoncallback=1"
+    link = "http://flickr.com/search/?w=all&m=text&q=#{CGI::escape(formatted_title)}"
+    output = <<END_OF_AJAX
+    new Ajax.Request( "/proxy",
+                      { evalscripts:true,
+                        method:'post',
+                        parameters:"proxy_uri=#{CGI::escape(ajax)}",
+                        onSuccess:function(r) {
+                          total = r.responseText.evalJSON().photos.total;
+                          if(total > 0) {
+                            $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
+                          }
+                          $('result_#{result[:num]}_indicator') ? $('result_#{result[:num]}_indicator').remove() : null;
+                        }
+                      });
+END_OF_AJAX
+  end
+  
+  
+  # video search
+  def ajax_for_video_search(result)
+    
+    formatted_title = format_title(result[:title]).gsub(/&.*?;/,'').gsub(/-.*$/,'').gsub(/[^\w ]/,'')
+    
+    type = 'videos'
+    noun = 'video'
+    ajax = "http://gdata.youtube.com/feeds/api/videos?vq=#{CGI::escape(formatted_title)}&max-results=1&alt=json"
+    link = "http://www.youtube.com/results?search_query=#{CGI::escape(formatted_title)}&search_type=&aq=f"
+    output = <<END_OF_AJAX
+    new Ajax.Request( "/proxy",
+                      { evalscripts:true,
+                        method:'post',
+                        parameters:"proxy_uri=#{CGI::escape(ajax)}",
+                        onSuccess:function(r) {
+                          total = r.responseText.evalJSON().feed.openSearch$totalResults.$t;
+                          if(total > 0) {
+                              $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
+                            }
+                          $('result_#{result[:num]}_indicator') ? $('result_#{result[:num]}_indicator').remove() : null;
+                          }
+                      });
+END_OF_AJAX
+  end
+  
+  
+  # video search
+  def ajax_for_twitter_search(result)
+    
+    formatted_title = format_title(result[:title]).gsub(/&.*?;/,'').gsub(/-.*$/,'').gsub(/[^\w ]/,'')
+    
+    type = 'tweets'
+    noun = 'tweet'
+    ajax = "http://search.twitter.com/search.json?q=#{CGI::escape(formatted_title)}"
+    link = "http://search.twitter.com/search?q=#{CGI::escape(formatted_title)}"
+    output = <<END_OF_AJAX
+    new Ajax.Request( "/proxy",
+                      { evalscripts:true,
+                        method:'post',
+                        parameters:"proxy_uri=#{CGI::escape(ajax)}",
+                        onSuccess:function(r) {
+                          total = r.responseText.evalJSON().results.length;
+                          if(total > 0) {
+                              total = (total == 15) ? '15+' : total;
                               $('result_#{result[:num]}_links_#{type}').insert({bottom:'<a href="#{link}">'+total+' #{noun}'+(total != 1 ? 's' : '')+'</a>'});
                             }
                           $('result_#{result[:num]}_indicator') ? $('result_#{result[:num]}_indicator').remove() : null;

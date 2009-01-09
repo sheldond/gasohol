@@ -76,12 +76,17 @@ class ApplicationController < ActionController::Base
   # Looks for something in memcache with the +key+ 'foo' and returns it if found. If not found, then store 'hello, world' 
   # with the +key+ 'foo' and return to the caller. ie. +output+ will always equal the value of the block.
   def cache(key, &block)
-    unless output = CACHE.get(key)
+    begin
+      unless output = CACHE.get(key)
+        output = yield
+        CACHE.set(key, output, GASOHOL_CONFIG[:cache][:timeout])
+        logger.info("Cache MISS and STORE: #{key}")
+      else
+        logger.info("Cache HIT: #{key}")
+      end
+    rescue MemCache::MemCacheError
       output = yield
-      CACHE.set(key, output, 60)
-      logger.info("Cache MISS and STORE: #{key}")
-    else
-      logger.info("Cache HIT: #{key}")
+      logger.info("Cache ERROR: Cache not available or not responding")
     end
     return output
   end
