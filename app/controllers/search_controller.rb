@@ -155,7 +155,7 @@ class SearchController < ApplicationController
     # Maybe a flag you pass, defaulted to true, telling the system to record the query to the database
     # caching time
     begin
-      md5 = Digest::MD5.hexdigest("#{request.path_info}?#{@query.to_s}_#{@options.to_s}")
+      md5 = Digest::MD5.hexdigest(request.request_uri)
       output = cache(md5) { SEARCH.search(@query, @options) }
     rescue MemCache::MemCacheError
       logger.error('Hitting CACHE failed: memcached server not running or not responding')
