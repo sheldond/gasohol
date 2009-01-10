@@ -219,6 +219,9 @@ END_OF_AJAX
                         parameters:'request=#{output.to_json}',
                         onSuccess:function(r) {
                           $('result_#{result[:num]}_indicator') ? $('result_#{result[:num]}_indicator').remove() : null;
+                        },
+                        onFailure:function(e) {
+                          $('result_#{result[:num]}_indicator').remove();
                         }
                       });
 END_OF_AJAX

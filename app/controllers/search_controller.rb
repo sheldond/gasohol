@@ -92,41 +92,46 @@ class SearchController < ApplicationController
   
   # (/search/related)
   # Does related item queries for every serach results on /search/index
-  # Pass this a JSON array of hashes like so:  [{type:google,:name:discussions,url:/search/google.json?asdf}]
-  # +type+ is one of google|photo|video|twitter
-  # +name+ is the name of the <div> to update in the view
-  # +url+ is where to go to get the response
+  # Pass this a JSON array of hashes like so:  {id:1,calls:[{type:'google',name:'discussions',noun:'discussion',url:'http://site.com/search/google.json?asdf',link:'http://site.com'}]}
+  # +id+    the id of result on the page that needs updating
+  # +type+  one of google|photo|video|twitter
+  # +name+  the name of the <div> to update in the view
+  # +noun+  the name of the related 'thing' so we can singularize/pluralize the noun based on how many records were returned - "1 discussion" versus "3 discussions"
+  # +ajax+  where to go to get the response
+  # +link+  link that the user can click to see the full result set
   def related
-    #render :text => params.inspect
-    request = ActiveSupport::JSON.decode(params[:request])
-    
-    logger.info("\n\nrequest = #{request.inspect}\n\n")
-    
-    threads = []
-    output = []
-    request['calls'].each do |c|
-#      threads << Thread.new(c) do |call|
-call = c
+    # only if this entire request is not hashed will we look at each individual part (and also see if THEY'RE cached)
+    md5 = Digest::MD5.hexdigest(params[:request])
+    js = cache(md5) do
+      request = ActiveSupport::JSON.decode(params[:request])
+      output = []
+      request['calls'].each do |call|
+        md5 = Digest::MD5.hexdigest(call['ajax'])
         case call['type']
         when 'google'
+          # do_google already handles caching
           query,options = get_options_from_query(call['ajax'])
           result = do_google(query,options)
         when 'photos'
-          result = ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['photos']['total']
+          result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['photos']['total'] }
         when 'videos'
-          result = ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['feed']['openSearch$totalResults']['$t']
+          result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['feed']['openSearch$totalResults']['$t'] }
         when 'tweets'
-          result = ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['results'].length
+          result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['results'].length }
         end
-        output << "$('result_#{request['id']}_links_#{call['name']}').insert({bottom:'<a href=\"#{call['link']}\">#{result} #{call['noun']}'+(#{result} != 1 ? 's' : '')+'</a>'});"
-#      end
+        if result.to_i == 0
+          output << "$('result_#{request['id']}_links_#{call['name']}').remove();"
+        else
+          output << "$('result_#{request['id']}_links_#{call['name']}').insert({bottom:'<a href=\"#{call['link']}\">#{result} #{call['noun']}'+(#{result} != 1 ? 's' : '')+'</a>'});"
+        end
+      end
+      # add an ajax call to un-hide the 'related' row on the page
+      output << "!$('result_#{request['id']}_links').visible() ? $('result_#{request['id']}_links').show() : null;"
+      js = output.join('')
     end
-#    threads.each { |t| t.join }
-    # add an ajax call to un-hide the 'related' row on the page
-    output << "!$('result_#{request['id']}_links').visible() ? $('result_#{request['id']}_links').show() : null;"
+    
     # render all the calls and set content type so that we can evaluate them as valid statements in the browser
-    render :text => output.join(''), :content_type => 'application/javascript'
-
+    render :text => js, :content_type => 'application/javascript'
   end
   
   
@@ -302,6 +307,9 @@ call = c
 
     query = p[:q] || ''
     options = {}
+    
+# move this to ActiveSearch
+=begin
     location = get_location_from_params(p)
     
     # add in the user's location
@@ -315,7 +323,8 @@ call = c
         options.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
       end
     end
-      
+=end
+
     # put any other URL params into a hash as long as they're not the rails 
     # defaults (controller, action, format) or the query itself (that goes in @query)
     p.each do |key,value|
