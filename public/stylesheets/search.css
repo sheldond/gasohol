@@ -675,7 +675,7 @@
 		}
 		
 		.result .related_links_container {
-			height: 1em;
+			/* height: 1em; */
 		}
 		
 		.result .related_links, .result .action_links {
@@ -687,6 +687,7 @@
 		
 			.result .related_links {
 				margin: .5em 0;
+				display: inline;
 			}
 			
 			.result .action_links {

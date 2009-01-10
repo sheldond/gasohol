@@ -58,14 +58,14 @@ class SearchController < ApplicationController
     # time how long it takes to hear back from the GSA
     @time = {}
     @time[:google] = Time.now
-      @google = do_google
+      @google = do_google(@query,@options)
     @time[:google] = Time.now - @time[:google]
     query_record.total_results = @google[:google][:total_results]
     query_record.user = current_user
     query_record.save
     
     # get various related queries on the page
-    @location = get_location_from_params
+    @location = get_location_from_params(params)
     @popular_local_searches = Query.find_popular_by_location(@location,5)   # most frequent keyword searches in same location
     @related_searches = Query.find_related_by_location(@query,@location,5)  # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
@@ -85,9 +85,50 @@ class SearchController < ApplicationController
     # we probably only want the keywords to location lookup if we're using the regular search front end
     # test_keywords_for_location!(params[:q])
     @query, @options = get_options_from_query
-    @google = do_google
+    @google = do_google(@query,@options)
     standard_response(@google)
   end
+  
+  
+  # (/search/related)
+  # Does related item queries for every serach results on /search/index
+  # Pass this a JSON array of hashes like so:  [{type:google,:name:discussions,url:/search/google.json?asdf}]
+  # +type+ is one of google|photo|video|twitter
+  # +name+ is the name of the <div> to update in the view
+  # +url+ is where to go to get the response
+  def related
+    #render :text => params.inspect
+    request = ActiveSupport::JSON.decode(params[:request])
+    
+    logger.info("\n\nrequest = #{request.inspect}\n\n")
+    
+    threads = []
+    output = []
+    request['calls'].each do |c|
+#      threads << Thread.new(c) do |call|
+call = c
+        case call['type']
+        when 'google'
+          query,options = get_options_from_query(call['ajax'])
+          result = do_google(query,options)
+        when 'photos'
+          result = ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['photos']['total']
+        when 'videos'
+          result = ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['feed']['openSearch$totalResults']['$t']
+        when 'tweets'
+          result = ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['results'].length
+        end
+        output << "$('result_#{request['id']}_links_#{call['name']}').insert({bottom:'<a href=\"#{call['link']}\">#{result} #{call['noun']}'+(#{result} != 1 ? 's' : '')+'</a>'});"
+#      end
+    end
+#    threads.each { |t| t.join }
+    # add an ajax call to un-hide the 'related' row on the page
+    output << "!$('result_#{request['id']}_links').visible() ? $('result_#{request['id']}_links').show() : null;"
+    # render all the calls and set content type so that we can evaluate them as valid statements in the browser
+    render :text => output.join(''), :content_type => 'application/javascript'
+
+  end
+  
   
   # (/search/location)
   # API for access to the zips table. Takes a zip code and optional radius. Tack on .xml, .json, .yaml for various formats.
@@ -101,6 +142,7 @@ class SearchController < ApplicationController
     end
     standard_response(@result)
   end
+  
   
   # (/search/set_location)
   # If called internally we pass a location object as 'value'. If no object was passed then look for a params[:value] instead.
@@ -150,17 +192,12 @@ class SearchController < ApplicationController
   
   
   # Actually does the work of searching the GSA
-  def do_google
+  def do_google(query,options)
     # TODO: some way to get the query recorded here -- but would run for all related searches as well
     # Maybe a flag you pass, defaulted to true, telling the system to record the query to the database
     # caching time
-    begin
-      md5 = Digest::MD5.hexdigest(request.request_uri)
-      output = cache(md5) { SEARCH.search(@query, @options) }
-    rescue MemCache::MemCacheError
-      logger.error('Hitting CACHE failed: memcached server not running or not responding')
-      output = SEARCH.search(@query, @options)
-    end
+    md5 = Digest::MD5.hexdigest("#{query.to_s}_#{options.to_s}")
+    output = cache(md5) { SEARCH.search(query,options) }
     return output
   end
   
@@ -251,15 +288,24 @@ class SearchController < ApplicationController
   end
 
 
+  # Takes an optional URL and pulls parameters out of it instead of the default params hash
   # Gets the query terms out of the query string and puts it in '@query'. Takes the remaining query string variables
   # and puts them into a hash called '@options'
-  def get_options_from_query
-    query = params[:q] || ''
+  def get_options_from_query(url='')
+    unless url == ''
+      # turn the passed url into a set of query params to simulate the standard params hash from Rails
+      p = {}
+      CGI.parse(URI.parse(url).query).collect { |key,value| p[key.to_sym] = value.join('') }
+    else
+      p = params
+    end
+
+    query = p[:q] || ''
     options = {}
-    location = get_location_from_params
+    location = get_location_from_params(p)
     
     # add in the user's location
-    if params[:location]
+    if p[:location]
       case location.type
       when :everywhere
         nil
@@ -272,7 +318,7 @@ class SearchController < ApplicationController
       
     # put any other URL params into a hash as long as they're not the rails 
     # defaults (controller, action, format) or the query itself (that goes in @query)
-    params.each do |key,value|
+    p.each do |key,value|
       options.merge!({ key.to_sym => value.to_s }) if key != 'controller' && key != 'action' && key != 'q' && key != 'format'
     end
     
@@ -281,9 +327,9 @@ class SearchController < ApplicationController
 
 
   # Gets the location info out of the URL. If it isn't there then
-  def get_location_from_params
-    if params[:location]
-      return Location.new(params[:location], { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
+  def get_location_from_params(p)
+    if p[:location]
+      return Location.new(p[:location], { :radius => p[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
     else
       return Location.new('everywhere')
     end
