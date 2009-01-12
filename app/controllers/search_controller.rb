@@ -129,7 +129,6 @@ class SearchController < ApplicationController
       output << "!$('result_#{request['id']}_links').visible() ? $('result_#{request['id']}_links').show() : null;"
       js = output.join('')
     end
-    
     # render all the calls and set content type so that we can evaluate them as valid statements in the browser
     render :text => js, :content_type => 'application/javascript'
   end
@@ -196,21 +195,11 @@ class SearchController < ApplicationController
   end
   
   
-  # Actually does the work of searching the GSA
+  # Actually does the work of searching the GSA, results are automatically cached
   def do_google(query,options)
-    # TODO: some way to get the query recorded here -- but would run for all related searches as well
-    # Maybe a flag you pass, defaulted to true, telling the system to record the query to the database
-    # caching time
     md5 = Digest::MD5.hexdigest("#{query.to_s}_#{options.to_s}")
     output = cache(md5) { SEARCH.search(query,options) }
     return output
-  end
-  
-  
-  # just says whether the given md5 is cached alread
-  def is_cached?
-    md5 = Digest::MD5.hexdigest("#{request.path_info}?#{@query.to_s}_#{@options.to_s}")
-    return CACHE.get(md5) ? true : false
   end
   
   
@@ -307,23 +296,6 @@ class SearchController < ApplicationController
 
     query = p[:q] || ''
     options = {}
-    
-# move this to ActiveSearch
-=begin
-    location = get_location_from_params(p)
-    
-    # add in the user's location
-    if p[:location]
-      case location.type
-      when :everywhere
-        nil
-      when :only_state
-        options.merge!({ :state => location.state })
-      else
-        options.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
-      end
-    end
-=end
 
     # put any other URL params into a hash as long as they're not the rails 
     # defaults (controller, action, format) or the query itself (that goes in @query)

@@ -91,4 +91,10 @@ class ApplicationController < ActionController::Base
     return output
   end
   
+  # just says whether the given key is cached or not
+  def is_cached?(text)
+    return CACHE.get(text) ? true : false
+  end
+  
+  
 end
