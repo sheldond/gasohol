@@ -161,7 +161,7 @@ class SearchController < ApplicationController
     elsif value.is_a?(String)
       # this is just a string, so try to parse it
       begin
-        logger.info("\nset_location: creating new location from string '#{value}'\n\n")
+        logger.info("\nSearchController. set_location: creating new location from string '#{value}'\n\n")
         location = Location.new(value, { :radius => GASOHOL_CONFIG[:google][:default_radius] })
       rescue Exceptions::LocationError::InvalidZip
         render :text => "Could not find zip - try city,state?", :status => 500
@@ -260,7 +260,7 @@ class SearchController < ApplicationController
     if found_location
       params[:q] = keywords
       params[:location] = found_location.form_value
-      logger.debug("Location found in keywords '#{params[:q]}'")
+      logger.debug("SearchController.test_keywords_for_location: Location found in keywords '#{params[:q]}'")
     end
   end
   
@@ -288,7 +288,7 @@ class SearchController < ApplicationController
     params[:sort] ||= DEFAULT_SORT
     
     # at this point whatever we should sort by has been set as params[:sort] so just return it
-    logger.debug("Sorting by #{params[:sort]}")
+    logger.debug("\n\nSearchController.figure_sort: Sorting by #{params[:sort]}")
     return params[:sort]
   end
 
@@ -337,9 +337,14 @@ class SearchController < ApplicationController
 
   # Gets the location info out of the URL. If it isn't there then
   def get_location_from_params(p)
-    if p[:location]
-      return Location.new(p[:location], { :radius => p[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
-    else
+    begin
+      if p[:location]
+        return Location.new(p[:location], { :radius => p[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
+      else
+        return Location.new('everywhere')
+      end
+    rescue  #problem with the location in the URL, just search everywhere
+      logger.info("\n\nSearchController.get_location_from_params: Location in URL is bogus: '#{params[:location]}\n\n")
       return Location.new('everywhere')
     end
   end

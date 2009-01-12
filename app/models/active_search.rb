@@ -46,15 +46,19 @@ class ActiveSearch < Gasohol
     end
     
     if parts[:location]
-      if location = Location.new(parts[:location], { :radius => parts[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
-        case location.type
-        when :everywhere
-          nil
-        when :only_state
-          parts.merge!({ :state => location.state })
-        else
-          parts.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
+      begin
+        if 
+          case location.type
+          when :everywhere
+            nil
+          when :only_state
+            parts.merge!({ :state => location.state })
+          else
+            parts.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
+          end
         end
+      rescue  # if there was an error with the location, just search everywhere
+        RAILS_DEFAULT_LOGGER.info("\n\nActiveSearch.googlize_params_into_query: Location in URL is bogus: '#{parts[:location]}'\n\n")
       end
     end
 
