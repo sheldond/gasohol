@@ -114,12 +114,12 @@ module SearchHelper
     # what kind of URL are we looking for?
     case options[:type]
     when :count_only
-      path = 'http://localhost:3000' + url_for(:controller => 'search', :action => 'google', :format => 'json')
+      path = url_for(:controller => 'search', :action => 'google', :format => 'json')
       parts[:num] = 1
     when :full
-      path = 'http://localhost:3000' + url_for(:controller => 'search')
+      path = url_for(:controller => 'search')
     when :short
-      path = 'http://localhost:3000' + url_for(:controller => 'search', :action => 'google', :format => 'html')
+      path = url_for(:controller => 'search', :action => 'google', :format => 'html')
       parts[:num] = 5
       parts[:style] = 'short'
     end
@@ -178,7 +178,7 @@ END_OF_AJAX
   
   # Outputs the javascript for an ajax call to get related content for each search result.
   def ajax_for_result_related(result)
-    formatted_title = format_title(result[:title]).gsub(/&.*?;/,'').gsub(/-.*$/,'').gsub(/[^\w ]/,'')
+    formatted_title = format_title(result[:title]).gsub(/&.*?;/,'').gsub(/-.*$/,'').gsub(/[^\w ]/,'').strip
     output = {:id => result[:num], :calls => []}
     
     output[:calls] << { :noun => 'training plan',
@@ -213,7 +213,7 @@ END_OF_AJAX
                         :link => CGI::escape("http://search.twitter.com/search?q=#{CGI::escape(formatted_title)}") }
     output = <<END_OF_AJAX
     
-    new Ajax.Request( "/search/related",
+    new Ajax.Request( "#{url_for(:controller => 'search', :action => 'related')}",
                       { evalJS:true,
                         method:'post',
                         parameters:'request=#{output.to_json}',

@@ -115,9 +115,9 @@ class Location
       @zip = loc['city']
       @city = loc['city']
       @state = loc['state']
-      @latitude = loc['latitude']
-      @longitude = loc['longitude']
-      @radius = loc['radius']
+      @latitude = loc['latitude'].to_f
+      @longitude = loc['longitude'].to_f
+      @radius = loc['radius'].to_f
       @everywhere = loc['everywhere']
       return
     end
@@ -139,9 +139,9 @@ class Location
         @zip = zip.zip
         @city = zip.city
         @state = State.find_by_abbreviation(zip.state.downcase).name.titlecase
-        @latitude = zip.latitude
-        @longitude = zip.longitude
-        @radius = options[:radius].to_i
+        @latitude = zip.latitude.to_f
+        @longitude = zip.longitude.to_f
+        @radius = options[:radius].to_f
         return
       else
         raise InvalidZip, "Zip code '#{obj}' was not found."
@@ -157,9 +157,9 @@ class Location
           # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
           @city = zips[0].city
           @state = State.find_by_abbreviation(zips[0].state.downcase).name.titlecase
-          @latitude = center[:latitude]
-          @longitude = center[:longitude]
-          @radius = options[:radius].to_i
+          @latitude = center[:latitude].to_f
+          @longitude = center[:longitude].to_f
+          @radius = options[:radius].to_f
           return
         else
           raise InvalidCityState, "No location was found matching '#{obj}'"
@@ -184,9 +184,9 @@ class Location
         # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
         @city = zips[0].city
         @state = State.find_by_abbreviation(zips[0].state.downcase).name.titlecase
-        @latitude = center[:latitude]
-        @longitude = center[:longitude]
-        @radius = options[:radius].to_i
+        @latitude = center[:latitude].to_f
+        @longitude = center[:longitude].to_f
+        @radius = options[:radius].to_f
         return
       end
     else

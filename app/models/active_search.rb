@@ -44,6 +44,19 @@ class ActiveSearch < Gasohol
         query += Chronic.parse(parts[:end_date]).strftime('%Y-%m-%d')
       end
     end
+    
+    if parts[:location]
+      if location = Location.new(parts[:location], { :radius => parts[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
+        case location.type
+        when :everywhere
+          nil
+        when :only_state
+          parts.merge!({ :state => location.state })
+        else
+          parts.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
+        end
+      end
+    end
 
     # do the location
     # if there's no specified radius, set to the default in config/gasohol.yml
