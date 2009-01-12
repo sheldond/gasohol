@@ -100,13 +100,14 @@ class SearchController < ApplicationController
   # +ajax+  where to go to get the response
   # +link+  link that the user can click to see the full result set
   def related
-    # only if this entire request is not hashed will we look at each individual part (and also see if THEY'RE cached)
+    # only if this entire request is not cached will we look at each individual part (and also see if THEY'RE cached)
     md5 = Digest::MD5.hexdigest(params[:request])
     js = cache(md5) do
       request = ActiveSupport::JSON.decode(params[:request])
       output = []
       request['calls'].each do |call|
         md5 = Digest::MD5.hexdigest(call['ajax'])
+        # TODO: Thread these
         case call['type']
         when 'google'
           # do_google already handles caching
@@ -183,7 +184,6 @@ class SearchController < ApplicationController
   
   
   private
-
   # Handles all the format types of the various API methods
   def standard_response(output)
    respond_to do |format|
@@ -204,13 +204,6 @@ class SearchController < ApplicationController
     md5 = Digest::MD5.hexdigest("#{query.to_s}_#{options.to_s}")
     output = cache(md5) { SEARCH.search(query,options) }
     return output
-  end
-  
-  
-  # just says whether the given md5 is cached alread
-  def is_cached?
-    md5 = Digest::MD5.hexdigest("#{request.path_info}?#{@query.to_s}_#{@options.to_s}")
-    return CACHE.get(md5) ? true : false
   end
   
   
@@ -307,23 +300,6 @@ class SearchController < ApplicationController
 
     query = p[:q] || ''
     options = {}
-    
-# move this to ActiveSearch
-=begin
-    location = get_location_from_params(p)
-    
-    # add in the user's location
-    if p[:location]
-      case location.type
-      when :everywhere
-        nil
-      when :only_state
-        options.merge!({ :state => location.state })
-      else
-        options.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
-      end
-    end
-=end
 
     # put any other URL params into a hash as long as they're not the rails 
     # defaults (controller, action, format) or the query itself (that goes in @query)
