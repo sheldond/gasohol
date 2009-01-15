@@ -12,7 +12,8 @@ class ActiveSearch < Gasohol
     
     # exclude shooting results
     query += ' -inmeta:channel=Shooting'
-
+    parts = parse_location(parts)
+    
     # are we searching just a single url?
     if parts[:inurl] and !parts[:inurl].blank?
       query += ' inurl:' + parts[:inurl]
@@ -86,6 +87,23 @@ class ActiveSearch < Gasohol
     end
 
     return query
+  end
+  
+  
+  def parse_location(p)
+    location = SearchController::get_location_from_params(p)
+    # add in the user's location
+    if p[:location]
+      case location.type
+      when :everywhere
+        nil
+      when :only_state
+        p.merge!({ :state => location.state })
+      else
+        p.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
+      end
+    end
+    return p
   end
   
 end

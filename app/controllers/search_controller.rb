@@ -129,7 +129,6 @@ class SearchController < ApplicationController
       output << "!$('result_#{request['id']}_links').visible() ? $('result_#{request['id']}_links').show() : null;"
       js = output.join('')
     end
-    
     # render all the calls and set content type so that we can evaluate them as valid statements in the browser
     render :text => js, :content_type => 'application/javascript'
   end
@@ -195,7 +194,7 @@ class SearchController < ApplicationController
   end
   
   
-  # Actually does the work of searching the GSA
+  # Actually does the work of searching the GSA, results are automatically cached
   def do_google(query,options)
     md5 = Digest::MD5.hexdigest("#{query.to_s}_#{options.to_s}")
     return cache(md5) { SEARCH.search(query,options) }
