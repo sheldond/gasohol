@@ -12,7 +12,6 @@ class ActiveSearch < Gasohol
     
     # exclude shooting results
     query += ' -inmeta:channel=Shooting'
-    parts = parse_location(parts)
     
     # are we searching just a single url?
     if parts[:inurl] and !parts[:inurl].blank?
@@ -48,15 +47,13 @@ class ActiveSearch < Gasohol
     
     if parts[:location]
       begin
-        if 
-          case location.type
-          when :everywhere
-            nil
-          when :only_state
-            parts.merge!({ :state => location.state })
-          else
-            parts.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
-          end
+        case location.type
+        when :everywhere
+          nil
+        when :only_state
+          parts.merge!({ :state => location.state })
+        else
+          parts.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
         end
       rescue  # if there was an error with the location, just search everywhere
         RAILS_DEFAULT_LOGGER.info("\n\nActiveSearch.googlize_params_into_query: Location in URL is bogus: '#{parts[:location]}'\n\n")
@@ -87,23 +84,6 @@ class ActiveSearch < Gasohol
     end
 
     return query
-  end
-  
-  
-  def parse_location(p)
-    location = SearchController::get_location_from_params(p)
-    # add in the user's location
-    if p[:location]
-      case location.type
-      when :everywhere
-        nil
-      when :only_state
-        p.merge!({ :state => location.state })
-      else
-        p.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
-      end
-    end
-    return p
   end
   
 end

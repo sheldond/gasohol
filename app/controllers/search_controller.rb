@@ -254,29 +254,31 @@ class SearchController < ApplicationController
   
   # Figure out what we should sort on based on various parameters
   def figure_sort
+    output = nil
+    
     # if there's a 'sort' parameter in the URL it's because the user set it manually so save to cookie
     if params[:sort]
       cookies[:sort] = params[:sort]
+      output = params[:sort]
     end
     
     # because of the way cookies behave in Rails, we can't set and read in the same request, so if params[:sort]
-    # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out and set it
-    # to params[:sort] so that it's the only thing we have to worry about in the checks below
+    # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out to return
     if !params[:sort] && cookies[:sort]
-      params[:sort] = cookies[:sort]
+      output = cookies[:sort]
     end
     
     # should we automatically sort by date? (if the user doesn't have a cookie set, but they have chosen to filter by date, then yes)
-    if !params[:sort] && @options[:start_date] && !@options[:start_date].empty?
-      params[:sort] = 'date'
+    if !cookies[:sort] && !params[:sort] && @options[:start_date] && !@options[:start_date].empty?
+      output = 'date'
     end
     
     # if nothing set the sort yet, default to relevance
-    params[:sort] ||= DEFAULT_SORT
+    output ||= DEFAULT_SORT
     
     # at this point whatever we should sort by has been set as params[:sort] so just return it
-    logger.debug("\n\nSearchController.figure_sort: Sorting by #{params[:sort]}")
-    return params[:sort]
+    logger.debug("\n\nSearchController.figure_sort: Sorting by #{output}")
+    return output
   end
 
 
