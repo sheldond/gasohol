@@ -7,7 +7,7 @@ class SearchController < ApplicationController
   
   DO_RELATED_SEARCH = true          # do all the related (ajax) searches for each and every result
   DO_CONTEXT_SEARCH = true          # contextual search on the right
-  DEFAULT_LOCATION = 'San Diego,CA' # default location if geo-coding doesn't work
+  DEFAULT_LOCATION = 'everywhere' # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'        # default sort method
     
   # (/ or /search/home) 
@@ -91,7 +91,7 @@ class SearchController < ApplicationController
   
   
   # (/search/related)
-  # Does related item queries for every serach results on /search/index
+  # Does related item queries for every serach result on /search/index
   # Pass this a JSON array of hashes like so:  {id:1,calls:[{type:'google',name:'discussions',noun:'discussion',url:'http://site.com/search/google.json?asdf',link:'http://site.com'}]}
   # +id+    the id of result on the page that needs updating
   # +type+  one of google|photo|video|twitter
@@ -110,9 +110,8 @@ class SearchController < ApplicationController
         # TODO: Thread these
         case call['type']
         when 'google'
-          # do_google already handles caching
           query,options = get_options_from_query(call['ajax'])
-          result = do_google(query,options)
+          result = do_google(query,options)             # do_google already handles its own caching
         when 'photos'
           result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['photos']['total'] }
         when 'videos'
@@ -198,12 +197,8 @@ class SearchController < ApplicationController
   
   # Actually does the work of searching the GSA
   def do_google(query,options)
-    # TODO: some way to get the query recorded here -- but would run for all related searches as well
-    # Maybe a flag you pass, defaulted to true, telling the system to record the query to the database
-    # caching time
     md5 = Digest::MD5.hexdigest("#{query.to_s}_#{options.to_s}")
-    output = cache(md5) { SEARCH.search(query,options) }
-    return output
+    return cache(md5) { SEARCH.search(query,options) }
   end
   
   
@@ -233,7 +228,7 @@ class SearchController < ApplicationController
         rescue
         end
       elsif params[:q].split(' ').length > 1                # "running atlanta"  or  "running san diego"  but not  "running san diego, ca" (ca is the valid location, "running san diego" becomes the keywords)
-        parts = params[:q].split(' ').reverse
+        parts = params[:q].split(' ').reverse               # Starting from the end of multiple keywords, check if the last word is a valid location, if not then add the second to last word to the string and check that, etc.
         from = 0
         to = parts.length
         until from == to
