@@ -1,3 +1,5 @@
+<%= render :partial => 'search_modes', :locals => { :mode => @mode } %>
+
 <% if params[:id] == 'amg' %>
   <div class="ads">
     <iframe height="90" frameborder="no" width="728" scrolling="no" marginheight="0" marginwidth="0" border="0" src="http://ads.active.com/html.ng/tile=926623&amp;site=network2&amp;channel=football&amp;subchannel=nosubchannel&amp;tanproduct=footballpower&amp;b2borb2c=b2c&amp;feature=content&amp;subfeature1=nosubfeature1&amp;subfeature2=nosubfeature2&amp;subfeature3=nosubfeature3&amp;sz=728x90&amp;position=leader_top&amp;ord=396793?" id="leader_top"><a target="_top" href="http://ads.active.com/click.ng/Params.richmedia=yes&tile=926623&site=network2&channel=football&subchannel=nosubchannel&tanproduct=footballpower&b2borb2c=b2c&feature=content&subfeature1=nosubfeature1&subfeature2=nosubfeature2&subfeature3=nosubfeature3&sz=728x90&position=leader_top&ord=396793?" target="_blank"><img src="http://ads.active.com/image.ng/Params.richmedia=yes&tile=926623&site=network2&channel=football&subchannel=nosubchannel&tanproduct=footballpower&b2borb2c=b2c&feature=content&subfeature1=nosubfeature1&subfeature2=nosubfeature2&subfeature3=nosubfeature3&sz=728x90&position=leader_top&ord=396793?" width="728" height="90" /></a></iframe>
@@ -11,11 +13,11 @@
 	<input type="image" name="commit" id="commit" src="/images/button_search_big.png" class="submit" />
 	<div id="more_link"><a href="#" onclick="$('activity_search').toggle(); return false;">More Options</a></div>
 	<div id="activity_search" style="display:none;">
-	  <%= render :partial => 'event_search' %>
+	  <%= render :partial => "search/modes/#{@mode}" %>
   </div>
   <script type="text/javascript">
     // UGLY HACK COMING UP
-    // remove the keywords and submit button from the event search
+    // remove the keywords and submit button from the activities search
     $('keywords_container').remove();
     $('commit2').remove();
     $('start_date').value = 'today';

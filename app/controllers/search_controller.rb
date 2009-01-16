@@ -7,13 +7,17 @@ class SearchController < ApplicationController
   
   DO_RELATED_SEARCH = true          # do all the related (ajax) searches for each and every result
   DO_CONTEXT_SEARCH = true          # contextual search on the right
-  DEFAULT_LOCATION = 'everywhere' # default location if geo-coding doesn't work
+  CONTEXT_RESULT_COUNT = 5          # number of items to show for contextual related
+  DEFAULT_LOCATION = 'everywhere'   # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'        # default sort method
     
   # (/ or /search/home) 
   # homepage that just shows a search box and popular searches
   def home
     params[:q] ||= ''
+    # what search mode are we in? default to activity search
+    @mode = params[:mode] || 'activities'
+    
     # TODO: move popular searches into Ajax call so we can cache this page
     # TODO: move population of the 'Searching in' area to Ajax so we can cache
     @location = get_or_set_default_location
@@ -26,6 +30,9 @@ class SearchController < ApplicationController
   # variables (@options) and we'll format the results into a simpler format that we use in our views.
   def index
     params[:q] ||= ''
+    
+    # what search mode are we in? default to activity search
+    @mode = params[:mode] || 'activities'
 
     # record original params as the query came in
     query_record = Query.new_with_original_params(params)

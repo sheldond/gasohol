@@ -1,8 +1,10 @@
+<%= render :partial => 'search_modes', :locals => { :mode => @mode } %>
+
 <table id="search_table">
   <tr>
     <td id="refine">
       <div style="overflow: hidden; width: 210px; visibility: hidden; height: 0pt;"></div>
-      <%= render :partial => 'search_refine' %>
+      <%= render :partial => 'search_refine', :locals => { :mode => @mode } %>
     </td>
     <td id="main">
       <div style="overflow: hidden; width: 400px; visibility: hidden; height: 0pt;"></div>

@@ -309,6 +309,22 @@
 		padding: 0 0 1em;
 	}
 	
+		#search_modes {
+			background-color: #EFF8FF;
+			padding: .5em 0 .5em 1em;
+			font-size: 93%;
+		}
+			#search_modes li {
+				display: inline;
+				margin-right: 1.5em;
+			}
+				#search_modes li.selected {
+					font-weight: bold;
+				}
+					#search_modes li.selected a {
+						text-decoration: none;
+					}
+	
 	#results_container {
 		margin: 0 1em 0 .2em;
 	}

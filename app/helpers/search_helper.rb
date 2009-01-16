@@ -120,14 +120,14 @@ module SearchHelper
       path = url_for(:controller => 'search')
     when :short
       path = url_for(:controller => 'search', :action => 'google', :format => 'html')
-      parts[:num] = 5
+      parts[:num] = SearchController::CONTEXT_RESULT_COUNT
       parts[:style] = 'short'
     end
     
     # what type of content are we searching?
     case options[:category]
     when :training
-      parts[:category] = 'Products'
+      parts[:mode] = 'training'
       parts[:q] = options[:q] || ''
       
       unless options[:q]
@@ -141,12 +141,11 @@ module SearchHelper
         end
       end
     when :articles
+      parts[:mode] = 'articles'
       parts[:q] = options[:q] || '"' + format_title(result[:title]) + '"'
-      parts[:category] = "Articles"
-      parts[:inurl] = "active.com/*/Articles"
     when :discussions
+      parts[:mode] = 'community'
       parts[:q] = options[:q] || '"' + format_title(result[:title]) + '"'
-      parts[:inurl] = 'community.active.com'
     end
     
     url = path + '?' + parts.to_query
