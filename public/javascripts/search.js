@@ -5,8 +5,8 @@ Search.prototype = {
 		// observe the dropdowns
 		this.assets = assets;
 
-		$('sport').observe('change', this.changeSport.bindAsEventListener(this));
-		$('type').observe('change', this.changeType.bindAsEventListener(this));
+		$('sport') ? $('sport').observe('change', this.changeSport.bindAsEventListener(this)) : null;
+		$('type') ? $('type').observe('change', this.changeType.bindAsEventListener(this)) : null;
 
 		// add sports to the dropdown
 		this.build($('sport'), this.assets);
@@ -18,11 +18,12 @@ Search.prototype = {
 	changeSport:function() {
 		var selectedSport = this.getSport();
 
-		if (selectedSport) {
-			this.build($('type'),selectedSport.types);
+		if($('type')) {
+			if (selectedSport) {
+				this.build($('type'),selectedSport.types);
+			}
+			this.changeType();
 		}
-
-		this.changeType();
 	},
 
 	changeType:function() {

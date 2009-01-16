@@ -11,13 +11,6 @@ class ActiveSearch < Gasohol
   def googlize_params_into_query(parts,query)
     
     # exclude shooting results
-    query += ' -inmeta:channel=Shooting'
-    
-    # are we searching just a single url?
-    # TODO: remove any javascripts that add inurl and then we can remove this
-    if parts[:inurl] and !parts[:inurl].blank?
-      query += ' inurl:' + parts[:inurl]
-    end
     
     # channel
     if parts[:sport] && !parts[:sport].blank? && parts[:sport].downcase != 'any'
@@ -29,10 +22,14 @@ class ActiveSearch < Gasohol
       case parts[:mode]
       when 'activities'
         query += " inmeta:category=activities"
+        query += ' -inmeta:channel=Shooting'
       when 'results'
         query += " inurl:results.active.com"
       when 'training'
         query += " inmeta:category=products"
+        if parts[:difficulty] && parts[:difficulty].downcase != 'any'
+          query += " inmeta:participationCriteria=#{parts[:difficulty]}"
+        end
       when 'articles'
         query += " inmeta:category=articles"
       when 'community'

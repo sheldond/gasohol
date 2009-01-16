@@ -1,18 +1,13 @@
 <div id="refine_container">
   <div id="activity_search" class="tab">
-    <form id="search_form2" name="search_form2" method="get" action="/search">
-      <%= render :partial => 'location', :locals => { :location => @location } %>
-      <%= render :partial => "search/modes/#{mode}" %>
+    <form id="search_form" name="search_form" method="get" action="/search">
+      <div id="form_contents">
+        <input type="hidden" name="mode" id="mode" value="<%= mode %>" />
+        <%= render :partial => "search/modes/#{mode}" %>
+        <%= render :partial => 'search/modes/debug' if is_admin? %>
+        <a id="commit" href="#" onclick="search_form.submit(); return false;"><img src="/images/button_search.png" class="submit" /></a>
     </form>
   </div>
   <%= render :partial => 'popular_local_searches', :locals => { :location_text => @location.form_value } unless @popular_local_searches.empty? %>
   <%= render :partial => 'related_searches' unless @query == '' || @related_searches.empty? %>
 </div>
-
-<script type="text/javascript">
-  url.sport ? selectOption('sport',url.sport) : null; s.changeSport();
-  url.type ? selectOption('type',url.type) : null; s.changeType();
-  url.custom ? selectOption('custom',url.custom.replace(/\+/g,' ')) : null;
-  // url.start_date ? $('start_date').value = url.start_date : null;
-  // url.end_date ? $('end_date').value = url.end_date : null;
-</script>

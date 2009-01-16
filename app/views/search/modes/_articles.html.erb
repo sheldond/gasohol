@@ -1,50 +1,15 @@
-<div id="form_contents">
-  <input type="hidden" name="category" id="category" value="activities" />
-  <input type="hidden" name="p" id="p" value="1" />
-
-  <div id="keywords_container">
-  	<label for="keywords">Keywords <span class="optional">(optional)</span></label>
-  	<input type="text" name="q" id="q2" value="<%= google_query_to_keywords params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
-  </div>
-
-  <div class="column">
-  	<label>Date Range</label>
-  	<div id="date_picker">
-  		<div><label for="start_date">from</label><%= calendar_date_select_tag "start_date", params[:start_date] %></div>
-  		<div><label for="end_date">to</label><%= calendar_date_select_tag "end_date", params[:end_date] %></div>
-  	</div>
-  </div>
-
-  <div class="column">
-  	<label for="sport">Sport/Activity</label>
-  	<select name="sport" id="sport"></select>
-
-  	<div id="type_container">
-  		<label for="type">Activity Type</label>
-  		<select name="type" id="type">
-  		  <option value="any">Any</option>
-  		</select>
-  	</div>
-
-  	<div id="custom_container" style="display:none">
-  		<label for="custom" id="custom_label"></label>
-  		<select name="custom" id="custom"></select>
-  	</div>
-  </div>
-
-  <% if is_admin? %>
-    <div id="debug_options">
-      <label for="num">Num Results</label>
-      <input type="textbox" id="num" name="num" value="<%= params[:num] || GASOHOL_CONFIG[:google][:num] %>" />
-      <label for="debug">Debug</label>
-      <input type="checkbox" id="debug" name="debug" value="true" <%= "checked=\"checked\"" if params[:debug] %> />
-    </div>
-  <% end %>
-
-  <a id="commit2" href="#" onclick="search_form2.submit(); return false;"><img src="/images/button_search.png" class="submit" /></a>
-
-  <script type="text/javascript">
-    // initialize search dropdowns
-    var s = new Search(assets);
-  </script>
+<div id="keywords_container">
+	<label for="keywords">Keywords <span class="optional">(optional)</span></label>
+	<input type="text" name="q" id="q" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
 </div>
+
+<div class="column">
+	<label for="sport">Sport/Activity</label>
+	<select name="sport" id="sport"></select>
+</div>
+
+<script type="text/javascript">
+  // initialize search dropdowns
+  var s = new Search(assets);
+  url.sport ? selectOption('sport',url.sport) : null; s.changeSport();
+</script>

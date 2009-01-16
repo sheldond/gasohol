@@ -25,7 +25,7 @@
 			font-size: 93%;
 		}
 
-	#home_search input#q1 {
+	#home_search input#q {
 		width: 20em;
 		padding: .1em;
 		font-size: 116%;
@@ -162,9 +162,7 @@
 	}
 
 	#refine input#q {
-		border: 1px solid #aaaaaa;
-		padding: 2px;
-		width: 194px;
+
 	}
 	
 	#refine .submit {
