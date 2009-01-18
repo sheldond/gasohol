@@ -3,12 +3,32 @@
 
 set :application, "gasohol"
 
-default_run_options[:pty] = true
+# default_run_options[:pty] = true
 set :repository,  "git://github.com/cannikin/gasohol.git"
 set :scm, "git"
 set :scm_passphrase, "" #This is your custom users password
 set :branch, "master"
+set :deploy_to, "/mnt/app"
 
+set :user, 'root'
+ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")] 
+
+
+# If you aren't deploying to /u/apps/#{application} on the target
+# servers (which is the default), you can specify the actual location
+# via the :deploy_to variable:
+# set :deploy_to, "/var/www/#{application}"
+
+# If you aren't using Subversion to manage your source code, specify
+# your SCM below:
+# set :scm, :subversion
+
+role :app, "ec2-174-129-175-160.compute-1.amazonaws.com"
+role :web, "ec2-174-129-175-160.compute-1.amazonaws.com"
+# role :db,  "ec2-67-202-11-134.compute-1.amazonaws.com", :primary => true
+
+
+=begin
 # NOTE: for some reason Capistrano requires you to have both the public and
 # the private key in the same folder, the public key should have the 
 # extension ".pub".
@@ -108,6 +128,8 @@ set :ec2onrails_config, {
 #task :disable_slave_db_backup, :roles => :db do
 #    sudo "rm -rf /etc/cron.d/backup_app_db_to_s3"
 #end
+
+=end
 
 # custom maintenance page
 namespace :deploy do

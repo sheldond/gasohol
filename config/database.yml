@@ -14,8 +14,9 @@ test:
   timeout: 5000
 
 production:
+  host: domU-12-31-39-00-65-64.compute-1.internal
+  port: 3306
   adapter: mysql
-  host: db_primary
   database: gasohol
-  username: root
-  password: 
+  username: gasohol
+  password: piHiEQwCOs2Ki2RGVD
