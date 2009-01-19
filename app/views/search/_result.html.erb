@@ -73,7 +73,7 @@
         </div>
         
         <div class="related_links_container">
-          <img src="/images/indicator.gif" alt="Loading..." id="result_<%= result[:num] %>_indicator" />
+          <%= image_tag('indicator.gif', { :alt => 'Loading...', :id => "result_#{result[:num]}_indicator" }) %>
           <div id="result_<%= result[:num] %>_links" class="related_links" style="display:none;">
             <% if SearchController::DO_RELATED_SEARCH %>
               <strong>Related:</strong>

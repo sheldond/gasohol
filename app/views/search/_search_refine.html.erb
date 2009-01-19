@@ -5,7 +5,8 @@
         <input type="hidden" name="mode" id="mode" value="<%= mode %>" />
         <%= render :partial => "search/modes/#{mode}" %>
         <%= render :partial => 'search/modes/debug' if is_admin? %>
-        <a id="commit" href="#" onclick="search_form.submit(); return false;"><img src="/images/button_search.png" class="submit" /></a>
+        <a id="commit" href="#" onclick="search_form.submit(); return false;">
+          <%= image_tag('button_search.png', :class => 'submit') %></a>
     </form>
   </div>
   <%= render :partial => 'popular_local_searches', :locals => { :location_text => @location.form_value } unless @popular_local_searches.empty? %>
