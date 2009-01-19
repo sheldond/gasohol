@@ -11,7 +11,7 @@ config.cache_classes = true
 config.action_controller.consider_all_requests_local = false
 config.action_controller.perform_caching             = true
 # deprecated in 2.2.2
-# config.action_view.cache_template_loading            = true
+config.action_view.cache_template_loading            = true
 
 # Enable serving of images, stylesheets, and javascripts from an asset server
 # config.action_controller.asset_host                  = "http://assets.example.com"
@@ -19,4 +19,5 @@ config.action_controller.perform_caching             = true
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
 
-config.action_controller.relative_url_root = "/search" 
+# works in 2.2.2 only
+# config.action_controller.relative_url_root = "/search" 
