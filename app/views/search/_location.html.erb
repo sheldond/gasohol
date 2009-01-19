@@ -1,7 +1,7 @@
 <div id="search_location">
   Searching
   <% if location.everywhere? %>
-     <span id="loc"><strong>everywhere</strong></span>
+    <span id="loc"><strong>everywhere</strong></span>
   <% elsif location.only_state? %>
     <span id="loc">in <strong><%= location.state.titlecase %></strong></span>
   <% else %>
@@ -18,7 +18,8 @@
       <li><a href="#" onclick="return false;" id="location_everywhere">Everywhere</a></li>
     </ul>
     <input type="text" name="location" id="location" value="<%= location.form_value %>" />
-    <img src="/images/indicator.gif" alt="Loading..." id="location_update_indicator" style="display:none;" /><input type="button" id="location_update" value="Update" /><span id="location_cancel_container"> or <a href="#" id="location_cancel">Cancel</a></span>
+    <%= image_tag('indicator.gif' { :alt => 'Loading...', :id => 'location_update_indicator', :style => 'display:none' }) %>
+    <input type="button" id="location_update" value="Update" /><span id="location_cancel_container"> or <a href="#" id="location_cancel">Cancel</a></span>
   </div>
   
   <script type="text/javascript">
