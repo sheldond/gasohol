@@ -8,6 +8,7 @@ google:
   output: xml_no_dtd
   getfields: *
 cache:
+  host: 10.248.98.129
   timeout: 86400
 flickr:
   url: http://api.flickr.com/services/rest

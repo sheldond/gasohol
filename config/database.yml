@@ -14,7 +14,7 @@ test:
   timeout: 5000
 
 production:
-  host: domU-12-31-39-00-65-64.compute-1.internal
+  host: 10.254.106.146
   port: 3306
   adapter: mysql
   database: gasohol

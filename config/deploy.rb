@@ -25,7 +25,7 @@ ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")]
 
 role :app, "ec2-174-129-175-160.compute-1.amazonaws.com"
 role :web, "ec2-174-129-175-160.compute-1.amazonaws.com"
-# role :db,  "ec2-67-202-11-134.compute-1.amazonaws.com", :primary => true
+role :db,  "ec2-174-129-175-160.compute-1.amazonaws.com", :primary => true
 
 
 =begin

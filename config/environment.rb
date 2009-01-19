@@ -69,7 +69,7 @@ GASOHOL_CONFIG = temp_config
 
 # get the cache server ready
 begin
-  CACHE = MemCache.new('127.0.0.1')
+  CACHE = MemCache.new(GASOHOL_CONFIG[:cache][:host])
 rescue MemCache::MemCacheError
   RAILS_DEFAULT_LOGGER.error('Initializing CACHE failed: memcached server not running or not responding')
 end
