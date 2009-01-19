@@ -1,4 +1,4 @@
-@import url('/stylesheets/shared.css');
+@import url('shared.css');
 
 .ads {
 	text-align: center;
@@ -134,7 +134,7 @@
 	
 		#refine #search_tabs li.selected {
 			font-weight: bold;
-			background: transparent url('/images/search_selector.png') center bottom no-repeat;
+			background: transparent url('images/search_selector.png') center bottom no-repeat;
 		}
 			#refine #search_tabs li.selected a {
 				color: #333333;
@@ -584,7 +584,7 @@
 	
 	/*
 		.result:hover {
-			background: transparent url('/images/result_bg.png') top left repeat-x;
+			background: transparent url('../images/result_bg.png') top left repeat-x;
 		}
 	*/
 		
@@ -617,17 +617,17 @@
 			/*
 			.result .title.running {
 				padding-left: 34px;
-				background-image: url('/images/sport_icon_running.png');
+				background-image: url('../images/sport_icon_running.png');
 			}
 			
 			.result .title.triathlon {
 				padding-left: 34px;
-				background-image: url('/images/sport_icon_triathlon.png');
+				background-image: url('../images/sport_icon_triathlon.png');
 			}
 			
 			.result .title.cycling {
 				padding-left: 34px;
-				background-image: url('/images/sport_icon_cycling.png');
+				background-image: url('../images/sport_icon_cycling.png');
 			}
 			*/
 		
@@ -766,21 +766,21 @@
 		}
 
 	.paging a.previous {
-		background: transparent url('/images/previous.png') 2px center no-repeat;
+		background: transparent url('../images/previous.png') 2px center no-repeat;
 		}
 
 	.paging span.previous {
 		color: #aaaaaa;
-		background: transparent url('/images/previous_disabled.png') 2px center no-repeat;
+		background: transparent url('../images/previous_disabled.png') 2px center no-repeat;
 		}
 
 	.paging a.next {
-		background: transparent url('/images/next.png') 90% center no-repeat;
+		background: transparent url('../images/next.png') 90% center no-repeat;
 		}
 
 	.paging span.next {
 		color: #aaaaaa;
-		background: transparent url('/images/next_disabled.png') 90% center no-repeat;
+		background: transparent url('../images/next_disabled.png') 90% center no-repeat;
 		}
 
 	.paging a.current {
@@ -801,12 +801,12 @@
   		height: 51px;
   		}
   	div#error.page404 h1 {
-  		background: transparent url('/images/icon-info.png') top left no-repeat;
+  		background: transparent url('../images/icon-info.png') top left no-repeat;
   		margin-left: -65px;
   		padding: .5em 0 0 65px;
   		}
   	div#error.page500 h1 {
-  		background: transparent url('/images/icon-warning.png') top left no-repeat;
+  		background: transparent url('../images/icon-warning.png') top left no-repeat;
   		margin-left: -75px;
   		padding: .5em 0 0 75px;
   		}
