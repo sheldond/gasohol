@@ -45,6 +45,10 @@ strong {
 		overflow: hidden;
 	}
 	
+	  #active_left {
+	    border: 0;
+    }
+	
 		#active_left h1 {
 			display: block;
 			float: left;
