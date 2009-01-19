@@ -45,7 +45,7 @@
       $('location_update_indicator').show();
       // $('location_update').hide();
       $('location_cancel_container').hide();
-      new Ajax.Request('/search/set_location',
+      new Ajax.Request('<%= url_for(:controller => 'search', :action => 'set_location') %>',
                    { asynchronous:false,
                      method:'get',
                      parameters:'value='+value,
