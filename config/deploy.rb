@@ -150,7 +150,16 @@ namespace :deploy do
   end
 end
 
+namespace :passenger do
+  desc "Restart Application"
+  task :restart do
+    run "touch #{current_path}/tmp/restart.txt"
+  end
+end
+
 before 'deploy', 'deploy:web:disable'
 before 'deploy:migrations', 'deploy:web:disable'
 after 'deploy', 'deploy:web:enable'
 after 'deploy:migrations', 'deploy:web:enable'
+
+after :deploy, "passenger:restart"
