@@ -1,6 +1,6 @@
 <%= render :partial => 'search_modes', :locals => { :mode => @mode } %>
 
-<form id="search_form" method="get" action="/search">
+<form id="search_form" method="get" action="<%= url_for(:controller => 'search') %>">
   <!-- <%= render :partial => 'location', :locals => { :location => @location } %> -->
   <!--
   <input type="text" name="q" value="" onkeypress="return handleEnter(this.form, event);" />
