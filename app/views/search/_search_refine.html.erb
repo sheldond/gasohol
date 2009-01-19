@@ -1,6 +1,6 @@
 <div id="refine_container">
   <div id="activity_search" class="tab">
-    <form id="search_form" name="search_form" method="get" action="/search">
+    <form id="search_form" name="search_form" method="get" action="<%= url_for(:controller => 'search') %>">
       <div id="form_contents">
         <input type="hidden" name="mode" id="mode" value="<%= mode %>" />
         <%= render :partial => "search/modes/#{mode}" %>
