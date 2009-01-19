@@ -150,6 +150,13 @@ namespace :deploy do
   end
 end
 
+namespace :ec2 do
+  desc "Change permissions on /mnt/app directory to be owned by app"
+  task :set_permissions do
+    run "chown -R app:app /mnt/app"
+  end
+end
+
 namespace :passenger do
   desc "Restart Application"
   task :restart do
@@ -161,5 +168,7 @@ before 'deploy', 'deploy:web:disable'
 before 'deploy:migrations', 'deploy:web:disable'
 after 'deploy', 'deploy:web:enable'
 after 'deploy:migrations', 'deploy:web:enable'
+
+after 'deploy:update', 'ec2:set_permissions'
 
 after :deploy, "passenger:restart"
