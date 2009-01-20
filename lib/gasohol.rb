@@ -127,11 +127,12 @@ class Gasohol
   #  @google = Google.new(config)
   #  @results = @google.search('pizza')
   
-  def search(query,options={})    
+  def search(parts)    
+    google_query, options = googlize_params_into_query(parts)  # creates the q= part of the google search
     options = @config.merge(options)
- 
-    google_query = googlize_params_into_query(options,query)  # creates the q= part of the google search
+    RAILS_DEFAULT_LOGGER.debug("\n\nGasohol:google_query=#{google_query}\n\n")
     full_query_path = query_path(google_query,options)        # creates the full URL to the GSA
+    RAILS_DEFAULT_LOGGER.debug("\n\nGasohol:full_query_path=#{full_query_path}\n\n")
     
     begin
       # do the query and save the xml
@@ -145,7 +146,7 @@ class Gasohol
       # the struct we're going to output
       output = Marshal.load(Marshal.dump(DEFAULT_OUTPUT))
       
-      output[:google][:query] = query
+      # output[:google][:query] = query
       output[:google][:google_query] = google_query
       output[:google][:full_query_path] = full_query_path
       
@@ -263,7 +264,7 @@ class Gasohol
   #   finder = PizzaFinder.new(config)  # where 'config' is your hash of options to get the search engine ready (see above)
   #   finder.search(parts,query)        # where 'parts' is a hash of params in the URL not including the keywords
   #                                     # and 'query' is the actual keyword query
-  def googlize_params_into_query(parts,query)
+  def googlize_params_into_query(parts)
     return ''
   end
   

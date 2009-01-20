@@ -5,8 +5,8 @@ class SearchController < ApplicationController
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = true          # do all the related (ajax) searches for each and every result
-  DO_CONTEXT_SEARCH = true          # contextual search on the right
+  DO_RELATED_SEARCH = false          # do all the related (ajax) searches for each and every result
+  DO_CONTEXT_SEARCH = false          # contextual search on the right
   CONTEXT_RESULT_COUNT = 5          # number of items to show for contextual related
   DEFAULT_LOCATION = 'everywhere'   # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'        # default sort method
@@ -37,35 +37,16 @@ class SearchController < ApplicationController
     # record original params as the query came in
     query_record = Query.new_with_original_params(params)
     
-    # did they type location-type things into the keywords box?
-    test_keywords_for_location!(params[:q])
-    
-    # turn the query string parts into options that the GSA understands
-    @query, @options = get_options_from_query
-    
-    @do_date_separators = false
-    # what should we sort by?
     @sort = figure_sort
-    if @sort == 'date'
-      @options.merge!( {:sort => 'date:A:S:d1'} )
-      @do_date_separators = true
-    end
-    
-    # Sometimes we want to override the user's filter settings if they did a simple keyword search
-    # but we think we can get better results by injecting some extra pizzaz into the query to the GSA
-    if simple_search?(@options)
-      if @override = Override.find_by_keywords(@query)
-        @options.merge!(@override.to_options)
-      end
-    end
+    @do_date_separators = @sort == 'date' ? true : false
     
     # now update query record with the calculated values for keywords, location, etc.
-    query_record.update_with_options(@query,@options)
-    
+    # query_record.update_with_options(params)
+
     # time how long it takes to hear back from the GSA
     @time = {}
     @time[:google] = Time.now
-      @google = do_google(@query,@options)
+      @google = do_google(params)
     @time[:google] = Time.now - @time[:google]
     query_record.total_results = @google[:google][:total_results]
     query_record.user = current_user
@@ -91,8 +72,7 @@ class SearchController < ApplicationController
   def google
     # we probably only want the keywords to location lookup if we're using the regular search front end
     # test_keywords_for_location!(params[:q])
-    @query, @options = get_options_from_query
-    @google = do_google(@query,@options)
+    @google = do_google(params)
     standard_response(@google)
   end
   
@@ -202,90 +182,9 @@ class SearchController < ApplicationController
   
   
   # Actually does the work of searching the GSA, results are automatically cached
-  def do_google(query,options)
-    md5 = Digest::MD5.hexdigest("#{query.to_s}_#{options.to_s}")
-    return cache(md5) { SEARCH.search(query,options) }
-  end
-  
-  
-  # This gets a bang (!) because it will change params based on whether or not a location was found in the passed text string 
-  def test_keywords_for_location!(text)
-    
-    # Try the whole keyword block first
-    keywords = ''
-    location = params[:q]
-    begin
-      found_location = Location.new(params[:q])
-    rescue
-    end
-    
-    # if the whole keyword didn't match, how about various parts of it?
-    unless found_location
-      if params[:q].split(' near ').length > 1
-        keywords, location = params[:q].split(' near ')     # "running near atlanta, ga"
-        begin
-          found_location = Location.new(location)
-        rescue
-        end
-      elsif params[:q].split(' in ').length > 1
-        keywords, location = params[:q].split(' in ')       # "running in california"
-        begin
-          found_location = Location.new(location)
-        rescue
-        end
-      elsif params[:q].split(' ').length > 1                # "running atlanta"  or  "running san diego"  but not  "running san diego, ca" (ca is the valid location, "running san diego" becomes the keywords)
-        parts = params[:q].split(' ').reverse               # Starting from the end of multiple keywords, check if the last word is a valid location, if not then add the second to last word to the string and check that, etc.
-        from = 0
-        to = parts.length
-        until from == to
-          location = parts[0..from].reverse.join(' ')
-          keywords = parts[from+1..to].reverse.join(' ')
-          begin
-            found_location = Location.new(location)
-          rescue
-          end
-          break if found_location
-          from += 1
-        end
-      end
-    end
-      
-    # if it was found, reset the params
-    if found_location
-      params[:q] = keywords
-      params[:location] = found_location.form_value
-      logger.debug("SearchController.test_keywords_for_location: Location found in keywords '#{params[:q]}'")
-    end
-  end
-  
-  
-  # Figure out what we should sort on based on various parameters
-  def figure_sort
-    output = nil
-    
-    # if there's a 'sort' parameter in the URL it's because the user set it manually so save to cookie
-    if params[:sort]
-      cookies[:sort] = params[:sort]
-      output = params[:sort]
-    end
-    
-    # because of the way cookies behave in Rails, we can't set and read in the same request, so if params[:sort]
-    # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out to return
-    if !params[:sort] && cookies[:sort]
-      output = cookies[:sort]
-    end
-    
-    # should we automatically sort by date? (if the user doesn't have a cookie set, but they have chosen to filter by date, then yes)
-    if !cookies[:sort] && !params[:sort] && @options[:start_date] && !@options[:start_date].empty?
-      output = 'date'
-    end
-    
-    # if nothing set the sort yet, default to relevance
-    output ||= DEFAULT_SORT
-    
-    # at this point whatever we should sort by has been set as params[:sort] so just return it
-    logger.debug("\n\nSearchController.figure_sort: Sorting by #{output}")
-    return output
+  def do_google(parts)
+    md5 = Digest::MD5.hexdigest(parts.inspect)
+    return cache(md5) { SEARCH.search(parts) }
   end
 
 
@@ -345,6 +244,36 @@ class SearchController < ApplicationController
     end
     return location
   end
+  
+  
+  # Figure out what we should sort on based on various parameters
+  def figure_sort
+    output = nil
+    
+    # if there's a 'sort' parameter in the URL it's because the user set it manually so save to cookie
+    if params[:sort]
+      cookies[:sort] = params[:sort]
+      output = params[:sort]
+    end
+    
+    # because of the way cookies behave in Rails, we can't set and read in the same request, so if params[:sort]
+    # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out to return
+    if !params[:sort] && cookies[:sort]
+      output = cookies[:sort]
+    end
+    
+    # should we automatically sort by date? (if the user doesn't have a cookie set, but they have chosen to filter by date, then yes)
+    if !cookies[:sort] && !params[:sort] && params[:start_date] && !params[:start_date].empty?
+      output = 'date'
+    end
+    
+    # if nothing set the sort yet, default to relevance
+    output ||= DEFAULT_SORT
+    
+    # at this point whatever we should sort by has been set as params[:sort] so just return it
+    logger.debug("\n\nSearchController.figure_sort: Sorting by #{output}")
+    return output
+  end
 
   
   # Checks if a skin is either in the query_string or a cookie
@@ -356,12 +285,6 @@ class SearchController < ApplicationController
     elsif cookies[:skin]
       @skin = cookies[:skin]
     end
-  end
-  
-  
-  # Determines whether this is search that uses only keywords
-  def simple_search?(options)
-    (options[:category] && options[:category].downcase == 'activities') && (options[:sport].nil? || options[:sport].downcase == 'any') && (options[:type].nil? || options[:type].downcase == 'any') && (options[:custom].nil? || options[:custom].downcase == 'any')
   end
   
 end

@@ -1,3 +1,5 @@
+<input type="hidden" name="location" id="location" value="<%= params[:location] %>" />
+
 <div id="keywords_container">
 	<label for="keywords">Keywords <span class="optional">(optional)</span></label>
 	<input type="text" name="q" id="q" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />

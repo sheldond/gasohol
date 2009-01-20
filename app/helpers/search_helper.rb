@@ -71,7 +71,8 @@ module SearchHelper
     output << params[:type].titlecase unless !params[:type] or params[:type].downcase == 'any'
     output << params[:custom].titlecase unless !params[:custom] or params[:custom].downcase == ''
     output << params[:location] unless !params[:location] or params[:location] == ''
-    output << "within #{params[:radius]} miles" unless !params[:radius] or params[:radius].downcase == 'any'
+    # TODO: properly show search radius
+    #output << "within #{params[:radius]} miles" unless !params[:radius] or params[:radius].downcase == 'any'
     output << "#{google_query_to_keywords params[:q]}"
     output.join(' <span>&gt;</span> ')
   end

@@ -5,12 +5,29 @@
 #
 # +parts+ is just the default Rails params hash (minus Rails-specific params like :controller or :action)
 # +query+ looks like '?q=keywords' when we start. We append on to this with the data we care about, interpreted from +parts+
+require 'location'
 
 class ActiveSearch < Gasohol
     
-  def googlize_params_into_query(parts,query)
+  def googlize_params_into_query(parts)
     
-    # exclude shooting results
+    query = "#{parts[:q]}"
+    
+=begin
+
+    # Sometimes we want to override the user's filter settings if they did a simple keyword search
+    # but we think we can get better results by injecting some extra pizzaz into the query to the GSA
+    if simple_search?(@options)
+      if @override = Override.find_by_keywords(@query)
+        @options.merge!(@override.to_options)
+      end
+    end
+
+    # did they type location-type things into the keywords box?
+    test_keywords_for_location!(params[:q])
+
+
+=end
     
     # channel
     if parts[:sport] && !parts[:sport].blank? && parts[:sport].downcase != 'any'
@@ -62,7 +79,8 @@ class ActiveSearch < Gasohol
     end
     
     if parts[:location]
-      begin
+      #begin
+        location = Location.new(parts[:location])
         case location.type
         when :everywhere
           nil
@@ -71,9 +89,9 @@ class ActiveSearch < Gasohol
         else
           parts.merge!({ :latitude => location.latitude, :longitude => location.longitude, :radius => location.radius })
         end
-      rescue  # if there was an error with the location, just search everywhere
-        RAILS_DEFAULT_LOGGER.error("\n\nActiveSearch.googlize_params_into_query: Location in URL is bogus: '#{parts[:location]}'\n\n")
-      end
+      #rescue  # if there was an error with the location, just search everywhere
+      #  RAILS_DEFAULT_LOGGER.error("\n\nActiveSearch.googlize_params_into_query: Location in URL is bogus: '#{parts[:location]}'\n\n")
+      #end
     end
 
     # do the location
@@ -99,9 +117,71 @@ class ActiveSearch < Gasohol
       query += " inmeta:state~#{parts[:state]}"
     end
     
-    RAILS_DEFAULT_LOGGER.debug("\n\nActiveSearch: final GSA query string: '#{query}'\n\n")
+    options = {}
+    options.merge!({:num => parts[:num]}) if parts[:num]
+    options.merge!({:sort => 'date:A:S:d1'}) if parts[:sort] == 'date'
 
-    return query
+    RAILS_DEFAULT_LOGGER.debug("\n\nActiveSearch:options: '#{options.inspect}'\n\n")
+
+    return [query,options]
+  end
+  
+  
+  private
+  # Determines whether this is search that uses only keywords
+  def simple_search?(options)
+    (options[:category] && options[:category].downcase == 'activities') && (options[:sport].nil? || options[:sport].downcase == 'any') && (options[:type].nil? || options[:type].downcase == 'any') && (options[:custom].nil? || options[:custom].downcase == 'any')
+  end
+  
+  
+  # This gets a bang (!) because it will change params based on whether or not a location was found in the passed text string 
+  def test_keywords_for_location!(text)
+    
+    # Try the whole keyword block first
+    keywords = ''
+    location = params[:q]
+    begin
+      found_location = Location.new(params[:q])
+    rescue
+    end
+    
+    # if the whole keyword didn't match, how about various parts of it?
+    unless found_location
+      if params[:q].split(' near ').length > 1
+        keywords, location = params[:q].split(' near ')     # "running near atlanta, ga"
+        begin
+          found_location = Location.new(location)
+        rescue
+        end
+      elsif params[:q].split(' in ').length > 1
+        keywords, location = params[:q].split(' in ')       # "running in california"
+        begin
+          found_location = Location.new(location)
+        rescue
+        end
+      elsif params[:q].split(' ').length > 1                # "running atlanta"  or  "running san diego"  but not  "running san diego, ca" (ca is the valid location, "running san diego" becomes the keywords)
+        parts = params[:q].split(' ').reverse               # Starting from the end of multiple keywords, check if the last word is a valid location, if not then add the second to last word to the string and check that, etc.
+        from = 0
+        to = parts.length
+        until from == to
+          location = parts[0..from].reverse.join(' ')
+          keywords = parts[from+1..to].reverse.join(' ')
+          begin
+            found_location = Location.new(location)
+          rescue
+          end
+          break if found_location
+          from += 1
+        end
+      end
+    end
+      
+    # if it was found, reset the params
+    if found_location
+      params[:q] = keywords
+      params[:location] = found_location.form_value
+      logger.debug("SearchController.test_keywords_for_location: Location found in keywords '#{params[:q]}'")
+    end
   end
   
 end
