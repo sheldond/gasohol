@@ -8,7 +8,13 @@
 	<div id="more_link"><a href="#" onclick="$('activity_search').toggle(); return false;">More Options</a></div>
   -->
 	<div id="activity_search">
+	  <% if location_aware_search_mode?(@mode) %>
+      <%= render :partial => 'location', :locals => { :location => @location } %>
+    <% end %>
 	  <%= render :partial => "search/modes/#{@mode}" %>
+	  <a id="commit" href="#" onclick="$('search_form').submit(); return false;">
+      <%= image_tag('button_search.png', :class => 'submit') %>
+    </a>
   </div>
   <!--
   <script type="text/javascript">

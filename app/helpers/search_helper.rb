@@ -66,15 +66,24 @@ module SearchHelper
   # Given the params in the URL, build a breadcrumb with all the parts
   def build_breadcrumbs(params)
     output = []
-    output << params[:category].titlecase unless !params[:category] or params[:category].downcase == 'any'
+    output << SearchController::SEARCH_MODES.find { |mode| mode[:mode] == params[:mode] }[:name].titlecase unless !params[:mode] or params[:mode].downcase == 'any'
     output << params[:sport].titlecase unless !params[:sport] or params[:sport].downcase == 'any'
+    output << params[:difficulty].titlecase unless !params[:difficulty] or params[:difficulty] == 'any'
     output << params[:type].titlecase unless !params[:type] or params[:type].downcase == 'any'
     output << params[:custom].titlecase unless !params[:custom] or params[:custom].downcase == ''
-    output << params[:location] unless !params[:location] or params[:location] == ''
+    if location_aware_search_mode?(params[:mode])
+      output << params[:location] unless !params[:location] or params[:location] == ''
+    end
     # TODO: properly show search radius
     #output << "within #{params[:radius]} miles" unless !params[:radius] or params[:radius].downcase == 'any'
     output << "#{google_query_to_keywords params[:q]}"
     output.join(' <span>&gt;</span> ')
+  end
+  
+  
+  # says whether or not the passed mode is one that cares about location
+  def location_aware_search_mode?(text)
+    return SearchController::LOCATION_AWARE_SEARCH_MODES.include?(text)
   end
   
   # Return only the params that the 'all' search cares about (q, category, sport)

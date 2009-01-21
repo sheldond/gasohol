@@ -13,15 +13,11 @@ class Location
   
   def initialize(obj,options={})
     options = DEFAULT_OPTIONS.merge!(options)
-    @zip, @city, @state, @latitude, @longitude, @radius = nil
+    @zip, @city, @latitude, @longitude, @radius = nil
+    @state = {}
     @everywhere = false
     
-    begin
-      parse(obj,options)
-    # rescue
-      # if there are any errors finding the location, just default it to everywhere
-    #  @everywhere = true
-    end
+    parse(obj,options)
   end
   
   # Alias 'new' as 'from_cookie' if we are creating a new Location from a cookie 
@@ -31,7 +27,7 @@ class Location
   end
   
   def empty?
-    return (@zip.nil? && @city.nil? && @state.nil? && !@everywhere) ? true : false
+    return (@zip.nil? && @city.nil? && @state.empty? && !@everywhere) ? true : false
   end
   
   # Return a Hash version of this object
@@ -52,7 +48,7 @@ class Location
   
   # Figures out if this is only a state-search
   def only_state?
-    return (@state && @city.nil? && @zip.nil?) ? true : false
+    return (!@state.empty? && @city.nil? && @zip.nil?) ? true : false
   end
   
   # Does this location represent everywhere?
@@ -72,7 +68,7 @@ class Location
   def type
     if @everywhere
       return :everywhere
-    elsif @state && @zip.nil? && @city.nil?
+    elsif !@state.empty? && @zip.nil? && @city.nil?
       return :only_state
     else
       return :city_state
@@ -85,9 +81,9 @@ class Location
     when :everywhere
       return 'everywhere'
     when :only_state
-      return @state.titlecase
+      return @state[:name].titlecase
     else
-      return "#{@city.titlecase}, #{@state.titlecase}"
+      return "#{@city.titlecase}, #{@state[:name].titlecase}"
     end
   end
   
@@ -114,7 +110,7 @@ class Location
       loc = ActiveSupport::JSON.decode(obj)
       @zip = loc['city']
       @city = loc['city']
-      @state = loc['state']
+      @state = { :name => loc['state']['name'], :abbreviation => loc['state']['abbreviation'] }
       @latitude = loc['latitude'].to_f
       @longitude = loc['longitude'].to_f
       @radius = loc['radius'].to_f
@@ -136,9 +132,10 @@ class Location
     # zip code
     if obj.to_i > 0
       if zip = Zip.find_by_zip(obj)
+        state =  State.find_by_abbreviation(zip.state.downcase)
         @zip = zip.zip
         @city = zip.city
-        @state = State.find_by_abbreviation(zip.state.downcase).name.titlecase
+        @state = { :name => state.name.titlecase, :abbreviation => state.abbreviation }
         @latitude = zip.latitude.to_f
         @longitude = zip.longitude.to_f
         @radius = options[:radius].to_f
@@ -155,8 +152,9 @@ class Location
         if zips = Zip.find_all_by_city_and_state(city.titlecase, state.abbreviation.upcase)
           center = find_center_point_of(zips)
           # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
+          state = State.find_by_abbreviation(zips[0].state.downcase)
           @city = zips[0].city
-          @state = State.find_by_abbreviation(zips[0].state.downcase).name.titlecase
+          @state = { :name => state.name.titlecase, :abbreviation => state.abbreviation }
           @latitude = center[:latitude].to_f
           @longitude = center[:longitude].to_f
           @radius = options[:radius].to_f
@@ -172,7 +170,7 @@ class Location
     # this is plain text, is it a state?
     # TODO: Add another column to the cities table that lets us look up a city based on a nickname like 'san fran' which is translated into 'san francisco' which then does the normal location lookup
     if state = State.find_by_name_or_abbreviation(obj.downcase)
-      @state = state.name
+      @state = { :name => state.name, :abbreviation => state.abbreviation }
       return
     end
     
@@ -182,8 +180,9 @@ class Location
       if zips = Zip.find_all_by_city_and_state(city.name.titlecase, city.state.abbreviation.upcase)
         center = find_center_point_of(zips)
         # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
+        state = State.find_by_abbreviation(zips[0].state.downcase)
         @city = zips[0].city
-        @state = State.find_by_abbreviation(zips[0].state.downcase).name.titlecase
+        @state = { :name => state.name.titlecase, :abbreviation => state.abbreviation }
         @latitude = center[:latitude].to_f
         @longitude = center[:longitude].to_f
         @radius = options[:radius].to_f

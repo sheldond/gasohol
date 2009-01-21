@@ -3,9 +3,9 @@
   <% if location.everywhere? %>
     <span id="loc"><strong>everywhere</strong></span>
   <% elsif location.only_state? %>
-    <span id="loc">in <strong><%= location.state.titlecase %></strong></span>
+    <span id="loc">in <strong><%= location.state[:name].titlecase %></strong></span>
   <% else %>
-    <span id="loc">near <strong><%= "#{location.city.titlecase}, #{location.state.titlecase}" %></strong></span>
+    <span id="loc">near <strong><%= "#{location.city.titlecase}, #{location.state[:name].titlecase}" %></strong></span>
   <% end %>
   <%= link_to('change', { :action => 'set_location', :location => location.zip }, :id => 'change_location', :onclick => 'return false') %>
   <div id="location_changer" style="display:none;">

@@ -127,11 +127,12 @@ class Gasohol
   #  @google = Google.new(config)
   #  @results = @google.search('pizza')
   
-  def search(parts)    
-    google_query, options = googlize_params_into_query(parts)  # creates the q= part of the google search
-    options = @config.merge(options)
+  def search(parts,options={})
+    all_options = @config.merge(options)    # merge options that were passed directly to this method
+    google_query, google_options = googlize_params_into_query(parts)  # creates the q= part of the google search along with any options that were found
+    all_options.merge!(google_options)      # merge options that may have been deduced from the googlize_params_into_query() call
     RAILS_DEFAULT_LOGGER.debug("\n\nGasohol:google_query=#{google_query}\n\n")
-    full_query_path = query_path(google_query,options)        # creates the full URL to the GSA
+    full_query_path = query_path(google_query,all_options)        # creates the full URL to the GSA
     RAILS_DEFAULT_LOGGER.debug("\n\nGasohol:full_query_path=#{full_query_path}\n\n")
     
     begin
@@ -139,7 +140,7 @@ class Gasohol
       xml = Hpricot(open(full_query_path))
   
       # if all we really care about is the count of records from google, return just that number and get the heck outta here
-      if options[:count_only] == 'true'
+      if all_options[:count_only] == 'true'
         return xml.search(:m).inner_html.to_i || 0
       end
       

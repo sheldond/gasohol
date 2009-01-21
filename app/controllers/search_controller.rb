@@ -5,11 +5,19 @@ class SearchController < ApplicationController
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = false          # do all the related (ajax) searches for each and every result
-  DO_CONTEXT_SEARCH = false          # contextual search on the right
-  CONTEXT_RESULT_COUNT = 5          # number of items to show for contextual related
-  DEFAULT_LOCATION = 'everywhere'   # default location if geo-coding doesn't work
-  DEFAULT_SORT = 'relevance'        # default sort method
+  DO_RELATED_SEARCH = false           # do all the related (ajax) searches for each and every result
+  DO_CONTEXT_SEARCH = false           # contextual search on the right
+  CONTEXT_RESULT_COUNT = 5            # number of items to show for contextual related
+  DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
+  DEFAULT_SORT = 'relevance'          # default sort method
+  SEARCH_MODES = [{:mode => 'activities', :name => 'Activities & Events' },
+                  {:mode => 'results', :name => 'Race Results'},
+                  {:mode => 'training', :name => 'Training Plans'},
+                  {:mode => 'articles', :name => 'Articles'},
+                  {:mode => 'community', :name => 'Community'},
+                  {:mode => 'orgs', :name => 'Clubs & Orgs'},
+                  {:mode => 'facilities', :name => 'Facilities'}]
+  LOCATION_AWARE_SEARCH_MODES = ['activities','orgs','facilities']    # search modes that display the location box
     
   # (/ or /search/home) 
   # homepage that just shows a search box and popular searches
@@ -38,7 +46,13 @@ class SearchController < ApplicationController
     query_record = Query.new_with_original_params(params)
     
     @sort = figure_sort
-    @do_date_separators = @sort == 'date' ? true : false
+    if @sort == 'date'
+      @do_date_separators = true
+      google_sort_string = 'date:A:S:d1'
+    else
+      @do_date_separators = false
+      google_sort_string = ''
+    end
     
     # now update query record with the calculated values for keywords, location, etc.
     # query_record.update_with_options(params)
@@ -46,8 +60,9 @@ class SearchController < ApplicationController
     # time how long it takes to hear back from the GSA
     @time = {}
     @time[:google] = Time.now
-      @google = do_google(params)
+      @google = do_google(params,{:sort => google_sort_string})   # we manually pass in the sort so that ActiveSearch doesn't also need to do the figure_sort logic
     @time[:google] = Time.now - @time[:google]
+    # TODO:  @google contains modified keywords/location that we update the database record with so we know what the search was transformed into
     query_record.total_results = @google[:google][:total_results]
     query_record.user = current_user
     query_record.save
@@ -72,7 +87,8 @@ class SearchController < ApplicationController
   def google
     # we probably only want the keywords to location lookup if we're using the regular search front end
     # test_keywords_for_location!(params[:q])
-    @google = do_google(params)
+    google_sort_string = (figure_sort == 'date') ? 'date:A:S:d1' : ''     # what to sort by
+    @google = do_google(params, {:sort => google_sort_string})
     standard_response(@google)
   end
   
@@ -120,7 +136,8 @@ class SearchController < ApplicationController
     render :text => js, :content_type => 'application/javascript'
   end
   
-  
+
+=begin  
   # (/search/location)
   # API for access to the zips table. Takes a zip code and optional radius. Tack on .xml, .json, .yaml for various formats.
   # For the query string variables, 'zip' is required and 'radius' is optional.
@@ -133,7 +150,7 @@ class SearchController < ApplicationController
     end
     standard_response(@result)
   end
-  
+=end  
   
   # (/search/set_location)
   # If called internally we pass a location object as 'value'. If no object was passed then look for a params[:value] instead.
@@ -182,12 +199,13 @@ class SearchController < ApplicationController
   
   
   # Actually does the work of searching the GSA, results are automatically cached
-  def do_google(parts)
+  def do_google(parts,options)
     md5 = Digest::MD5.hexdigest(parts.inspect)
-    return cache(md5) { SEARCH.search(parts) }
+    return cache(md5) { SEARCH.search(parts,options) }
   end
 
 
+=begin
   # Takes an optional URL and pulls parameters out of it instead of the default params hash
   # Gets the query terms out of the query string and puts it in '@query'. Takes the remaining query string variables
   # and puts them into a hash called '@options'
@@ -211,7 +229,7 @@ class SearchController < ApplicationController
     
     return [query,options]
   end
-
+=end
 
   # Gets the location info out of the URL. If it isn't there then
   def get_location_from_params(p)

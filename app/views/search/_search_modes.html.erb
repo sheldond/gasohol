@@ -1,13 +1,5 @@
-<% links = [{:mode => 'activities', :name => 'Activities & Events' },
-            {:mode => 'results', :name => 'Race Results'},
-            {:mode => 'training', :name => 'Training Plans'},
-            {:mode => 'articles', :name => 'Articles'},
-            {:mode => 'community', :name => 'Community'},
-            {:mode => 'orgs', :name => 'Clubs & Orgs'},
-            {:mode => 'facilities', :name => 'Facilities'}] %>
-
 <ul id="search_modes">
-  <% links.each do |link| %>
-    <li <%= 'class="selected"' if mode == link[:mode] %>><%= link_to(link[:name], :controller => 'search', :mode => link[:mode], :q => params[:q], :location => params[:location], :num => params[:num] || GASOHOL_CONFIG[:google][:num]) %></li>
+  <% SearchController::SEARCH_MODES.each do |link| %>
+    <li <%= 'class="selected"' if mode == link[:mode] %>><%= link_to(link[:name], :controller => 'search', :action => params[:action], :mode => link[:mode], :q => params[:q], :location => params[:location], :num => params[:num] || GASOHOL_CONFIG[:google][:num]) %></li>
   <% end %>
 </ul>
