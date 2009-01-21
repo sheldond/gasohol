@@ -6,7 +6,7 @@ class SearchController < ApplicationController
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
   DO_RELATED_SEARCH = true           # do all the related (ajax) searches for each and every result
-  DO_CONTEXT_SEARCH = false           # contextual search on the right
+  DO_CONTEXT_SEARCH = true           # contextual search on the right
   CONTEXT_RESULT_COUNT = 5            # number of items to show for contextual related
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'          # default sort method
