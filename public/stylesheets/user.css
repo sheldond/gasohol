@@ -43,7 +43,7 @@ h1 {
 form {
 	width: 30.23em;
 	margin: 5em auto;
-	background: transparent url('/images/login_bg.png') top left no-repeat;
+	background: transparent url('../images/login_bg.png') top left no-repeat;
 	padding: 9em 3em 0;
 	text-align: center;
 	}
@@ -125,12 +125,12 @@ button {
 		}
 
 button.a1 {
-	background-image: url('/images/button_a1_right.png');
+	background-image: url('../images/button_a1_right.png');
 	}
 
 button.a1 span {
 	color: #ffffff;
-	background-image: url('/images/button_a1_left.png');
+	background-image: url('../images/button_a1_left.png');
 	}
 	
 #thankyou {

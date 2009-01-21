@@ -157,7 +157,7 @@ namespace :ec2 do
   end
 end
 
-namespace :passenger do
+namespace :deploy do
   desc "Restart Application"
   task :restart do
     run "touch #{current_path}/tmp/restart.txt"
@@ -168,7 +168,4 @@ before 'deploy', 'deploy:web:disable'
 before 'deploy:migrations', 'deploy:web:disable'
 after 'deploy', 'deploy:web:enable'
 after 'deploy:migrations', 'deploy:web:enable'
-
 after 'deploy:update', 'ec2:set_permissions'
-
-after 'deploy', "passenger:restart"
