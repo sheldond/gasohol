@@ -13,12 +13,12 @@ class Query < ActiveRecord::Base
                 :original_end_date => params[:end_date] || '')
   end
   
-  def update_with_options(query=nil,options=nil)
+  def update_with_options(params={})
     
-    self.keywords = query
+    self.keywords = params[:q]
     
-    opts = options.dup
-    [:location,:sport,:start_date,:end_date,:type,:custom,:category].each do |part|
+    opts = params.dup
+    [:location,:sport,:start_date,:end_date,:type,:custom,:mode].each do |part|
       # prepare the value of each to be something the database likes
       opts[part] = nil if opts[part] == ''
       if part == :start_date || part == :end_date
@@ -34,6 +34,7 @@ class Query < ActiveRecord::Base
     
   end
   
+  # Top searches anywhere
   def self.find_popular(num=5)
     # select keywords, sum(`count`) as count from queries where location = 'San Diego, California' group by keywords order by count desc;
     find_by_sql(["select *, count(*) as total \
@@ -44,8 +45,9 @@ class Query < ActiveRecord::Base
                   limit ?", num])
   end
   
+  
+  # Top searches in the same location
   def self.find_popular_by_location(location,num=5)
-    # if this is a hash, get the city and state out, otherwise assume it's a valid location string
     find_by_sql(["select *, count(*) as total \
                   from queries \
                   where location = ? and keywords != '' and keywords not like '%inmeta%' and keywords not like '%inurl%' \
@@ -54,8 +56,8 @@ class Query < ActiveRecord::Base
                   limit ?", location.form_value, num])
   end
   
+  # Top searches that contain some keyword in the same location
   def self.find_related_by_location(text,location,num=5)
-    # if this is a hash, get the city and state out, otherwise assume it's a valid location string
     find_by_sql(["select *, sum(count) as total \
                   from queries \
                   where location = ? and keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? \

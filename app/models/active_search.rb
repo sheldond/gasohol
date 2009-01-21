@@ -44,7 +44,7 @@ class ActiveSearch < Gasohol
     # location (this can mean a lot of different things so we do some work in each mode below depending on what that asset type 
     # needs as location data (ie. some need state name, some need state abbreviation)
     if parts[:location]
-  		location = Location.new(parts[:location])
+  		location = Location.new!(parts[:location])
     end
 
 		# mode (asset service knows these as 'categories')

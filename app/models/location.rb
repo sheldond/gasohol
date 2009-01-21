@@ -6,6 +6,7 @@ class Location
   
   include Exceptions::LocationError
   
+  DEFAULT_LOCATION = 'everywhere'
   DEFAULT_OPTIONS = { :radius => GASOHOL_CONFIG[:google][:default_radius] }
   ANYWHERE_PHRASES = ['anywhere','everywhere','any','us','usa','united states']
   
@@ -19,6 +20,17 @@ class Location
     
     parse(obj,options)
   end
+  
+  
+  # Using Location.new!(text) ignores any errors and will create a location for 'everywhere' if there is any error
+  def self.new!(obj,options={})
+    begin
+      self.new(obj,options)
+    rescue 
+      self.new(DEFAULT_LOCATION)
+    end
+  end
+  
   
   # Alias 'new' as 'from_cookie' if we are creating a new Location from a cookie 
   # (looks more syntactically correct when called in the context of creating a Location object from a cookie)

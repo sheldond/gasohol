@@ -67,6 +67,7 @@
                        $('location_cancel_container').show();
                      },
                      onFailure:function(r) {
+                       $('location_error') ? $('location_error').remove() : null;
                        $('location').enable();
                        $('location').insert({before:"<p id=\"location_error\">"+r.responseText+"</p>"});
                      }

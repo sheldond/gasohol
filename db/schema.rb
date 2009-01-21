@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090108174140) do
+ActiveRecord::Schema.define(:version => 20090121203338) do
 
   create_table "cities", :force => true do |t|
     t.string  "name"
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(:version => 20090108174140) do
     t.string   "type"
     t.string   "custom"
     t.integer  "count",               :default => 0
-    t.string   "category"
+    t.string   "mode"
     t.integer  "user_id"
     t.datetime "created_at"
     t.string   "original_keywords"

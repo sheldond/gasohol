@@ -53,9 +53,6 @@ class SearchController < ApplicationController
       @do_date_separators = false
       google_sort_string = ''
     end
-    
-    # now update query record with the calculated values for keywords, location, etc.
-    # query_record.update_with_options(params)
 
     # time how long it takes to hear back from the GSA
     @time = {}
@@ -63,12 +60,14 @@ class SearchController < ApplicationController
       @google = do_google(params,{:sort => google_sort_string})   # we manually pass in the sort so that ActiveSearch doesn't also need to do the figure_sort logic
     @time[:google] = Time.now - @time[:google]
     # TODO:  @google contains modified keywords/location that we update the database record with so we know what the search was transformed into
+    # now update query record with the calculated values for keywords, location, etc.
+    query_record.update_with_options(params)
     query_record.total_results = @google[:google][:total_results]
     query_record.user = current_user
     query_record.save
     
     # get various related queries on the page
-    @location = get_location_from_params(params)
+    @location = Location.new!(params[:location] || 'everywhere')
     @popular_local_searches = Query.find_popular_by_location(@location,5)   # most frequent keyword searches in same location
     @related_searches = Query.find_related_by_location(@query,@location,5)  # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
@@ -169,7 +168,11 @@ class SearchController < ApplicationController
       rescue Exceptions::LocationError::InvalidZip
         render :text => "Could not find zip - try city,state?", :status => 500
         return
-      rescue Exceptions::LocationError::InvalidLocation, Exceptions::LocationError::InvalidCityState
+      rescue Exceptions::LocationError::InvalidLocation
+        render :text => "Please enter a valid city, state or zip", :status => 500
+        return
+      rescue
+        # TODO: why don't the above rescues work anymore?
         render :text => "Please enter a valid city, state or zip", :status => 500
         return
       end
@@ -218,6 +221,7 @@ class SearchController < ApplicationController
 
 
   # Gets the location info out of the URL. If it isn't there then
+=begin
   def get_location_from_params(p)
     begin
       if p[:location]
@@ -230,17 +234,13 @@ class SearchController < ApplicationController
       return Location.new('everywhere')
     end
   end
-  
+=end
   
   # Used on the homepage so that the first time you come to the site we know where you are
   def get_or_set_default_location
     unless cookies[:location]
-      begin
-        xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
-        location = Location.new((xml/:location).at('zip').innerHTML, { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
-      rescue # any kind of error with the request, set to San Diego, CA
-        location = Location.new(DEFAULT_LOCATION)
-      end
+      xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
+      location = Location.new!((xml/:location).at('zip').innerHTML, { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
       # save to a cookie
       set_location(location)
     else
