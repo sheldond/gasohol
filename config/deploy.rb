@@ -171,4 +171,4 @@ after 'deploy:migrations', 'deploy:web:enable'
 
 after 'deploy:update', 'ec2:set_permissions'
 
-after :deploy, "passenger:restart"
+after 'deploy', "passenger:restart"
