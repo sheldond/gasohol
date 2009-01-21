@@ -1,13 +1,13 @@
-<input type="hidden" name="location" id="location" value="<%= params[:location] %>" />
-
 <div id="keywords_container">
 	<label for="keywords">Keywords <span class="optional">(optional)</span></label>
 	<input type="text" name="q" id="q" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
 </div>
 
-<div class="column">
-	<label for="sport">Sport/Activity</label>
-	<select name="sport" id="sport"></select>
+<div id="optional_search_fields">
+  <div class="column">
+  	<label for="sport">Sport/Activity</label>
+  	<select name="sport" id="sport"></select>
+  </div>
 </div>
 
 <script type="text/javascript">

@@ -140,7 +140,7 @@ class Gasohol
       xml = Hpricot(open(full_query_path))
   
       # if all we really care about is the count of records from google, return just that number and get the heck outta here
-      if all_options[:count_only] == 'true'
+      if all_options[:count_only] == true
         return xml.search(:m).inner_html.to_i || 0
       end
       

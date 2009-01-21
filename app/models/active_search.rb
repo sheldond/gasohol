@@ -20,16 +20,21 @@ class ActiveSearch < Gasohol
 				@options.merge!(@override.to_options)
 			end
 		end
-
-		# did they type location-type things into the keywords box?
-		test_keywords_for_location(params[:q])
 		
 		# TODO: add a test for sport in keywords box as well
 		test_keywords_for_sport(params[:q])
 
 =end
 
-		query = "#{parts[:q]}"
+    # did they type location-type things into the keywords box?
+    modified_keyword, modified_location = test_keywords_for_location(parts[:q])
+    unless modified_keyword.nil? && modified_location.nil?
+      # override the passed keyword and location values with these
+      parts[:q] = modified_keyword
+      parts[:location] = modified_location
+	  end
+	  
+	  query = "#{parts[:q]}"
 		
 		# sport (asset service knows these as 'channels')
 		if parts[:sport] && !parts[:sport].blank? && parts[:sport].downcase != 'any'
@@ -134,6 +139,7 @@ class ActiveSearch < Gasohol
 		options.merge!({:start => parts[:start]}) if parts[:start]
 		options.merge!({:num => parts[:num]}) if parts[:num]
 		options.merge!({:sort => 'date:A:S:d1'}) if parts[:sort] == 'date'
+		options.merge!({:count_only => true}) if parts[:count_only] && (parts[:count_only] == true || parts[:count_only] == 'true')
 
 		RAILS_DEFAULT_LOGGER.debug("\n\nActiveSearch:options: '#{options.inspect}'\n\n")
 
@@ -167,28 +173,28 @@ class ActiveSearch < Gasohol
 		
 		# Try the whole keyword block first
 		keywords = ''
-		location = params[:q]
+		location = text
 		begin
-			found_location = Location.new(params[:q])
+			found_location = Location.new(location)
 		rescue
 		end
 		
 		# if the whole keyword didn't match, how about various parts of it?
 		unless found_location
-			if params[:q].split(' near ').length > 1
-				keywords, location = params[:q].split(' near ')			# "running near atlanta, ga"
+			if text.split(' near ').length > 1
+				keywords, location = text.split(' near ')			# "running near atlanta, ga"
 				begin
 					found_location = Location.new(location)
 				rescue
 				end
-			elsif params[:q].split(' in ').length > 1
-				keywords, location = params[:q].split(' in ')				# "running in california"
+			elsif text.split(' in ').length > 1
+				keywords, location = text.split(' in ')				# "running in california"
 				begin
 					found_location = Location.new(location)
 				rescue
 				end
-			elsif params[:q].split(' ').length > 1								# "running atlanta"	 or	 "running san diego"	but not	 "running san diego, ca" (ca is the valid location, "running san diego" becomes the keywords)
-				parts = params[:q].split(' ').reverse								# Starting from the end of multiple keywords, check if the last word is a valid location, if not then add the second to last word to the string and check that, etc.
+			elsif text.split(' ').length > 1								# "running atlanta"	 or	 "running san diego"	but not	 "running san diego, ca" (ca is the valid location, "running san diego" becomes the keywords)
+				parts = text.split(' ').reverse								# Starting from the end of multiple keywords, check if the last word is a valid location, if not then add the second to last word to the string and check that, etc.
 				from = 0
 				to = parts.length
 				until from == to
@@ -206,10 +212,11 @@ class ActiveSearch < Gasohol
 			
 		# if it was found, reset the params
 		if found_location
-			params[:q] = keywords
-			params[:location] = found_location.form_value
-			logger.debug("SearchController.test_keywords_for_location: Location found in keywords '#{params[:q]}'")
-		end
+		  RAILS_DEFAULT_LOGGER.debug("SearchController.test_keywords_for_location: Location found in keywords '#{text}'")
+		  return [keywords,found_location.form_value]
+		else
+		  return [nil,nil]
+	  end
 	end
 	
 	

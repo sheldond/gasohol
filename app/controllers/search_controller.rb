@@ -5,7 +5,7 @@ class SearchController < ApplicationController
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = false           # do all the related (ajax) searches for each and every result
+  DO_RELATED_SEARCH = true           # do all the related (ajax) searches for each and every result
   DO_CONTEXT_SEARCH = false           # contextual search on the right
   CONTEXT_RESULT_COUNT = 5            # number of items to show for contextual related
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
@@ -100,7 +100,7 @@ class SearchController < ApplicationController
   # +type+  one of google|photo|video|twitter
   # +name+  the name of the <div> to update in the view
   # +noun+  the name of the related 'thing' so we can singularize/pluralize the noun based on how many records were returned - "1 discussion" versus "3 discussions"
-  # +ajax+  where to go to get the response
+  # +ajax+  a URL that a browser could call to get the response it needs, ie. /search/google.json?q=marathon&mode=community&num=1&count_only=true, even though we're going to call it internally and only care about the query_string options
   # +link+  link that the user can click to see the full result set
   def related
     # only if this entire request is not cached will we look at each individual part (and also see if THEY'RE cached)
@@ -113,21 +113,21 @@ class SearchController < ApplicationController
         # TODO: Thread these
         case call['type']
         when 'google'
-          query,options = get_options_from_query(call['ajax'])
-          result = do_google(query,options)             # do_google already handles its own caching
+          result = do_google(get_options_from_url(call['ajax']))          # do_google already handles its own caching
         when 'photos'
-          result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['photos']['total'] }
+          result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['photos']['total'].to_i }
         when 'videos'
-          result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['feed']['openSearch$totalResults']['$t'] }
+          result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['feed']['openSearch$totalResults']['$t'].to_i }
         when 'tweets'
           result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['results'].length }
         end
+        logger.debug("\n----\nResult from related call for #{call['type']}: #{result.inspect}\n------\n")
         if result.to_i == 0
           output << "$('result_#{request['id']}_links_#{call['name']}').remove();"
         else
           output << "$('result_#{request['id']}_links_#{call['name']}').insert({bottom:'<a href=\"#{call['link']}\">#{result} #{call['noun']}'+(#{result} != 1 ? 's' : '')+'</a>'});"
         end
-      end
+      end      # cache
       # add an ajax call to un-hide the 'related' row on the page
       output << "!$('result_#{request['id']}_links').visible() ? $('result_#{request['id']}_links').show() : null;"
       js = output.join('')
@@ -199,37 +199,23 @@ class SearchController < ApplicationController
   
   
   # Actually does the work of searching the GSA, results are automatically cached
-  def do_google(parts,options)
+  def do_google(parts,options={})
     md5 = Digest::MD5.hexdigest(parts.inspect)
     return cache(md5) { SEARCH.search(parts,options) }
   end
 
 
-=begin
+
   # Takes an optional URL and pulls parameters out of it instead of the default params hash
   # Gets the query terms out of the query string and puts it in '@query'. Takes the remaining query string variables
   # and puts them into a hash called '@options'
-  def get_options_from_query(url='')
-    unless url == ''
-      # turn the passed url into a set of query params to simulate the standard params hash from Rails
-      p = {}
-      CGI.parse(URI.parse(url).query).collect { |key,value| p[key.to_sym] = value.join('') }
-    else
-      p = params
-    end
-
-    query = p[:q] || ''
+  def get_options_from_url(url)
     options = {}
-
-    # put any other URL params into a hash as long as they're not the rails 
-    # defaults (controller, action, format) or the query itself (that goes in @query)
-    p.each do |key,value|
-      options.merge!({ key.to_sym => value.to_s }) if key != 'controller' && key != 'action' && key != 'q' && key != 'format'
-    end
-    
-    return [query,options]
+    CGI.parse(URI.parse(url).query).each { |key,value| options.merge!( {key.to_sym => value.first}) }
+    logger.debug("\n\nSearchController: get_options_from_url: output=#{options.inspect}\n\n")
+    return options
   end
-=end
+
 
   # Gets the location info out of the URL. If it isn't there then
   def get_location_from_params(p)

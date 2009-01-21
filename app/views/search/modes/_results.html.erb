@@ -1,33 +1,33 @@
-<input type="hidden" name="location" id="location" value="<%= params[:location] %>" />
-
 <div id="keywords_container">
 	<label for="keywords">Keywords <span class="optional">(optional)</span></label>
 	<input type="text" name="q" id="q" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
 </div>
 
-<div class="column">
-	<label>Date Range</label>
-	<div id="date_picker">
-		<div><label for="start_date">from</label><%= calendar_date_select_tag "start_date", params[:start_date] %></div>
-		<div><label for="end_date">to</label><%= calendar_date_select_tag "end_date", params[:end_date] %></div>
-	</div>
-</div>
+<div id="optional_search_fields">
+  <div class="column">
+  	<label>Date Range</label>
+  	<div id="date_picker">
+  		<div><label for="start_date">from</label><%= calendar_date_select_tag "start_date", params[:start_date] %></div>
+  		<div><label for="end_date">to</label><%= calendar_date_select_tag "end_date", params[:end_date] %></div>
+  	</div>
+  </div>
 
-<div class="column">
-	<label for="sport">Sport/Activity</label>
-	<select name="sport" id="sport"></select>
+  <div class="column">
+  	<label for="sport">Sport/Activity</label>
+  	<select name="sport" id="sport"></select>
 
-	<div id="type_container">
-		<label for="type">Activity Type</label>
-		<select name="type" id="type">
-		  <option value="any">Any</option>
-		</select>
-	</div>
+  	<div id="type_container">
+  		<label for="type">Activity Type</label>
+  		<select name="type" id="type">
+  		  <option value="any">Any</option>
+  		</select>
+  	</div>
 
-	<div id="custom_container" style="display:none">
-		<label for="custom" id="custom_label"></label>
-		<select name="custom" id="custom"></select>
-	</div>
+  	<div id="custom_container" style="display:none">
+  		<label for="custom" id="custom_label"></label>
+  		<select name="custom" id="custom"></select>
+  	</div>
+  </div>
 </div>
 
 <script type="text/javascript">
