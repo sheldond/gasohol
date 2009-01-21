@@ -69,7 +69,7 @@ class SearchController < ApplicationController
     # get various related queries on the page
     @location = Location.new!(params[:location] || 'everywhere')
     @popular_local_searches = Query.find_popular_by_location(@location,5)   # most frequent keyword searches in same location
-    @related_searches = Query.find_related_by_location(@query,@location,5)  # searches that contain the same keyword in the same location
+    @related_searches = Query.find_related_by_location(params[:q],@location,5)  # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
     
     # the result partials will populate this with related query ajax calls and then output at the end of the page
