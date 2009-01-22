@@ -23,7 +23,7 @@ class Location
   
   
   # Using Location.new!(text) ignores any errors and will create a location for 'everywhere' if there is any error
-  def self.new!(obj,options={})
+  def self.new!(obj='',options={})
     begin
       self.new(obj,options)
     rescue 
@@ -160,17 +160,23 @@ class Location
     # city or state or city,state
     if obj.split(',').length > 1   # in the form of city,state
       city,state = obj.split(',').each { |part| part.strip! }
-      if state = State.find_by_name_or_abbreviation(state) 
-        if zips = Zip.find_all_by_city_and_state(city.titlecase, state.abbreviation.upcase)
-          center = find_center_point_of(zips)
-          # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
-          state = State.find_by_abbreviation(zips[0].state.downcase)
-          @city = zips[0].city
-          @state = { :name => state.name.titlecase, :abbreviation => state.abbreviation }
-          @latitude = center[:latitude].to_f
-          @longitude = center[:longitude].to_f
-          @radius = options[:radius].to_f
-          return
+      if State.find_by_name_or_abbreviation(state)
+        state = State.find_by_name_or_abbreviation(state)
+        if Zip.find_all_by_city_and_state(city.titlecase, state.abbreviation.upcase)
+          zips = Zip.find_all_by_city_and_state(city.titlecase, state.abbreviation.upcase)
+          unless zips.empty?
+            center = find_center_point_of(zips)
+            # @zip = zips.collect { |zip| zip.zip }   # if it's a city/state then @zip contains an array of zips
+            state = State.find_by_abbreviation(zips[0].state.downcase)
+            @city = zips[0].city
+            @state = { :name => state.name.titlecase, :abbreviation => state.abbreviation }
+            @latitude = center[:latitude].to_f
+            @longitude = center[:longitude].to_f
+            @radius = options[:radius].to_f
+            return
+          else
+            raise InvalidCityState, "No location was found matching '#{obj}'"
+          end
         else
           raise InvalidCityState, "No location was found matching '#{obj}'"
         end

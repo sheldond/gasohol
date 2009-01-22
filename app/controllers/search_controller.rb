@@ -239,8 +239,12 @@ class SearchController < ApplicationController
   # Used on the homepage so that the first time you come to the site we know where you are
   def get_or_set_default_location
     unless cookies[:location]
-      xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
-      location = Location.new!((xml/:location).at('zip').innerHTML, { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
+      begin
+        xml = Hpricot.XML(open('http://api.active.com/REST/Geotargeting/'+request.remote_addr))
+        location = Location.new!((xml/:location).at('zip').innerHTML, { :radius => params[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
+      rescue  # Location wasn't found
+        location = Location.new!()
+      end
       # save to a cookie
       set_location(location)
     else
