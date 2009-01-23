@@ -1,0 +1,10 @@
+<div class="column">
+	<label for="sport">Sport/Activity</label>
+	<select name="sport" id="sport"></select>
+</div>
+
+<script type="text/javascript">
+  // initialize search dropdowns
+  var s = new Search(assets);
+  url.sport ? selectOption('sport',url.sport) : null; s.changeSport();
+</script>

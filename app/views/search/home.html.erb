@@ -7,18 +7,8 @@
 	<input type="image" name="commit" src="/images/button_search_big.png" class="submit" />
 	<div id="more_link"><a href="#" onclick="$('activity_search').toggle(); return false;">More Options</a></div>
   -->
-  <form id="search_form" name="search_form" method="get" action="<%= url_for(:controller => 'search') %>">
-    <input type="hidden" name="mode" id="mode" value="<%= @mode %>" />
-    <% if location_aware_search_mode?(@mode) %>
-      <%= render :partial => 'location', :locals => { :location => @location } %>
-    <% else %>
-      <input type="hidden" name="location" id="location" value="<%= params[:location] %>" />
-    <% end %>
-
-    <%= render :partial => "search/modes/#{@mode}" %>
-    <%= render :partial => 'search/modes/debug' if is_admin? %>
-    <%= image_submit_tag('button_search_big.png', :class => 'submit') %>
-  </form>
+  
+  <%= render :partial => "search/forms/#{@mode}", :layout => 'search/forms/layout', :locals => { :mode => @mode } %>
   
   <script type="text/javascript">
     // modify the formatting of the seraches a big so they look good on the homepage
@@ -30,6 +20,7 @@
       $('keywords_container').insert({after:'<a id="more_link" href="#" onclick="$(\'optional_search_fields\').toggle(); return false;">More options</a>'});
     }
   </script>
+  
   <!--
   <script type="text/javascript">
     // UGLY HACK COMING UP

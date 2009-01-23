@@ -6,9 +6,9 @@ class SearchController < ApplicationController
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
   DO_RELATED_SEARCH = true           # do all the related (ajax) searches for each and every result
-  DO_CONTEXT_SEARCH = true           # contextual search on the right
+  DO_CONTEXT_SEARCH = false           # contextual search on the right
   CONTEXT_RESULT_COUNT = 5            # number of items to show for contextual related
-  MINI_RELEVANT_SEARCH_COUNT = 3      # number of results to show in the mini display of relevant results when the page is sorted by date
+  MINI_RELEVANT_SEARCH_COUNT = 5      # number of results to show in the mini display of relevant results when the page is sorted by date
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'          # default sort method
   SEARCH_MODES = [{:mode => 'activities', :name => 'Activities & Events' },
@@ -58,18 +58,18 @@ class SearchController < ApplicationController
     
     # if user is sorting by date, do another search by relevance for the top 5 result
     if @sort == 'date'
-      #threads << Thread.new do
-        @mini_relevant_results = do_google(params.dup, {:num => MINI_RELEVANT_SEARCH_COUNT, :style => 'short'})
-      #end
+      threads << Thread.new(params) do |p|
+        @mini_relevant_results = do_google(p, {:num => MINI_RELEVANT_SEARCH_COUNT, :style => 'short'})
+      end
     end
     
     # do the real search we came here for
-    #threads << Thread.new do
-      @google = do_google(params,{:sort => google_sort_string})
-    #end  # we manually pass in the sort so that ActiveSearch doesn't also need to do the figure_sort logic
+    threads << Thread.new(params) do |p|
+      @google = do_google(p, {:sort => google_sort_string})
+    end  # we manually pass in the sort so that ActiveSearch doesn't also need to do the figure_sort logic
     
     # wait for all of our searches to complete
-    #threads.each { |t| t.join }
+    threads.each { |t| t.join }
     
     # now update query record with the calculated values for keywords, location, etc.
     query_record.update_with_options(params, {:total_results => @google[:google][:total_results], :user => current_user})  # TODO: +params+ are dirty and could have been changed by ActiveSearch...modify the result package so that it contains modified keywords/location that we update the database record with so we know what the search was transformed into

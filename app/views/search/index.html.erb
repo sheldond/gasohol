@@ -4,7 +4,10 @@
   <tr>
     <td id="refine">
       <div style="overflow: hidden; width: 210px; visibility: hidden; height: 0pt;"></div>
-      <%= render :partial => 'search_refine', :locals => { :mode => @mode } %>
+      <%= render :partial => "search/forms/#{@mode}", :layout => 'search/forms/layout', :locals => { :mode => @mode } %>
+      
+      <%= render :partial => 'popular_local_searches', :locals => { :location_text => @location.form_value } unless @popular_local_searches.empty? %>
+      <%= render :partial => 'related_searches' unless @query == '' || @related_searches.empty? %>
     </td>
     <td id="main">
       <div style="overflow: hidden; width: 400px; visibility: hidden; height: 0pt;"></div>
@@ -22,15 +25,6 @@
                 <h3>Featured Events</h3>
                 <%= render :partial => 'featured', :collection => @google[:featured] %>
               </div>
-            <% end %>
-            
-            <% if @mini_relevant_results %>
-              <!-- top 5 relevant results when user has sorted by date -->
-              <div id="relevant_results">
-                <h3>Most relevant results for '<%= params[:q] %>':</h3>
-                <%= render :partial => 'results', :locals => { :results => @mini_relevant_results[:results], :title_only => true, :numbered => false } %>
-              </div>
-              <h3>All results sorted by date:</h3>
             <% end %>
             
             <!-- normal results -->
@@ -53,12 +47,25 @@
         </div>
       </div>
     </td>
+    
+    
     <td id="context">
+      
+      <% if @mini_relevant_results %>
+        <!-- top 5 relevant results when user has sorted by date -->
+        <div id="relevant_results">
+          <h3>Most relevant results for '<%= params[:q] %>':</h3>
+          <%= render :partial => 'results', :locals => { :results => @mini_relevant_results[:results], :title_only => true, :numbered => false } %>
+        </div>
+      <% end %>
+      
+      <!--
       <div style="overflow: hidden; width: 250px; visibility: hidden; height: 0pt;"></div>
       <% if SearchController::DO_CONTEXT_SEARCH %>
         <%= render :partial => 'context' %>
         <% @ajax = ajax_for_context_related(:articles) + ajax_for_context_related(:discussions) + ajax_for_context_related(:training) + @ajax %>
       <% end %>
+    -->
     </td>
   </tr>
 </table>
