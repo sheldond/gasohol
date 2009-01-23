@@ -6,8 +6,9 @@ class SearchController < ApplicationController
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
   DO_RELATED_SEARCH = true           # do all the related (ajax) searches for each and every result
-  DO_CONTEXT_SEARCH = false           # contextual search on the right
+  DO_CONTEXT_SEARCH = true           # contextual search on the right
   CONTEXT_RESULT_COUNT = 5            # number of items to show for contextual related
+  MINI_RELEVANT_SEARCH_COUNT = 3      # number of results to show in the mini display of relevant results when the page is sorted by date
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'          # default sort method
   SEARCH_MODES = [{:mode => 'activities', :name => 'Activities & Events' },
@@ -58,7 +59,7 @@ class SearchController < ApplicationController
     # if user is sorting by date, do another search by relevance for the top 5 result
     if @sort == 'date'
       #threads << Thread.new do
-        @google_relevant_results = do_google(params.dup, {:num => 5, :style => 'short'})
+        @mini_relevant_results = do_google(params.dup, {:num => MINI_RELEVANT_SEARCH_COUNT, :style => 'short'})
       #end
     end
     
@@ -264,21 +265,23 @@ class SearchController < ApplicationController
   def figure_sort
     output = nil
     
-    # if there's a 'sort' parameter in the URL it's because the user set it manually so save to cookie
-    if params[:sort]
-      cookies[:sort] = params[:sort]
-      output = params[:sort]
-    end
+    if params[:mode] == 'activities'
+      # if there's a 'sort' parameter in the URL it's because the user set it manually so save to cookie
+      if params[:sort]
+        cookies[:sort] = params[:sort]
+        output = params[:sort]
+      end
     
-    # because of the way cookies behave in Rails, we can't set and read in the same request, so if params[:sort]
-    # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out to return
-    if !params[:sort] && cookies[:sort]
-      output = cookies[:sort]
-    end
+      # because of the way cookies behave in Rails, we can't set and read in the same request, so if params[:sort]
+      # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out to return
+      if !params[:sort] && cookies[:sort]
+        output = cookies[:sort]
+      end
     
-    # should we automatically sort by date? (if the user doesn't have a cookie set, but they have chosen to filter by date, then yes)
-    if !cookies[:sort] && !params[:sort] && params[:start_date] && !params[:start_date].empty?
-      output = 'date'
+      # should we automatically sort by date? (if the user doesn't have a cookie set, but they have chosen to filter by date, then yes)
+      if !cookies[:sort] && !params[:sort] && params[:start_date] && !params[:start_date].empty?
+        output = 'date'
+      end
     end
     
     # if nothing set the sort yet, default to relevance

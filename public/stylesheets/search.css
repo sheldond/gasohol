@@ -27,7 +27,7 @@ h3 {
 	text-align: left;
 	margin: 100px auto 0;
 	width: 32em;
-	overflow: hidden;
+	overflow: visible;
 }
 
 	/* on the homepage we hide other search options and move the search button up next to the keywords box */
@@ -227,11 +227,13 @@ h3 {
 				#search_form #location_changer {
 			    position: absolute;
 		      top: 50px;
-		      left: .5em;
+		      left: 10px;
+					z-index: 10;
 				}
 				
 				#search_home #search_form #location_changer {
-					position: absolute;
+					top: 0;
+					left: 0;
 				}
 				
 				#search_form #location_changer {

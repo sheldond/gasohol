@@ -24,11 +24,11 @@
               </div>
             <% end %>
             
-            <% if @google_relevant_results %>
+            <% if @mini_relevant_results %>
               <!-- top 5 relevant results when user has sorted by date -->
               <div id="relevant_results">
                 <h3>Most relevant results for '<%= params[:q] %>':</h3>
-                <%= render :partial => 'results', :locals => { :results => @google_relevant_results[:results], :title_only => true, :numbered => false } %>
+                <%= render :partial => 'results', :locals => { :results => @mini_relevant_results[:results], :title_only => true, :numbered => false } %>
               </div>
               <h3>All results sorted by date:</h3>
             <% end %>
