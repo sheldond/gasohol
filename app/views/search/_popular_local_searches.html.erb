@@ -1,5 +1,5 @@
 <div id="popular">
-  <h3>Most popular <%= location_text %> searches:</h3>
+  <h3>Most popular <%= location_text if SearchController::LOCATION_AWARE_SEARCH_MODES.include?(@mode) %> <%= @mode %> searches:</h3>
   <ul>
     <% popular_local_searches.each do |search| %>
       <% unless search.keywords.blank? %>

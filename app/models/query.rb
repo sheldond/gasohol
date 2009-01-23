@@ -66,6 +66,17 @@ class Query < ActiveRecord::Base
   
   
   # Top searches in the same location
+  def self.find_popular_by_mode(mode,num=5)
+    find_by_sql(["select *, count(*) as total \
+                  from queries \
+                  where mode = ? and keywords != '' and keywords not like '%inmeta%' and keywords not like '%inurl%' \
+                  group by keywords \
+                  order by total desc \
+                  limit ?", mode, num])
+  end
+  
+  
+  # Top searches in the same location
   def self.find_popular_by_location(location,num=5)
     find_by_sql(["select *, count(*) as total \
                   from queries \
@@ -75,7 +86,28 @@ class Query < ActiveRecord::Base
                   limit ?", location.form_value, num])
   end
   
-  # Top searches that contain some keyword in the same location
+  
+  # Top searches in the same location for this type of asset
+  def self.find_popular_by_location_and_mode(location,mode,num=5)
+    find_by_sql(["select *, count(*) as total \
+                  from queries \
+                  where mode = ? and location = ? and keywords != '' and keywords not like '%inmeta%' and keywords not like '%inurl%' \
+                  group by keywords \
+                  order by total desc \
+                  limit ?", mode, location.form_value, num])
+  end
+  
+  
+  
+  def self.find_related_by_mode(text,mode,num=5)
+    find_by_sql(["select *, sum(count) as total \
+                  from queries \
+                  where mode = ? and keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? \
+                  group by keywords \
+                  order by total desc \
+                  limit ?", mode, "%#{text}%", text, num])
+  end
+  
   def self.find_related_by_location(text,location,num=5)
     find_by_sql(["select *, sum(count) as total \
                   from queries \
@@ -83,6 +115,15 @@ class Query < ActiveRecord::Base
                   group by keywords \
                   order by total desc \
                   limit ?", location.form_value, "%#{text}%", text, num])
+  end
+  # Top searches that contain some keyword in the same location
+  def self.find_related_by_location_and_mode(text,location,mode,num=5)
+    find_by_sql(["select *, sum(count) as total \
+                  from queries \
+                  where mode = ? and location = ? and keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? \
+                  group by keywords \
+                  order by total desc \
+                  limit ?", mode, location.form_value, "%#{text}%", text, num])
   end
   
 end

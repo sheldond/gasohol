@@ -4,14 +4,14 @@ class SessionController < ApplicationController
 
   def new
     # TODO: Fix to get rid of old cookies
-    if cookies[:location] && cookies[:location].match(/region/)
+    if cookies[:location]
       log_out_user
     end
     redirect_back if logged_in?
   end
 
+  # if user is who they say they are, create their session - login
   def create
-    # if user is who they say they are, create their session - login
     unless params[:login].blank? or params[:password].blank?
       user = User.find_by_login_and_password(params[:login], params[:password])
       if user
@@ -35,8 +35,8 @@ class SessionController < ApplicationController
     end
   end
 
+  # remove user's session - logout
   def destroy
-    # remove user's session - logout
     log_out_user
     flash[:notice] = 'You have been logged out. Come back soon!'
     redirect_to login_path
