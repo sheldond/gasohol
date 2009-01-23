@@ -1,4 +1,6 @@
 <% do_date_separators = false if !defined? do_date_separators %>
+<% title_only = false if !defined? title_only %>
+<% numbered = true if !defined? numbered %>
 
 <% results.each do |result| %>
   <% unless result[:title].blank? %>
