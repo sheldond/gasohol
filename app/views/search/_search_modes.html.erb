@@ -1,5 +1,5 @@
 <ul id="search_modes">
   <% SearchController::SEARCH_MODES.each do |link| %>
-    <li <%= 'class="selected"' if mode == link[:mode] %>><%= link_to(link[:name], :controller => 'search', :action => params[:action], :mode => link[:mode], :q => params[:q], :location => params[:location], :num => params[:num] || GASOHOL_CONFIG[:google][:num]) %></li>
+    <li <%= 'class="selected"' if mode == link[:mode] %>><%= link_to(link[:name], :controller => 'search', :action => params[:action], :mode => link[:mode], :q => @original_keywords, :location => @location.form_value, :num => params[:num] || GASOHOL_CONFIG[:google][:num]) %></li>
   <% end %>
 </ul>

@@ -6,7 +6,7 @@ class SearchController < ApplicationController
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
   DO_RELATED_SEARCH = true           # do all the related (ajax) searches for each and every result
-  DO_CONTEXT_SEARCH = true           # contextual search on the right
+  DO_CONTEXT_SEARCH = false           # contextual search on the right
   CONTEXT_RESULT_COUNT = 5            # number of items to show for contextual related
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'          # default sort method
@@ -38,12 +38,11 @@ class SearchController < ApplicationController
   # variables (@options) and we'll format the results into a simpler format that we use in our views.
   def index
     params[:q] ||= ''
-    
-    # what search mode are we in? default to activity search
-    @mode = params[:mode] || 'activities'
+    @mode = params[:mode] || 'activities'   # what search mode are we in? default to activity search
+    @original_keywords = params[:q]         # save the original keyword and location because they could changed based on logic in ActiveSearch
+    @original_location = params[:location]
 
-    # record original params as the query came in
-    query_record = Query.new_with_original_params(params)
+    query_record = Query.new_with_original_params(params.dup)   # record original params as the query came in
     
     @sort = figure_sort
     if @sort == 'date'
@@ -53,23 +52,31 @@ class SearchController < ApplicationController
       @do_date_separators = false
       google_sort_string = ''
     end
-
-    # time how long it takes to hear back from the GSA
-    @time = {}
-    @time[:google] = Time.now
-      @google = do_google(params,{:sort => google_sort_string})   # we manually pass in the sort so that ActiveSearch doesn't also need to do the figure_sort logic
-    @time[:google] = Time.now - @time[:google]
-    # TODO:  @google contains modified keywords/location that we update the database record with so we know what the search was transformed into
+    
+    threads = []
+    
+    # if user is sorting by date, do another search by relevance for the top 5 result
+    if @sort == 'date'
+      #threads << Thread.new do
+        @google_relevant_results = do_google(params.dup, {:num => 5, :style => 'short'})
+      #end
+    end
+    
+    # do the real search we came here for
+    #threads << Thread.new do
+      @google = do_google(params,{:sort => google_sort_string})
+    #end  # we manually pass in the sort so that ActiveSearch doesn't also need to do the figure_sort logic
+    
+    # wait for all of our searches to complete
+    #threads.each { |t| t.join }
+    
     # now update query record with the calculated values for keywords, location, etc.
-    query_record.update_with_options(params)
-    query_record.total_results = @google[:google][:total_results]
-    query_record.user = current_user
-    query_record.save
+    query_record.update_with_options(params, {:total_results => @google[:google][:total_results], :user => current_user})  # TODO: +params+ are dirty and could have been changed by ActiveSearch...modify the result package so that it contains modified keywords/location that we update the database record with so we know what the search was transformed into
     
     # get various related queries on the page
-    @location = Location.new!(params[:location] || 'everywhere')
+    @location = Location.new!(@original_location)
     @popular_local_searches = Query.find_popular_by_location(@location,5)   # most frequent keyword searches in same location
-    @related_searches = Query.find_related_by_location(params[:q],@location,5)  # searches that contain the same keyword in the same location
+    @related_searches = Query.find_related_by_location(@original_keywords,@location,5)  # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
     
     # the result partials will populate this with related query ajax calls and then output at the end of the page
@@ -87,7 +94,7 @@ class SearchController < ApplicationController
     # we probably only want the keywords to location lookup if we're using the regular search front end
     # test_keywords_for_location!(params[:q])
     google_sort_string = (figure_sort == 'date') ? 'date:A:S:d1' : ''     # what to sort by
-    @google = do_google(params, {:sort => google_sort_string})
+    @google = do_google(params, {:sort => google_sort_string, :skip_deep_keyword_search => true})
     standard_response(@google)
   end
   
@@ -112,7 +119,7 @@ class SearchController < ApplicationController
         # TODO: Thread these
         case call['type']
         when 'google'
-          result = do_google(get_options_from_url(call['ajax']))          # do_google already handles its own caching
+          result = do_google(get_options_from_url(call['ajax']), { :skip_deep_keyword_search => true })          # do_google already handles its own caching
         when 'photos'
           result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['photos']['total'].to_i }
         when 'videos'
@@ -120,7 +127,6 @@ class SearchController < ApplicationController
         when 'tweets'
           result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['results'].length }
         end
-        logger.debug("\n----\nResult from related call for #{call['type']}: #{result.inspect}\n------\n")
         if result.to_i == 0
           output << "$('result_#{request['id']}_links_#{call['name']}').remove();"
         else

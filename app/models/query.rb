@@ -5,15 +5,26 @@ class Query < ActiveRecord::Base
   self.inheritance_column = 'none'
   belongs_to :user
   
-  def self.new_with_original_params(params)
-     Query.new( :original_keywords => params[:q], 
-                :original_location => params[:location] || '',
-                :start => params[:start] || 1,
-                :original_start_date => params[:start_date] || '',
-                :original_end_date => params[:end_date] || '')
+  def self.new_with_original_params(params, values={})
+    query = self.new( :original_keywords => params[:q], 
+                      :original_location => params[:location] || '',
+                      :start => params[:start] || 1,
+                      :original_start_date => params[:start_date] || '',
+                      :original_end_date => params[:end_date] || '')
+    
+    unless values.empty?
+      values.each do |key,value|
+        self.send("#{key.to_s}=",value)
+      end
+    end
+    
+    return query
+                
   end
   
-  def update_with_options(params={})
+  
+  # add some more params, parsing if needed, then save
+  def update_with_options(params={}, values={})
     
     self.keywords = params[:q]
     
@@ -30,9 +41,17 @@ class Query < ActiveRecord::Base
       self.send("#{part.to_s}=",opts[part])
     end
     
-    return self
+    # extra values that were passed in as a hash
+    unless values.empty?
+      values.each do |key,value|
+        self.send("#{key.to_s}=",value)
+      end
+    end
+    
+    self.save
     
   end
+  
   
   # Top searches anywhere
   def self.find_popular(num=5)

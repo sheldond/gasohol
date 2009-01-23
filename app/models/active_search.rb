@@ -27,11 +27,13 @@ class ActiveSearch < Gasohol
 =end
 
     # did they type location-type things into the keywords box?
-    modified_keyword, modified_location = test_keywords_for_location(parts[:q])
-    unless modified_keyword.nil? && modified_location.nil?
-      # override the passed keyword and location values with these
-      parts[:q] = modified_keyword
-      parts[:location] = modified_location
+    unless options[:skip_deep_keyword_search]
+      modified_keyword, modified_location = test_keywords_for_location(parts[:q])
+      unless modified_keyword.nil? && modified_location.nil?
+        # override the passed keyword and location values with these
+        parts[:q] = modified_keyword
+        parts[:location] = modified_location
+  	  end
 	  end
 	  
 	  query = "#{parts[:q]}"
@@ -140,8 +142,9 @@ class ActiveSearch < Gasohol
 		options.merge!({:num => parts[:num]}) if parts[:num]
 		options.merge!({:sort => 'date:A:S:d1'}) if parts[:sort] == 'date'
 		options.merge!({:count_only => true}) if parts[:count_only] && (parts[:count_only] == true || parts[:count_only] == 'true')
+		options.merge!({:style => parts[:style]}) if parts[:style]
 
-		RAILS_DEFAULT_LOGGER.debug("\n\nActiveSearch:options: '#{options.inspect}'\n\n")
+		RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: googlize_params_into_query: options='#{options.inspect}'\n")
 
 		return [query,options]
 	end
@@ -170,6 +173,8 @@ class ActiveSearch < Gasohol
 	
 	# This gets a bang (!) because it will change params based on whether or not a location was found in the passed text string 
 	def test_keywords_for_location(text)
+	  
+	  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: test_keywords_for_location: text='#{text}'\n")
 		
 		# Try the whole keyword block first
 		keywords = ''

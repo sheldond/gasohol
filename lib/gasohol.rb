@@ -42,6 +42,7 @@ class Gasohol
   
   attr_reader :config
   
+  # default parameters that go to the GSA
   DEFAULT_OPTIONS = { :url => '',
                       :num => 10, 
                       :start => 0, 
@@ -53,6 +54,7 @@ class Gasohol
                       :sort => '',
                       :requiredfields => '',
                       :partialfields => '' }
+  # the parameters that google cares about and will respond to
   ALLOWED_PARAMS = DEFAULT_OPTIONS.keys
   DEFAULT_OUTPUT = {  :results => [], 
                       :featured => [], 
@@ -128,12 +130,16 @@ class Gasohol
   #  @results = @google.search('pizza')
   
   def search(parts,options={})
+    RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: options=#{options.inspect}\n")
     all_options = @config.merge(options)    # merge options that were passed directly to this method
-    google_query, google_options = googlize_params_into_query(parts)  # creates the q= part of the google search along with any options that were found
+    google_query, google_options = googlize_params_into_query(parts,options.dup)  # creates the q= part of the google search along with any options that were found
     all_options.merge!(google_options)      # merge options that may have been deduced from the googlize_params_into_query() call
-    RAILS_DEFAULT_LOGGER.debug("\n\nGasohol:google_query=#{google_query}\n\n")
+    all_options.merge!(options)              # any options that were specifically passed to this hash should override any that may have been found in the params
+    RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: google_query=#{google_query}\n")
+    RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: google_options=#{google_options.inspect}\n")
+    RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: all_options=#{all_options.inspect}\n")
     full_query_path = query_path(google_query,all_options)        # creates the full URL to the GSA
-    RAILS_DEFAULT_LOGGER.debug("\n\nGasohol:full_query_path=#{full_query_path}\n\n")
+    RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: full_query_path=#{full_query_path}\n\n")
     
     begin
       # do the query and save the xml
@@ -266,7 +272,7 @@ class Gasohol
   #   finder.search(parts,query)        # where 'parts' is a hash of params in the URL not including the keywords
   #                                     # and 'query' is the actual keyword query
   def googlize_params_into_query(parts)
-    return ''
+    return ['',nil]
   end
   
   # This method creates the combination of the url, query and options into one big URI

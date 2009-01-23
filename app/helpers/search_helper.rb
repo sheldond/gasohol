@@ -41,6 +41,22 @@ module SearchHelper
     return output
   end
   
+  
+  # determines what type of 'thing' the passed result is. Since each media type can be displayed different, this
+  # has a lot of ugly logic to determine what type of thing the result is. There should be one return for each file
+  # in /app/views/search/results
+  def result_type(result)
+    return 'activity' if result[:meta][:category] && result[:meta][:category] == 'Activities'
+    return 'article' if result[:meta][:category] && result[:meta][:category] == 'Articles'
+    return 'community' if result[:url].match(/community\.active\.com/)
+    return 'facility' if result[:meta][:category] && result[:meta][:category] == 'Facilities'
+    return 'org' if result[:meta][:category] && result[:meta][:category] == 'Organizations'
+    return 'training' if result[:meta][:media_types][0] && result[:meta][:media_types][0].value.match(/Training Plan/)
+    # if nothing else, just return 'unknown'
+    return 'unknown'
+  end
+  
+  
   # Determines if the passed result is an activity
   def activity?(result)
     result[:meta][:category] && result[:meta][:category] == 'Activities'

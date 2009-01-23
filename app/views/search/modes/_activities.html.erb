@@ -1,6 +1,6 @@
 <div id="keywords_container">
 	<label for="keywords">Keywords <span class="optional">(optional)</span></label>
-	<input type="text" name="q" id="q" value="<%= params[:q] %>" onkeypress="return handleEnter(this.form, event);" />
+	<input type="text" name="q" id="q" value="<%= @original_keywords %>" onkeypress="return handleEnter(this.form, event);" />
 </div>
 
 <div id="optional_search_fields">

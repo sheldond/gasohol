@@ -1,0 +1,12 @@
+<%= "inside _layout, numbered => #{numbered}" %>
+
+<div <%= "id=\"result_#{result[:num]}\"" if numbered %> class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
+
+  <% sport = (result[:meta] && result[:meta][:channel]) ? result[:meta][:channel].titlecase : nil %>
+  <%= render :partial => 'search/results/title', :locals => { :sport => sport, :title => result[:title], :url => result[:url] } %>
+  
+  <% unless title_only %>
+    <%= yield %>
+  <% end %>
+  
+</div>

@@ -1,6 +1,8 @@
+<% style ||= 'long' %>
+
 <% unless result.nil? or result[:title].blank? %>
   
-  <% if params[:style] == 'short' %>
+  <% if style == 'short' %>
   
     <%# mini results, ?style=short %>
     <div class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">

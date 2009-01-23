@@ -1,0 +1,7 @@
+<div class="title">
+  <% unless sport.nil? %>
+    <a class="sport_icon" href="#" onclick="$('sport').value = '<%= sport %>'; $('search_form').submit(); return false;"><img src="/images/sport_icon_<%= sport %>.png" alt="" /></a>
+  <% end %>
+  <h3><%= link_to(un(title.split('|').first.strip), url) %></h3>
+  <%= output_rating(rand(6)) %>
+</div>
