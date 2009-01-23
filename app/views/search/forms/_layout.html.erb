@@ -16,5 +16,7 @@
   </div>
 
   <%= render :partial => 'search/forms/debug' if is_admin? %>
-  <%= image_submit_tag('button_search_big.png', :class => 'submit') %>
+  
+  <button name="commit" id="commit" class="submit"><%= image_tag('button_search_big.png') %></button>
+  <%# button_tag('button_search_big.png', :class => 'submit') %>
 </form>

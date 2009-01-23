@@ -1,10 +1,10 @@
 <div <%= "id=\"result_#{result[:num]}\"" unless numbered == false %> class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
   <div class="title">
-    <% if result[:meta] && result[:meta][:channel] %>
+    <% if result[:meta] && result[:meta][:channel] and !title_only %>
       <a class="sport_icon" href="#" onclick="$('sport').value = '<%= result[:meta][:channel].titlecase %>'; $('search_form').submit(); return false;"><img src="/images/sport_icon_<%= result[:meta][:channel].titlecase %>.png" alt="" /></a>
     <% end %>
     <h3><%= link_to(un(result[:title].split('|').first.strip), result[:url]) %></h3>
-    <%= output_rating(rand(6)) %>
+    <%= output_rating(rand(6)) if !title_only %>
   </div>
 
   <%= yield unless title_only %>

@@ -23,6 +23,10 @@ h3 {
 	text-decoration: none;
 }
 
+	#popular ul, #related ul {
+		line-height: 1.5;
+	}
+
 #search_home form#search_form {
 	text-align: left;
 	margin: 100px auto 0;
@@ -171,7 +175,6 @@ h3 {
 	#search_form .submit {
 		display: block;
 		margin: .5em auto;
-		width: 96px;
 	}
 
 		#search_form label {
@@ -339,48 +342,48 @@ h3 {
 		background-color: #f6f6f6;
 	}
 	
-		#context .related {
+		#context #relevant_results {
 			display: block;
 			margin: 0 0 1em;
 			padding: 0 30px 1em 1em;
 			border-bottom: 1px dashed #cccccc;
 		}
 		
-			#context .related h4 {
+			#context #relevant_results h4 {
 				display: block;
 				float: none;
 				color: #555555;
 			}
 	
-		#context .result {
+		#context #relevant_results .result {
 			margin: 0;
 			padding: .2em 0;
 			overflow: hidden;
 		}
 
-		#context .result .title {
+		#context #relevant_results .result .title {
 			float: left;
 			margin: 0 0 .3em;
 			line-height: 1.1;
 		}
-			#context .result .title a {
+			#context #relevant_results .result .title a {
 				border: none;
 				color: #888888;
 			}
-			#context .result .title a:hover {
+			#context #relevant_results .result .title a:hover {
 				color: #003e7e;
 			}
 
-		#context .result h3 {
+		#context #relevant_results .result h3 {
 			font-size: 93%;
 			display: inline;
 		}
 		
-			#context .result h3 a {
+			#context #relevant_results .result h3 a {
 				text-decoration: none;
 			}
 
-			#context .result .title.sport {
+			#context #relevant_results .result .title.sport {
 				background-color: transparent;
 				background-position: 0 1px;
 				background-repeat: no-repeat;
@@ -388,13 +391,13 @@ h3 {
 				padding: 0;
 			}
 			
-			#context .indicator {
+			#context #relevant_results .indicator {
 				display: block;
 				width: 32px;
 				margin: 1em auto;
 			}
 			
-		#context .more {
+		#context #relevant_results .more {
 			display: block;
 			text-align: left;
 			margin: .5em 0 0;
@@ -402,7 +405,7 @@ h3 {
 			color: #333333;
 			font-weight: bold;
 		}
-			#context .more:hover {
+			#context #relevant_results .more:hover {
 				color:#d06f1a;
 			}
 	
