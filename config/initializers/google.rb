@@ -1,1 +1,0 @@
-# google = Google.new('http://gsa7.enterprisedemo-google.com/search', :num => RESULTS_PER_PAGE, :start => params[:start])
