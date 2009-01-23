@@ -74,5 +74,7 @@ Rails::Initializer.run do |config|
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 end
 
+ActionController::AbstractRequest.relative_url_root = "/search"
+
 require 'core_extensions'
 require 'will_paginate'
