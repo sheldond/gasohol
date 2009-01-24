@@ -9,7 +9,9 @@ require 'location'
 
 class ActiveSearch < Gasohol
 		
-	def googlize_params_into_query(parts,options={})
+	def search(parts,options={})
+	  
+	  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: options='#{options.inspect}'\n")
 		
 =begin
 
@@ -26,14 +28,18 @@ class ActiveSearch < Gasohol
 
 =end
 
+    # assume that any options passed in at this point will be output at the end
+    output_options = options.dup
+
     # did they type location-type things into the keywords box?
     unless options[:skip_deep_keyword_search]
-      modified_keyword, modified_location = test_keywords_for_location(parts[:q])
+      modified_keyword, modified_location = deep_keyword_search(parts[:q])
       unless modified_keyword.nil? && modified_location.nil?
         # override the passed keyword and location values with these
         parts[:q] = modified_keyword
         parts[:location] = modified_location
   	  end
+  	  output_options.delete :skip_deep_keyword_search   # we don't want this one passed on to gasohol
 	  end
 	  
 	  query = "#{parts[:q]}"
@@ -137,16 +143,18 @@ class ActiveSearch < Gasohol
 			end
 		end
 		
-		# Figure out any GSA options that were included in the +parts+ hash
-		options.merge!({:start => parts[:start]}) if parts[:start]
-		options.merge!({:num => parts[:num]}) if parts[:num]
-		options.merge!({:sort => 'date:A:S:d1'}) if parts[:sort] == 'date'
-		options.merge!({:count_only => true}) if parts[:count_only] && (parts[:count_only] == true || parts[:count_only] == 'true')
-		options.merge!({:style => parts[:style]}) if parts[:style]
+		# Figure out any GSA options that might have been included in the +parts+ hash (instead of explicitly set in the +options+ hash)
+		output_options.merge!({:start => parts[:start]}) if parts[:start]
+		output_options.merge!({:num => parts[:num]}) if parts[:num] and !options[:num]    # if num was set explicitly in the options hash, don't override that here
+		output_options.merge!({:sort => 'date:A:S:d1'}) if parts[:sort] == 'date'
+		output_options.merge!({:count_only => true}) if parts[:count_only] && (parts[:count_only] == true || parts[:count_only] == 'true')
+		
+		# TODO: this is really only used by display, does it really need to exist here?
+		output_options.merge!({:style => parts[:style]}) if parts[:style]
 
-		RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: googlize_params_into_query: options='#{options.inspect}'\n")
+		RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: googlize_params_into_query: options='#{output_options.inspect}'\n")
 
-		return [query,options]
+		super(query,output_options)
 	end
 	
 	
@@ -172,7 +180,7 @@ class ActiveSearch < Gasohol
 	
 	
 	# This gets a bang (!) because it will change params based on whether or not a location was found in the passed text string 
-	def test_keywords_for_location(text)
+	def deep_keyword_search(text)
 	  
 	  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: test_keywords_for_location: text='#{text}'\n")
 		

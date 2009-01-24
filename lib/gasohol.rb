@@ -129,16 +129,12 @@ class Gasohol
   #  @google = Google.new(config)
   #  @results = @google.search('pizza')
   
-  def search(parts,options={})
+  def search(query,options={})
     RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: options=#{options.inspect}\n")
+    RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: query='#{query}'\n")
     all_options = @config.merge(options)    # merge options that were passed directly to this method
-    google_query, google_options = googlize_params_into_query(parts,options.dup)  # creates the q= part of the google search along with any options that were found
-    all_options.merge!(google_options)      # merge options that may have been deduced from the googlize_params_into_query() call
-    all_options.merge!(options)              # any options that were specifically passed to this hash should override any that may have been found in the params
-    RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: google_query=#{google_query}\n")
-    RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: google_options=#{google_options.inspect}\n")
     RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: all_options=#{all_options.inspect}\n")
-    full_query_path = query_path(google_query,all_options)        # creates the full URL to the GSA
+    full_query_path = query_path(query,all_options)        # creates the full URL to the GSA
     RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: full_query_path=#{full_query_path}\n\n")
     
     begin
@@ -154,7 +150,7 @@ class Gasohol
       output = Marshal.load(Marshal.dump(DEFAULT_OUTPUT))
       
       # output[:google][:query] = query
-      output[:google][:google_query] = google_query
+      output[:google][:google_query] = query
       output[:google][:full_query_path] = full_query_path
       
       # total number of results
