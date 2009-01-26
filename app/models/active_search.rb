@@ -8,8 +8,9 @@
 #   directives that should trigger some special behavior (like :skip_deep_keyword_search)
 
 require 'location'
+require 'gasohol/gasohol'
 
-class ActiveSearch < Gasohol
+class ActiveSearch < Gasohol::Base
 		
 	def search(parts,options={})
 	  

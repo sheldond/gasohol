@@ -5,9 +5,4 @@ module Exceptions
     class InvalidCityState < StandardError; end;
     class InvalidLocation < StandardError; end;
   end
-  
-  module GasoholError
-    class MissingConfig < StandardError; end;
-    class MissingURL < StandardError; end;
-  end
 end
