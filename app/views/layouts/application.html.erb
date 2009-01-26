@@ -7,7 +7,7 @@
 	
 	<%= stylesheet_link_tag 'reset','fonts','search', "skins/#{@skin}.css",'calendar_date_select/custom.css' %>
 	<%= stylesheet_link_tag 'debug' if params[:debug] %>
-	<%= javascript_include_tag 'prototype','effects','search','controls','calendar_date_select/calendar_date_select','calendar_date_select/format_american','application' %>
+	<%= javascript_include_tag 'prototype','effects','search','related','calendar_date_select/calendar_date_select','calendar_date_select/format_american','application' %>
   <% if params[:controller] == 'search' && params[:action] == 'index' %>
     <link href="<%= url_for(:controller => 'search', :action => 'google', :format => 'rss') %>?<%= request.query_string %>" rel="alternate" title="RSS" type="application/rss+xml" />
   <% end %>

@@ -206,7 +206,7 @@ class Gasohol
     end
     result[:meta][:media_types] = []
     xml.search(:mt).each do |meta|
-      tag = { meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s }
+      tag = { meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s.gsub(/\\/,'/') }
       # if this meta tag contgains 'date' in the name somewhere, parse it
       if tag.key.to_s.match(/date/i)
         result[:meta].merge!({ tag.key => Time.parse(tag.value) })

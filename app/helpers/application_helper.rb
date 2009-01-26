@@ -39,4 +39,7 @@ module ApplicationHelper
     un(text.split("|").first.strip).gsub(/<.*?>/,'')
   end
 
+  def format_title_for_related(text)
+    format_title(text).gsub(/&.*?;/,'').gsub(/-.*$/,'').gsub(/[^\w ]/,'').strip
+  end
 end

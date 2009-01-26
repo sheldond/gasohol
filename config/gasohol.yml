@@ -9,6 +9,7 @@ google:
   getfields: *
 cache:
   host: 10.248.98.129
+  #host: 127.0.0.1
   timeout: 86400
 flickr:
   url: http://api.flickr.com/services/rest

@@ -148,6 +148,7 @@ class ActiveSearch < Gasohol
 		output_options.merge!({:num => parts[:num]}) if parts[:num] and !options[:num]    # if num was set explicitly in the options hash, don't override that here
 		output_options.merge!({:sort => 'date:A:S:d1'}) if parts[:sort] == 'date'
 		output_options.merge!({:count_only => true}) if parts[:count_only] && (parts[:count_only] == true || parts[:count_only] == 'true')
+		output_options.merge!({:partialfields => parts[:partialfields]}) if parts[:partialfields]
 		
 		# TODO: this is really only used by display, does it really need to exist here?
 		output_options.merge!({:style => parts[:style]}) if parts[:style]

@@ -18,38 +18,16 @@ Ajax.Responders.register({
   }
 });
 
-function handleEnter(form,e) {
-	var keycode;
-	if (window.event) {
-		keycode = window.event.keyCode;
-	} else if (e) {
-		keycode = e.which;
-	} else {
-		return true;
+
+// Add a tip to the bottom of the calendar by extending the existing library
+CalendarDateSelect.prototype.__initCalendarDiv = CalendarDateSelect.prototype.initCalendarDiv;
+Object.extend(CalendarDateSelect.prototype, {
+	initCalendarDiv:function() {
+		this.__initCalendarDiv();
+		this.calendar_div.insert({bottom:'<div class="tips"><strong>Tip:</strong> Next time try just typing something like "next month", "july" or "today"</div>'});
 	}
+});
 
-	if (keycode == 13) {
-		form.submit();
-		return false;
-	} else {
-		return true;
-	}
-}
-
-function switchSearch(type) {
-	// turn off all searches
-	$$('#search_refine .tab').each(function(tab) {
-		tab.hide();
-	});
-	// turn off all tabs
-	$$('#search_tabs li').each(function(tab) {
-		tab.removeClassName('selected');
-	});
-
-	// show selected search and highlight selected tab
-	$(type+'_search').show();
-	$(type+'_tab').addClassName('selected');
-}
 
 function sort(sort_by) {
   var query_string = '?'
@@ -74,17 +52,10 @@ function selectOption(obj, value) {
 			}
 		});
 	}
-}
+}	
 
-// Add a tip to the bottom of the calendar by extending the exist library
-CalendarDateSelect.prototype.__initCalendarDiv = CalendarDateSelect.prototype.initCalendarDiv;
-Object.extend(CalendarDateSelect.prototype, {
-	initCalendarDiv:function() {
-		this.__initCalendarDiv();
-		this.calendar_div.insert({bottom:'<div class="tips"><strong>Tip:</strong> Next time try just typing something like "next month", "july" or "today"</div>'});
-	}
-});		
-
+// fire up an instance of the related items handler
+var related = new Related();
 
 // asset sports and types
 var assets = [
