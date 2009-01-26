@@ -105,7 +105,7 @@ class SearchController < ApplicationController
   # +id+ the id of the request as far as the browser is concerned so it can be replaced on the page
   # +title+ the title of the event
   # +media_types+ a pipe delimited list of media_types to search against
-  def related2
+  def related
     md5 = Digest::MD5.hexdigest('search/related/'+params.inspect)
     js = cache(md5) do
       
@@ -190,51 +190,8 @@ class SearchController < ApplicationController
 
     render :text => js.to_json, :content_type => 'application/javascript'
   end
-  
-  # (/search/related)
-  # Does related item queries for every serach result on /search/index
-  # Pass this a JSON array of hashes like so:  {id:1,calls:[{type:'google',name:'discussions',noun:'discussion',url:'http://site.com/search/google.json?asdf',link:'http://site.com'}]}
-  # +id+    the id of result on the page that needs updating
-  # +type+  one of google|photo|video|twitter
-  # +name+  the name of the <div> to update in the view
-  # +noun+  the name of the related 'thing' so we can singularize/pluralize the noun based on how many records were returned - "1 discussion" versus "3 discussions"
-  # +ajax+  a URL that a browser could call to get the response it needs, ie. /search/google.json?q=marathon&mode=community&num=1&count_only=true, even though we're going to call it internally and only care about the query_string options
-  # +link+  link that the user can click to see the full result set
-  def related
-    # only if this entire request is not cached will we look at each individual part (and also see if THEY'RE cached)
-    md5 = Digest::MD5.hexdigest(params[:request])
-    js = cache(md5) do
-      request = ActiveSupport::JSON.decode(params[:request])
-      output = []
-      request['calls'].each do |call|
-        md5 = Digest::MD5.hexdigest(call['ajax'])
-        # TODO: Thread these
-        case call['type']
-        when 'google'
-          result = do_google(get_options_from_url(call['ajax']), { :skip_deep_keyword_search => true })          # do_google already handles its own caching
-        when 'photos'
-          result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['photos']['total'].to_i }
-        when 'videos'
-          result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['feed']['openSearch$totalResults']['$t'].to_i }
-        when 'tweets'
-          result = cache(md5) { ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse(call['ajax'])))['results'].length }
-        end
-        if result.to_i == 0
-          output << "$('result_#{request['id']}_links_#{call['name']}').remove();"
-        else
-          output << "$('result_#{request['id']}_links_#{call['name']}').insert({bottom:'<a href=\"#{call['link']}\">#{result} #{call['noun']}'+(#{result} != 1 ? 's' : '')+'</a>'});"
-        end
-      end      # cache
-      # add an ajax call to un-hide the 'related' row on the page
-      output << "!$('result_#{request['id']}_links').visible() ? $('result_#{request['id']}_links').show() : null;"
-      js = output.join('')
-    end
-    # render all the calls and set content type so that we can evaluate them as valid statements in the browser
-    render :text => js, :content_type => 'application/javascript'
-  end
-  
 
-=begin  
+  
   # (/search/location)
   # API for access to the zips table. Takes a zip code and optional radius. Tack on .xml, .json, .yaml for various formats.
   # For the query string variables, 'zip' is required and 'radius' is optional.
@@ -247,7 +204,7 @@ class SearchController < ApplicationController
     end
     standard_response(@result)
   end
-=end  
+
   
   # (/search/set_location)
   # If called internally we pass a location object as 'value'. If no object was passed then look for a params[:value] instead.
@@ -317,22 +274,6 @@ class SearchController < ApplicationController
     return options
   end
 
-
-  # Gets the location info out of the URL. If it isn't there then
-=begin
-  def get_location_from_params(p)
-    begin
-      if p[:location]
-        return Location.new(p[:location], { :radius => p[:radius] || GASOHOL_CONFIG[:google][:default_radius] })
-      else
-        return Location.new('everywhere')
-      end
-    rescue  #problem with the location in the URL, just search everywhere
-      logger.info("\n\nSearchController.get_location_from_params: Location in URL is bogus: '#{params[:location]}\n\n")
-      return Location.new('everywhere')
-    end
-  end
-=end
   
   # Used on the homepage so that the first time you come to the site we know where you are
   def get_or_set_default_location

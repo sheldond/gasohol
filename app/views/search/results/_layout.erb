@@ -28,7 +28,7 @@
             $('result_<%= result[:num] %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
             $('result_<%= result[:num] %>_links_watching').update(Math.round(Math.random()*40)+' watching');
             
-            new Ajax.Request( "<%= url_for(:controller => 'search', :action => 'related2') %>",
+            new Ajax.Request( "<%= url_for(:controller => 'search', :action => 'related') %>",
                               { method:'get',
                                 parameters:'id=<%= result[:num] %>&title=<%= format_title_for_related(result[:title]) %>&media_types=<%= format_media_types_for_training_plans(result) %>',
                                 onSuccess:function(r) { related.parse(r) },

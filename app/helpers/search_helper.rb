@@ -113,7 +113,7 @@ module SearchHelper
     end
   end
   
-  
+  # take the array of media_types and turn them into a standard format that /search/related knows how to parse into useful data
   def format_media_types_for_training_plans(result)
     if result[:meta] && result[:meta][:media_types]
       output = ''

@@ -11,7 +11,7 @@
 # 2. options (stuff like 'collection,' client,' and 'num')
 #
 # And then there is the actual string that you see in your browser, the "query string," which contains
-# all of the & and = parts.
+# all of the & and = stuff.
 #
 # Think of the query as the keywords to search for. However the query to the GSA can actually contain 
 # several parts besides just keywords. If you are using metadata then the query can contain several 
@@ -124,10 +124,40 @@ class Gasohol
     end
   end
   
-  # Assembles the query and options into a big query string and sends over to your GSA.
+  
+  # This method does the actual searching. It accepts to parameters:
   #
-  #  @google = Google.new(config)
-  #  @results = @google.search('pizza')
+  # * +query+ is the query string to google (q=)
+  # * +options+ is a hash of parameters that could replace or augment DEFAULT_OPTIONS
+  #
+  # On most implementations that offer more than straight keyword searches you're going to want additional
+  # parameters, like meta searches, to appear in the browser's URL so that the search can be uniquely identified
+  # and run again. These parameters will not be formatted correctly for Google. So you'll want to extend Gasohol
+  # write your own impementation of this method that at the end will call super and pass in a final query string
+  # and hash of options.
+  #
+  # == Example
+  # You have an application that searches for pizzas. You want your URL to look something like:
+  #
+  #   http://pizzafinder.com/search?keyword=deep+dish&size=16&toppings=cheese
+  #
+  # Google doesn't know what to do with 'keyword,' 'size,' or 'toppings' so you need to turn those into something
+  # it does understand. So you might extend this method to look like:
+  #
+  #   class PizzaFinder > Gasohol
+  #     def search(parts,options={})
+  #       super("#{query} inmeta:panSize=#{parts[:size]} inmeta:toppings~#{parts[:toppings]")
+  #     end
+  #   end
+  #
+  # And then use it like so (+params+ is the default Ruby on Rails hash or URL values):
+  #
+  #   the_finder = PizzaFinder.new(config)
+  #   the_finder.search(params)
+  #
+  # That string is appeneded to the GSA url and now it knows how to search:
+  #
+  #   http://gsa.pizzafinder.com/search?q=deep+dish+inmeta:panSize=16+inmeta:toppings~cheese&collection=etc,etc,etc
   
   def search(query,options={})
     RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: options=#{options.inspect}\n")
@@ -223,6 +253,7 @@ class Gasohol
     return result
   end
   
+  
   # a featured result
   def parse_featured_result(xml)
     result = Marshal.load(Marshal.dump(DEFAULT_FEATURED_RESULT))
@@ -231,45 +262,6 @@ class Gasohol
     return result
   end
   
-  # This method is only concerned with turning the query and all of the params into the Google query variable (q).
-  # The options (collection, client, etc.) are defined in @config, which is used as a local 
-  # variable 'options' in various places above.
-  #
-  # * 'parts' should contain a hash of everything that is _not_ the actual keyword query terms.
-  # * 'query' is the keyword(s) query terms
-  #
-  # On most implementations that offer more than straight keyword matches you're going to want additional
-  # parameters, like meta searches, to appear in the browser's URL so that the search can be uniquely identified
-  # and ran again. These parameters will not be formatted correctly for Google. That's what this method will do. 
-  # Extend the Gasohol class with your own and then override this method so you can build a query string specific 
-  # to your implementation.
-  #
-  # == Example
-  # You have an application that searches for pizzas. You want your URL to look something like:
-  #
-  #   http://pizzafinder.com/search?keyword=deep+dish&size=16&toppings=cheese
-  #
-  # Google doesn't know what to do with 'keyword,' 'size,' or 'toppings' so you need to turn those into something
-  # it does understand. So you might extend this method to look like:
-  #
-  #   class PizzaFinder > Gasohol
-  #     def googlize_params_into_query(parts,query)
-  #       return "#{query} inmeta:panSize=#{parts[:size]} inmeta:toppings~#{parts[:toppings]"
-  #     end
-  #   end
-  #
-  # That string is appeneded to the GSA url and now it knows how to search:
-  #
-  #   http://gsa.pizzafinder.com/search?q=deep+dish+inmeta:panSize=16+inmeta:toppings~cheese&collection=etc,etc,etc
-  #
-  # And to get this whole process started:
-  #
-  #   finder = PizzaFinder.new(config)  # where 'config' is your hash of options to get the search engine ready (see above)
-  #   finder.search(parts,query)        # where 'parts' is a hash of params in the URL not including the keywords
-  #                                     # and 'query' is the actual keyword query
-  def googlize_params_into_query(parts)
-    return ['',nil]
-  end
   
   # This method creates the combination of the url, query and options into one big URI
   def query_path(query,options)

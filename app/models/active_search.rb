@@ -3,8 +3,10 @@
 # ie: searching in community actually adds an +inurl:community.active.com+ rather than a standard
 # +inmeta:category=foo+ since there are no community pages in asset service
 #
-# +parts+ is just the default Rails params hash (minus Rails-specific params like :controller or :action)
-# +query+ looks like '?q=keywords' when we start. We append on to this with the data we care about, interpreted from +parts+
+# +parts+ is just the default Rails params hash
+# +options+ is a hash that contains values to replace or augment Gasohol::DEFAULT_OPTIONS as well as any
+#   directives that should trigger some special behavior (like :skip_deep_keyword_search)
+
 require 'location'
 
 class ActiveSearch < Gasohol
@@ -149,9 +151,6 @@ class ActiveSearch < Gasohol
 		output_options.merge!({:sort => 'date:A:S:d1'}) if parts[:sort] == 'date'
 		output_options.merge!({:count_only => true}) if parts[:count_only] && (parts[:count_only] == true || parts[:count_only] == 'true')
 		output_options.merge!({:partialfields => parts[:partialfields]}) if parts[:partialfields]
-		
-		# TODO: this is really only used by display, does it really need to exist here?
-		output_options.merge!({:style => parts[:style]}) if parts[:style]
 
 		RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: googlize_params_into_query: options='#{output_options.inspect}'\n")
 
@@ -160,6 +159,7 @@ class ActiveSearch < Gasohol
 	
 	
 	private
+	
 	# do a little math to figure out the max/min latitude/longitude around the current location and create a range for the GSA to search in
 	def figure_latitude_longitude(lat,long,radius)
 		# make sure the radius is floating point number
@@ -173,14 +173,13 @@ class ActiveSearch < Gasohol
 	end
 	
 	
-	
 	# Determines whether this is search that uses only keywords
 	def simple_search?(options)
 		(options[:category] && options[:category].downcase == 'activities') && (options[:sport].nil? || options[:sport].downcase == 'any') && (options[:type].nil? || options[:type].downcase == 'any') && (options[:custom].nil? || options[:custom].downcase == 'any')
 	end
 	
 	
-	# This gets a bang (!) because it will change params based on whether or not a location was found in the passed text string 
+	# Search keywords for special trigger phrases like a location or a sport
 	def deep_keyword_search(text)
 	  
 	  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: test_keywords_for_location: text='#{text}'\n")
