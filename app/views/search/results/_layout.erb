@@ -10,7 +10,7 @@
   <%= yield unless title_only %>
   
   <%# Workaround for a weird bug -- the ajax calls are still appended to @ajax even though this code is inside of the conditional yield!  What the hell??? %>
-  <% if result.type == 'activity' && !title_only %>
+  <% if result.type == :activity && !title_only %>
     <div class="related_links_container">
       <%= image_tag('indicator.gif', { :alt => 'Loading...', :id => "result_#{result.num}_indicator" }) %>
       <div id="result_<%= result.num %>_links" class="related_links" style="display:none;">

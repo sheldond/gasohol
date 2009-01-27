@@ -1,6 +1,6 @@
-<% first = google[:results].first ? google[:results].first[:num] : 0 %>
-<% last = google[:results].last ? google[:results].last[:num] : 0 %>
-<% total = google[:google][:total_results] %>
+<% first = google.results.first ? google.results.first.num : 0 %>
+<% last = google.results.last ? google.results.last.num : 0 %>
+<% total = google.total_results %>
 
 <div id="breadcrumb">
 	<h2>

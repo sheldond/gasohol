@@ -14,7 +14,7 @@
       <% end %>
     <% end %>
   
-    <%= render :partial => "search/results/#{result.type}", :layout => "search/results/layout", :locals => { :result => result, :title_only => title_only, :numbered => numbered } %>
+    <%= render :partial => "search/results/#{result.type.to_s}", :layout => "search/results/layout", :locals => { :result => result, :title_only => title_only, :numbered => numbered } %>
     
   <% end %>
 <% end %>

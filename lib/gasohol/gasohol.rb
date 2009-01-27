@@ -60,18 +60,7 @@ module Gasohol
                         :partialfields => '' }
     # the parameters that google cares about and will respond to
     ALLOWED_PARAMS = DEFAULT_OPTIONS.keys
-    DEFAULT_OUTPUT = {  :results => [], 
-                        :featured => [], 
-                        :google => { 
-                          :query => '', 
-                          :params => {}, 
-                          :total_results => 0, 
-                          :next => 0, 
-                          :prev => 0, 
-                          :google_query => '', 
-                          :full_query_path => '',
-                          :total_featured_results => 0 } 
-                        }
+    
     DEFAULT_FEATURED_RESULT = { :url => '', :title => '', :featured => true }
 
     # To get gasohol ready, instantiate a new copy with Gasohol.new(config) where 'config' is a hash of options so that we know how/where
@@ -161,7 +150,7 @@ module Gasohol
       full_query_path = query_path(query,all_options)        # creates the full URL to the GSA
       RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: full_query_path=#{full_query_path}\n\n")
     
-      begin
+      #begin
         # do the query and save the xml
         xml = Hpricot(open(full_query_path))
   
@@ -169,53 +158,29 @@ module Gasohol
         if all_options[:count_only] == true
           return xml.search(:m).inner_html.to_i || 0
         end
-      
-        # the struct we're going to output
-        output = Marshal.load(Marshal.dump(DEFAULT_OUTPUT))
-      
-        # output[:google][:query] = query
-        output[:google][:google_query] = query
-        output[:google][:full_query_path] = full_query_path
-      
-        # total number of results
-        output[:google][:total_results] = xml.search(:m).inner_html.to_i || 0
-      
-        # save params
-        xml.search(:param).each do |param|
-          output[:google][:params].merge!({param.attributes['name'].to_sym => param.attributes['value'].to_s})
-        end
-  
+        
+        # otherwise create a real resultset
+        rs = ResultSet.new(query,full_query_path,xml,all_options[:num].to_i)
+        
         # if there was at least one result, parse the xml
-        if output[:google][:total_results] > 0
-          output[:google][:total_featured_results] = xml.search(:gm).size
-          # get featured results (called 'sponsored links' on the results page, displayed at the top)
-          output[:featured] = xml.search(:gm).collect { |xml_featured| parse_featured_result(xml_featured) }
-          # get regular results
-          output[:results] = xml.search(:r).collect { |xml_result| Result.new(xml_result) }
+        if rs.total_results > 0
+          rs.total_featured_results = xml.search(:gm).size
+          rs.featured = xml.search(:gm).collect { |xml_featured| Featured.new(xml_featured) }           # get featured results (called 'sponsored links' on the results page, displayed at the top)
+          rs.results = xml.search(:r).collect { |xml_result| Result.new(xml_result) }                   # get regular results
           # TODO: Add required will_paginate methods to automatically handle paging
         end
       
-      rescue => e
+      #rescue => e
         # error with results (the GSA barfed?)
-        RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
-      end
+        # RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
+      #end
     
-      return output
+      return rs
     end
 
 
     private
     
-  
-    # a featured result
-    def parse_featured_result(xml)
-      result = Marshal.load(Marshal.dump(DEFAULT_FEATURED_RESULT))
-      result[:url] = xml.at(:gl) ? xml.at(:gl).inner_html : ''
-      result[:title] = xml.at(:gd) ? xml.at(:gd).inner_html : ''
-      return result
-    end
-  
-  
     # This method creates the combination of the url, query and options into one big URI
     def query_path(query,options)
       url = options.delete(:url)  # sets url to the value of options[:url] and then removes it from the hash

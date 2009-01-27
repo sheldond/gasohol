@@ -1,51 +1,26 @@
 module Gasohol
   class Result
   
-    DEFAULT_RESULT = {  :num => 0, 
-                        :mime => '', 
-                        :level => 1, 
-                        :url => '', 
-                        :title => '', 
-                        :abstract => '', 
-                        :date => '', 
-                        :meta => {}, 
-                        :featured => false, 
-                        :rating => 0 }
-                      
     attr_reader :result,:num,:mime,:level,:url,:url_encoded,:title,:language,:abstract,:crawl_date,:has,:meta,:featured
   
     def initialize(xml)
-      @result = Marshal.load(Marshal.dump(DEFAULT_RESULT))
       @num = xml.attributes['n'].to_i
-      result[:num] = @num
       @mime = xml.attributes['mime'] || 'text/html'
-      result[:mime] = @mime
       @level = xml.attributes['l'].to_i > 0 ? xml.attributes['l'].to_i : 1
-      result[:level] = @level
       @url = xml.at(:u) ? xml.at(:u).inner_html : ''
-      result[:url] = @url
       @url_encoded = xml.at(:ue) ? xml.at(:ue).inner_html : ''
-      result[:url_encoded] = @url_encoded
       @title = xml.at(:t) ? xml.at(:t).inner_html : ''
-      result[:title] = @title
       @language = xml.at(:lang) ? xml.at(:lang).inner_html : ''
-      result[:language] = @language
       @abstract = xml.at(:s) ? xml.at(:s).inner_html.gsub(/&lt;br&gt;/i,'').gsub(/\.\.\./,'') : ''
-      result[:abstract] = @abstract
       # result[:date] = xml.at(:fs) ? Chronic.parse(xml.at(:fs)[:value]) : ''
       @crawl_date = xml.at(:crawldate) ? Chronic.parse(xml.at(:crawldate).inner_html) : ''
-      result[:crawl_date] = @crawl_date
       if xml.at(:has)
         @has = {}
         if xml.at(:has).at(:c)
           @has[:cache] = {}
-          result[:cache] = @has[:cache]
           @has[:cache][:size] = xml.at(:has).at(:c).attributes['sz']
-          result[:cache][:size] = @has[:cache][:size]
           @has[:cache][:cid] =xml.at(:has).at(:c).attributes['cid']
-          result[:cache][:cid] = @has[:cache][:cid]
           @has[:cache][:encoding] = xml.at(:has).at(:c).attributes['enc']
-          result[:cache][:encoding] = @has[:cache][:encoding]
         end
       end
       @meta = {}
@@ -62,26 +37,53 @@ module Gasohol
             @meta.merge!(tag)
           end
         end
-        result[:meta] = @meta
       end
       @featured = false
-      result[:featured] = @featured
-    
-      @result = result
     end
     
     
+    # what type of result is this?
     def type
-      return 'activity' if @meta[:category] && @meta[:category] == 'Activities'
-      return 'article' if @meta[:category] && @meta[:category] == 'Articles'
-      return 'community' if @url.match(/community\.active\.com/)
-      return 'facility' if @meta[:category] && @meta[:category] == 'Facilities'
-      return 'org' if @meta[:category] && @meta[:category] == 'Organizations'
-      return 'training' if @meta[:media_types][0] && @meta[:media_types][0].value.match(/Training Plan/)
+      return :activity if @meta[:category] && @meta[:category] == 'Activities'
+      return :article if @meta[:category] && @meta[:category] == 'Articles'
+      return :community if @url.match(/community\.active\.com/)
+      return :facility if @meta[:category] && @meta[:category] == 'Facilities'
+      return :org if @meta[:category] && @meta[:category] == 'Organizations'
+      return :training if @meta[:media_types][0] && @meta[:media_types][0].value.match(/Training Plan/)
       # if nothing else, just return 'unknown'
       return 'unknown'
     end
 
+
+    # individual type checks
+    def activity?
+      type == :activity
+    end
+    
+    def article?
+      type == :article
+    end
+    
+    def community?
+      type == :community
+    end
+    
+    def facility?
+      type == :facility
+    end
+    
+    def org?
+      type == :org
+    end
+    
+    def training?
+      type == :training
+    end
+    
+    def unknown?
+      type == :unknown
+    end
+    
   
   end
 end

@@ -72,7 +72,7 @@ class SearchController < ApplicationController
     threads.each { |t| t.join }
     
     # now update query record with the calculated values for keywords, location, etc.
-    query_record.update_with_options(params, {:total_results => @google[:google][:total_results], :user => current_user})  # TODO: +params+ are dirty and could have been changed by ActiveSearch...modify the result package so that it contains modified keywords/location that we update the database record with so we know what the search was transformed into
+    query_record.update_with_options(params, {:total_results => @google.total_results, :user => current_user})  # TODO: +params+ are dirty and could have been changed by ActiveSearch...modify the result package so that it contains modified keywords/location that we update the database record with so we know what the search was transformed into
     
     # get various related queries on the page
     @location = Location.new!(@original_location)
