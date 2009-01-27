@@ -8,37 +8,5 @@
   </div>
 
   <%= yield unless title_only %>
-  
-  <%# Workaround for a weird bug -- the ajax calls are still appended to @ajax even though this code is inside of the conditional yield!  What the hell??? %>
-  <% if result.type == :activity && !title_only %>
-    <div class="related_links_container">
-      <%= image_tag('indicator.gif', { :alt => 'Loading...', :id => "result_#{result.num}_indicator" }) %>
-      <div id="result_<%= result.num %>_links" class="related_links" style="display:none;">
-        <% if SearchController::DO_RELATED_SEARCH %>
-          <strong>Related:</strong>
-          <ul>
-            <li id="result_<%= result.num %>_links_discussions"></li>
-            <li id="result_<%= result.num %>_links_articles"></li>
-            <li id="result_<%= result.num %>_links_training"></li>
-            <li id="result_<%= result.num %>_links_photos"></li>
-            <li id="result_<%= result.num %>_links_videos"></li>
-            <li id="result_<%= result.num %>_links_tweets"></li>
-          </ul>
-          <script type="text/javascript">
-            $('result_<%= result.num %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
-            $('result_<%= result.num %>_links_watching').update(Math.round(Math.random()*40)+' watching');
-            
-            new Ajax.Request( "<%= url_for(:controller => 'search', :action => 'related') %>",
-                              { method:'get',
-                                parameters:'id=<%= result.num %>&title=<%= format_title_for_related(result.title) %>&media_types=<%= format_media_types_for_training_plans(result) %>',
-                                onSuccess:function(r) { related.parse(r) },
-                                onFailure:function(e) { $('result_<%= result.num %>_indicator').remove() }
-                              });
-          </script>
-          
-        <% end %>
-      </div>
-    </div>
-  <% end %>
 
 </div>

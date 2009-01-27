@@ -1,12 +1,12 @@
 class SearchController < ApplicationController
   # caches_page :google
   
-  #before_filter :login_required, :except => [:location,:google] # this page is locked down, only accessible if logged in
+  before_filter :login_required, :except => [:location,:google] # this page is locked down, only accessible if logged in
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = false            # do all the related (ajax) searches for each and every result
-  DO_CONTEXT_SEARCH = false           # contextual search on the right
+  DO_RELATED_SEARCH = true            # do all the related (ajax) searches for each and every result
+  # DO_CONTEXT_SEARCH = false           # contextual search on the right
   CONTEXT_RESULT_COUNT = 5            # number of items to show for contextual related
   MINI_RELEVANT_SEARCH_COUNT = 5      # number of results to show in the mini display of relevant results when the page is sorted by date
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
@@ -65,8 +65,8 @@ class SearchController < ApplicationController
     
     # do the real search we came here for
     threads << Thread.new(params) do |p|
-      @google = do_google(p, {:sort => google_sort_string})
-    end  # we manually pass in the sort so that ActiveSearch doesn't also need to do the figure_sort logic
+      @google = do_google(p, {:sort => google_sort_string})   # we have to manually pass in the sort each time (instead of letting ActiveSearch figure it out) because sort could be based on cookie (which ActiveSearch can't read)
+    end
     
     # wait for all of our searches to complete
     threads.each { |t| t.join }
@@ -79,9 +79,6 @@ class SearchController < ApplicationController
     @popular_local_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_popular_by_location_and_mode(@location,@mode,10) : Query.find_popular_by_mode(@mode,10)
     @related_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_related_by_location_and_mode(@original_keywords,@location,@mode,5) : Query.find_related_by_mode(@original_keywords,@mode,5) # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
-    
-    # the result partials will populate this with related query ajax calls and then output at the end of the page
-    @ajax = ''
     
     render :layout => 'application'
   end

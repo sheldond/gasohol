@@ -729,45 +729,9 @@ h3 {
 	padding: 1em 0;
 }
 		
-.paging {
-	float: right;
+#paging {
+	text-align: right;
 	}
-
-	.paging .previous {
-		margin: 0;
-		padding: 1px 1px 1px 10px;
-		}
-
-	.paging .next {
-		margin: 0;
-		padding: 1px 10px 1px 1px;
-		}
-
-	.paging a.previous {
-		background: transparent url('../images/previous.png') 2px center no-repeat;
-		}
-
-	.paging span.previous {
-		color: #aaaaaa;
-		background: transparent url('../images/previous_disabled.png') 2px center no-repeat;
-		}
-
-	.paging a.next {
-		background: transparent url('../images/next.png') 90% center no-repeat;
-		}
-
-	.paging span.next {
-		color: #aaaaaa;
-		background: transparent url('../images/next_disabled.png') 90% center no-repeat;
-		}
-
-	.paging a.current {
-		border: 1px solid #D3E2EE;
-		padding: 0 1px;
-		font-weight: bold;
-		text-decoration: none;
-		background-color: #eeeeee;
-		}
 		
 /* 404 and 500 */
   div#error {

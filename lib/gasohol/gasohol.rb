@@ -37,7 +37,9 @@ require 'chronic'
 require 'core_extensions'
 
 require 'gasohol/exceptions'
+require 'gasohol/result_set'
 require 'gasohol/result'
+require 'gasohol/featured'
 
 module Gasohol
   
@@ -143,12 +145,12 @@ module Gasohol
     #   http://gsa.pizzafinder.com/search?q=deep+dish+inmeta:panSize=16+inmeta:toppings~cheese&collection=etc,etc,etc
   
     def search(query,options={})
-      RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: options=#{options.inspect}\n")
-      RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: query='#{query}'\n")
+      #RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: options=#{options.inspect}\n")
+      #RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: query='#{query}'\n")
       all_options = @config.merge(options)    # merge options that were passed directly to this method
-      RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: all_options=#{all_options.inspect}\n")
+      #RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: all_options=#{all_options.inspect}\n")
       full_query_path = query_path(query,all_options)        # creates the full URL to the GSA
-      RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: full_query_path=#{full_query_path}\n\n")
+      #RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: full_query_path=#{full_query_path}\n\n")
     
       #begin
         # do the query and save the xml
@@ -165,13 +167,11 @@ module Gasohol
         # if there was at least one result, parse the xml
         if rs.total_results > 0
           rs.total_featured_results = xml.search(:gm).size
-          rs.featured = xml.search(:gm).collect { |xml_featured| Featured.new(xml_featured) }           # get featured results (called 'sponsored links' on the results page, displayed at the top)
-          rs.results = xml.search(:r).collect { |xml_result| Result.new(xml_result) }                   # get regular results
-          # TODO: Add required will_paginate methods to automatically handle paging
+          rs.featured = xml.search(:gm).collect { |xml_featured| parse_featured(xml_featured) }           # get featured results (called 'sponsored links' on the results page, displayed at the top)
+          rs.results = xml.search(:r).collect { |xml_result| parse_result(xml_result) }                   # get regular results
         end
       
-      #rescue => e
-        # error with results (the GSA barfed?)
+      #rescue => e    # error with results (the GSA barfed?)
         # RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
       #end
     
@@ -180,6 +180,16 @@ module Gasohol
 
 
     private
+    
+    # With these being their own methods we can override and modify if needed
+    def parse_featured(xml)
+      Featured.new(xml)
+    end
+    
+    # With these being their own methods we can override and modify if needed
+    def parse_result(xml)
+      Result.new(xml)
+    end
     
     # This method creates the combination of the url, query and options into one big URI
     def query_path(query,options)

@@ -1,4 +1,6 @@
 module Gasohol
+  
+  # Parses the 'sponsored links' results
   class Featured
     
     attr_reader :url, :title
@@ -10,13 +12,3 @@ module Gasohol
     
   end
 end
-
-=begin
-# a featured result
-def parse_featured_result(xml)
-  result = Marshal.load(Marshal.dump(DEFAULT_FEATURED_RESULT))
-  result[:url] = xml.at(:gl) ? xml.at(:gl).inner_html : ''
-  result[:title] = xml.at(:gd) ? xml.at(:gd).inner_html : ''
-  return result
-end
-=end

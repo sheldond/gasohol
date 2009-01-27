@@ -148,7 +148,7 @@ class ActiveSearch < Gasohol::Base
 		
 		# Figure out any GSA options that might have been included in the +parts+ hash (instead of explicitly set in the +options+ hash)
 		# output_options.merge!({:start => parts[:start]}) if parts[:start]
-		output_options.merge!({:num => parts[:num].to_i}) if parts[:num] and !options[:num]            # if num was set explicitly in the options hash, don't override that here
+		output_options.merge!({:num => parts[:num].to_i}) if parts[:num] && !options[:num]            # if num was set explicitly in the options hash, don't override that here
 		if parts[:page]  # convert +page+ to +start+ (which GSA understands)
 		  start_num = parts[:page].to_i * (output_options[:num].to_i || @config[:num]) - (output_options[:num].to_i || @config[:num])
 		  output_options.merge!({:start => start_num}) 

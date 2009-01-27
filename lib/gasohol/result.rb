@@ -1,4 +1,6 @@
 module Gasohol
+  
+  # Parses standard results
   class Result
   
     attr_reader :result,:num,:mime,:level,:url,:url_encoded,:title,:language,:abstract,:crawl_date,:has,:meta,:featured
@@ -24,10 +26,19 @@ module Gasohol
         end
       end
       @meta = {}
-      @meta[:media_types] = []
-      # result[:meta][:media_types] = []
       xml.search(:mt).each do |meta|
-        tag = { meta.attributes['n'].underscore.to_sym => meta.attributes['v'].to_s.gsub(/\\/,'/') }
+        key = meta.attributes['n'].underscore.to_sym
+        value = key.to_s.match(/date/i) ? Time.parse(meta.attributes['v'].to_s) : meta.attributes['v'].to_s.gsub(/\\/,'/')    # if the name contains 'date' assume it's a valid date object and convert, otherwise just use the string but convert backslashes to forward ones
+        if @meta[key]
+          if @meta[key].is_a? String
+            save_me = @meta[key]
+            @meta[key] = [save_me]
+          end
+          @meta[key] << value     # key already exists, append to array
+        else
+          @meta.merge!({ key => value })               # key doesn't exist, merge hash
+        end
+=begin
         if tag.key.to_s.match(/date/i)      # if this meta tag contains 'date' in the name somewhere, parse it
           @meta.merge!({ tag.key => Time.parse(tag.value) })
         else
@@ -37,6 +48,7 @@ module Gasohol
             @meta.merge!(tag)
           end
         end
+=end
       end
       @featured = false
     end

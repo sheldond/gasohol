@@ -43,26 +43,16 @@ module SearchHelper
   def location_aware_search_mode?(text)
     return SearchController::LOCATION_AWARE_SEARCH_MODES.include?(text)
   end
-  
-  # Return only the params that the 'all' search cares about (q, category, sport)
-  def all_search_params(without=nil)
-    include_params = ['q','sport','category','action','controller','format','id']; include_params.delete(without.to_s)
-    options = params.dup
-    options.each do |key,value|
-      unless(include_params.include? key)
-        options.delete(key)
-      end
-    end
-  end
+
   
   # take the array of media_types and turn them into a standard format that /search/related knows how to parse into useful data
   def format_media_types_for_training_plans(result)
-    if result[:meta] && result[:meta][:media_types]
+    if result.meta && result.meta[:media_type]
       output = ''
-      result[:meta][:media_types].each_with_index do |mt,i|
-        if mt.value.match(/\//)
-          output += mt.value.split('/').last
-          output += '|' if result[:meta][:media_types].length-1 != i
+      result.meta[:media_type].each_with_index do |mt,i|
+        if mt.match(/\//)
+          output += mt.split('/').last
+          output += '|' if result.meta[:media_type].length-1 != i
         end
       end
       return output
