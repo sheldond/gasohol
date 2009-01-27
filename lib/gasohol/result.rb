@@ -71,9 +71,17 @@ module Gasohol
     end
     
     
-    def to_h
-      result.inspect
+    def type
+      return 'activity' if @meta[:category] && @meta[:category] == 'Activities'
+      return 'article' if @meta[:category] && @meta[:category] == 'Articles'
+      return 'community' if @url.match(/community\.active\.com/)
+      return 'facility' if @meta[:category] && @meta[:category] == 'Facilities'
+      return 'org' if @meta[:category] && @meta[:category] == 'Organizations'
+      return 'training' if @meta[:media_types][0] && @meta[:media_types][0].value.match(/Training Plan/)
+      # if nothing else, just return 'unknown'
+      return 'unknown'
     end
+
   
   end
 end

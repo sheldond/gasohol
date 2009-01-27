@@ -1,14 +1,14 @@
-<% if result[:abstract] %>
-  <span class="abstract"><%= un result[:abstract] %></span>
+<% if result.abstract %>
+  <span class="abstract"><%= un result.abstract %></span>
 <% end %>
 <ul class="meta">
-  <% if result[:url].match(/blogs/) %>
+  <% if result.url.match(/blogs/) %>
     <li><strong>What:</strong> Blog post</li>
-  <% elsif result[:url].match(/thread/) || result[:url].match(/message/) %>
+  <% elsif result.url.match(/thread/) || result.url.match(/message/) %>
     <li><strong>What:</strong> Discussion post</li>
-  <% elsif result[:url].match(/community\.jspa\?communityID=/) %>
+  <% elsif result.url.match(/community\.jspa\?communityID=/) %>
     <li><strong>What:</strong> Discussion board</li>
-  <% elsif result[:url].match(/docs/) %>
+  <% elsif result.url.match(/docs/) %>
     <li><strong>What:</strong> Document</li>
   <% end %>
   </li>

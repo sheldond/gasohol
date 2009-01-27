@@ -1,15 +1,15 @@
-<% if result[:abstract] %>
-  <span class="abstract"><%= un result[:abstract] %></span>
+<% if result.abstract %>
+  <span class="abstract"><%= un result.abstract %></span>
 <% end %>
 
 <ul class="meta">
-  <% if result[:meta][:channel] %>
+  <% if result.meta[:channel] %>
     <li><strong>What:</strong>
-      <%= result[:meta][:channel].split('\\').first %>
-      <% if result[:meta][:media_types] && result[:meta][:media_types].first %>
-        <%= result[:meta][:media_types].first.value.split('\\').first %>
+      <%= result.meta[:channel].split('\\').first %>
+      <% if result.meta[:media_types] && result.meta[:media_types].first %>
+        <%= result.meta[:media_types].first.value.split('\\').first %>
       <% end %>
     </li>
   <% end %>
-  <li><strong>Published on:</strong> <%= result[:meta][:update_date_time].to_s(:standard) %></li>
+  <li><strong>Published on:</strong> <%= result.meta[:update_date_time].to_s(:standard) %></li>
 </ul>

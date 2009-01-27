@@ -1,38 +1,38 @@
-<div <%= "id=\"result_#{result[:num]}\"" unless numbered == false %> class="result <%= result[:meta][:category] ? urlize(result[:meta][:category]).singularize : '' %> <%= result[:level] > 1 ? 'sub' : '' %>">
+<div <%= "id=\"result_#{result.num}\"" unless numbered == false %> class="result <%= result.meta[:category] ? urlize(result.meta[:category]).singularize : '' %> <%= result.level > 1 ? 'sub' : '' %>">
   <div class="title">
-    <% if result[:meta] && result[:meta][:channel] and !title_only %>
-      <a class="sport_icon" href="#" onclick="$('sport').value = '<%= result[:meta][:channel].titlecase %>'; $('search_form').submit(); return false;"><img src="/images/sport_icon_<%= result[:meta][:channel].titlecase %>.png" alt="" /></a>
+    <% if result.meta && result.meta[:channel] and !title_only %>
+      <a class="sport_icon" href="#" onclick="$('sport').value = '<%= result.meta[:channel].titlecase %>'; $('search_form').submit(); return false;"><img src="/images/sport_icon_<%= result.meta[:channel].titlecase %>.png" alt="" /></a>
     <% end %>
-    <h3><%= link_to(format_title(result[:title]), result[:url]) %></h3>
+    <h3><%= link_to(format_title(result.title), result.url) %></h3>
     <%= output_rating(rand(6)) if !title_only %>
   </div>
 
   <%= yield unless title_only %>
   
   <%# Workaround for a weird bug -- the ajax calls are still appended to @ajax even though this code is inside of the conditional yield!  What the hell??? %>
-  <% if result_type(result) == 'activity' && !title_only %>
+  <% if result.type == 'activity' && !title_only %>
     <div class="related_links_container">
-      <%= image_tag('indicator.gif', { :alt => 'Loading...', :id => "result_#{result[:num]}_indicator" }) %>
-      <div id="result_<%= result[:num] %>_links" class="related_links" style="display:none;">
+      <%= image_tag('indicator.gif', { :alt => 'Loading...', :id => "result_#{result.num}_indicator" }) %>
+      <div id="result_<%= result.num %>_links" class="related_links" style="display:none;">
         <% if SearchController::DO_RELATED_SEARCH %>
           <strong>Related:</strong>
           <ul>
-            <li id="result_<%= result[:num] %>_links_discussions"></li>
-            <li id="result_<%= result[:num] %>_links_articles"></li>
-            <li id="result_<%= result[:num] %>_links_training"></li>
-            <li id="result_<%= result[:num] %>_links_photos"></li>
-            <li id="result_<%= result[:num] %>_links_videos"></li>
-            <li id="result_<%= result[:num] %>_links_tweets"></li>
+            <li id="result_<%= result.num %>_links_discussions"></li>
+            <li id="result_<%= result.num %>_links_articles"></li>
+            <li id="result_<%= result.num %>_links_training"></li>
+            <li id="result_<%= result.num %>_links_photos"></li>
+            <li id="result_<%= result.num %>_links_videos"></li>
+            <li id="result_<%= result.num %>_links_tweets"></li>
           </ul>
           <script type="text/javascript">
-            $('result_<%= result[:num] %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
-            $('result_<%= result[:num] %>_links_watching').update(Math.round(Math.random()*40)+' watching');
+            $('result_<%= result.num %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
+            $('result_<%= result.num %>_links_watching').update(Math.round(Math.random()*40)+' watching');
             
             new Ajax.Request( "<%= url_for(:controller => 'search', :action => 'related') %>",
                               { method:'get',
-                                parameters:'id=<%= result[:num] %>&title=<%= format_title_for_related(result[:title]) %>&media_types=<%= format_media_types_for_training_plans(result) %>',
+                                parameters:'id=<%= result.num %>&title=<%= format_title_for_related(result.title) %>&media_types=<%= format_media_types_for_training_plans(result) %>',
                                 onSuccess:function(r) { related.parse(r) },
-                                onFailure:function(e) { $('result_<%= result[:num] %>_indicator').remove() }
+                                onFailure:function(e) { $('result_<%= result.num %>_indicator').remove() }
                               });
           </script>
           
