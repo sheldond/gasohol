@@ -10,7 +10,7 @@ set :scm_passphrase, "" #This is your custom users password
 set :branch, "master"
 set :deploy_to, "/mnt/app"
 
-#set :user, 'root'
+set :user, 'root'
 #ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")] 
 
 
@@ -171,4 +171,4 @@ before 'deploy', 'deploy:web:disable'
 before 'deploy:migrations', 'deploy:web:disable'
 after 'deploy', 'deploy:web:enable'
 after 'deploy:migrations', 'deploy:web:enable'
-after 'deploy:symlink', 'ec2:set_permissions'
+# after 'deploy:symlink', 'ec2:set_permissions'
