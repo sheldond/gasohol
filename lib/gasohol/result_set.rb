@@ -38,10 +38,10 @@ module Gasohol
       @google_query = query
       @full_query_path = full_query_path
       @time = xml.search(:tm).inner_html.to_f || 0
-      @total_results = xml.search(:m).inner_html.to_i || 0
-      if xml.search(:res).first
-        @from_num = xml.search(:res).first.attributes['sn'].to_i
-        @to_num = xml.search(:res).first.attributes['en'].to_i
+      @total_results = xml.search(:m) ? xml.search(:m).inner_html.to_i : 0
+      if xml.at(:res)
+        @from_num = xml.at(:res).attributes['sn'].to_i
+        @to_num = xml.at(:res).attributes['en'].to_i
       end
       @params = {}
       xml.search(:param).each do |param|

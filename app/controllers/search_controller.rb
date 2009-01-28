@@ -123,13 +123,17 @@ class SearchController < ApplicationController
       # training plans
       threads << Thread.new do 
         parts = { :q => '', :mode => 'training', :partialfields => '' }
-        params[:media_types].split('|').each_with_index do |type,i|
-          parts[:partialfields] += "mediaType:#{CGI::escape(type)}"
-          parts[:partialfields] += '|' if params[:media_types].split('|').length-1 != i
-        end
-        begin
-          value = do_google(parts, { :count_only => true, :skip_deep_keyword_search => true })
-        rescue
+        if params[:media_types].split('|').length > 0
+          params[:media_types].split('|').each_with_index do |type,i|
+            parts[:partialfields] += "mediaType:#{CGI::escape(type)}"
+            parts[:partialfields] += '|' if params[:media_types].split('|').length-1 != i
+          end
+          begin
+            value = do_google(parts, { :count_only => true, :skip_deep_keyword_search => true })
+          rescue
+            value = 0
+          end
+        else  # there were no mediaTypes so don't even try to pull training plans
           value = 0
         end
         { :name => 'training', :noun => 'training plan', :link => url_for(:controller => 'search', :action => 'index', :q => parts[:q], :mode => parts[:mode], :partialfields => parts[:partialfields]), :value => value }
