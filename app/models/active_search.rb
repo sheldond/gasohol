@@ -10,7 +10,7 @@
 require 'location'
 require 'gasohol/gasohol'
 
-class ActiveSearch < Gasohol::Base
+class ActiveSearch < Gasohol::Search
 		
 	def search(parts,options={})
 	  

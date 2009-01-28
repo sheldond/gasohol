@@ -28,7 +28,7 @@
 #   ?q=pizza+inmeta:category=food+inmeta:pieSize:12..18&collection=default_collection&client=my_client&num=10
 #
 # (Note that spaces in the query are turned into + signs.) This full query string is then appended to the URL
-# you provided in the config options when you initialized gasohol (see Google::new) and the request is made to
+# you provided in the config options when you initialized gasohol (see Search::new) and the request is made to
 # the GSA. The results come back and are parsed and converted into a nicer format than XML.
 
 require 'open-uri'
@@ -36,14 +36,14 @@ require 'hpricot'
 require 'chronic'
 require 'core_extensions'
 
-require 'gasohol/exceptions'
-require 'gasohol/result_set'
-require 'gasohol/result'
-require 'gasohol/featured'
-
 module Gasohol
   
-  class Base
+  require 'gasohol/exceptions'
+  require 'gasohol/result_set'
+  require 'gasohol/result'
+  require 'gasohol/featured'
+  
+  class Search
     
     include GasoholError
     attr_reader :config
@@ -70,15 +70,16 @@ module Gasohol
     # For Google's reference of what these options do, check out the Search Protocol Reference: http://code.google.com/apis/searchappliance/documentation/50/xml_reference.html
     #
     # == Required config options
-    # * url => the URL to the search results page of your GSA. ie: http://127.0.0.1/search
+    # * url =>        the URL to the search results page of your GSA. ie: http://127.0.0.1/search
     # * collection => the GSA can contain several collections, specify which one to use for this search
-    # * client => the GSA can contain several clients, specify which one to use for this search
+    # * client =>     the GSA can contain several clients, specify which one to use for this search
     #
     # == Optional config options
-    # * filter => how to filter the results, defaults to 'p'
-    # * output => the output format of the results, defaults to 'xml_no_dtd' (leave this setting alone for gasohol to work correctly)
-    # * getfields => which meta tag values to return in the results, defaults to '*' (all meta tags)
-    # * num => the default number of results to return, defaults to 25
+    # * filter =>         how to filter the results, defaults to 'p'
+    # * output =>         the output format of the results, defaults to 'xml_no_dtd' (leave this setting alone for gasohol to work correctly)
+    # * getfields =>      which meta tag values to return in the results, defaults to '*' (all meta tags)
+    # * num =>            the default number of results to return, defaults to 25
+    # * partialfields =>  another way to filter results by meta tag values
     #
     # Example config hash:
     #   config => { :url => 'http://127.0.0.1',
@@ -86,13 +87,17 @@ module Gasohol
     #               :client => 'my_client',
     #               :num => 25 }
     #
-    # So if you're using gasohol with Rails, for example, you would place the following in your search controller:
-    #   @google = Gasohol.new(config)
+    # == Example usage
+    #
+    # So if you're using gasohol with Rails, for example, you could place the following in your search controller before any actions are defined:
+    #   GOOGLE = Gasohol.new(config)
     #
     # For a simple search now you go:
-    #   @results = @google.search('pizza')
+    #   @answer = GOOGLE.search('pizza')
     #
-    # What you'll get back in @results is a nicely formatted version of Google's response.
+    # +@answer+ will now contain some info about the query, what params the GSA returned, etc (see Gasohol::ResultSet)
+    # +@answer.results+ is an array of the results (see Gasohol::Result)
+    # +@answer.featured+ returns an array of any featured results (appear as 'sponsored links' at the top of a regular Google.com search) (see Gasohol::Featured)
   
     def initialize(config=nil)
       # start with default values
@@ -117,7 +122,7 @@ module Gasohol
     #
     # On most implementations that offer more than straight keyword searches you're going to want additional
     # parameters, like meta searches, to appear in the browser's URL so that the search can be uniquely identified
-    # and run again. These parameters will not be formatted correctly for Google. So you'll want to extend Gasohol
+    # and run again. These parameters will not be formatted correctly for Google. So you'll want to extend Gasohol and
     # write your own impementation of this method that at the end will call super and pass in a final query string
     # and hash of options.
     #
@@ -126,23 +131,26 @@ module Gasohol
     #
     #   http://pizzafinder.com/search?keyword=deep+dish&size=16&toppings=cheese
     #
-    # Google doesn't know what to do with 'keyword,' 'size,' or 'toppings' so you need to turn those into something
+    # The GSA doesn't know what to do with 'keyword,' 'size,' or 'toppings' so you need to turn those into something
     # it does understand. So you might extend this method to look like:
     #
-    #   class PizzaFinder > Gasohol
+    #   class PizzaFinder > Gasohol::Search
     #     def search(parts,options={})
     #       super("#{query} inmeta:panSize=#{parts[:size]} inmeta:toppings~#{parts[:toppings]")
     #     end
     #   end
     #
-    # And then use it like so (+params+ is the default Ruby on Rails hash or URL values):
+    # And then use it like so (+params+ is the default Ruby on Rails hash of URL values):
     #
     #   the_finder = PizzaFinder.new(config)
-    #   the_finder.search(params)
+    #   pizzas = the_finder.search(params)
     #
     # That string is appeneded to the GSA url and now it knows how to search:
     #
     #   http://gsa.pizzafinder.com/search?q=deep+dish+inmeta:panSize=16+inmeta:toppings~cheese&collection=etc,etc,etc
+    #
+    # The result that comes back is ready to be used in your app (looping through +pizzas.results+ and displaying them
+    # however you like
   
     def search(query,options={})
       #RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: options=#{options.inspect}\n")
@@ -152,28 +160,23 @@ module Gasohol
       full_query_path = query_path(query,all_options)        # creates the full URL to the GSA
       #RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: full_query_path=#{full_query_path}\n\n")
     
-      #begin
-        # do the query and save the xml
-        xml = Hpricot(open(full_query_path))
+      begin
+        xml = Hpricot(open(full_query_path))              # call the GSA with our search
   
-        # if all we really care about is the count of records from google, return just that number and get the heck outta here
         if all_options[:count_only] == true
-          return xml.search(:m).inner_html.to_i || 0
+          return xml.search(:m).inner_html.to_i || 0      # if all we really care about is the count of records from google, return just that number and get the heck outta here
         end
         
-        # otherwise create a real resultset
-        rs = ResultSet.new(query,full_query_path,xml,all_options[:num].to_i)
-        
-        # if there was at least one result, parse the xml
-        if rs.total_results > 0
-          rs.total_featured_results = xml.search(:gm).size
+        rs = ResultSet.new(query,full_query_path,xml,all_options[:num].to_i)      # otherwise create a real resultset
+        if rs.total_results > 0             # if there was at least one result, parse the xml
+          # rs.total_featured_results = xml.search(:gm).size
           rs.featured = xml.search(:gm).collect { |xml_featured| parse_featured(xml_featured) }           # get featured results (called 'sponsored links' on the results page, displayed at the top)
           rs.results = xml.search(:r).collect { |xml_result| parse_result(xml_result) }                   # get regular results
         end
       
-      #rescue => e    # error with results (the GSA barfed?)
-        # RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
-      #end
+      rescue => e    # error with results (the GSA barfed?)
+        RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
+      end
     
       return rs
     end
@@ -181,17 +184,7 @@ module Gasohol
 
     private
     
-    # With these being their own methods we can override and modify if needed
-    def parse_featured(xml)
-      Featured.new(xml)
-    end
-    
-    # With these being their own methods we can override and modify if needed
-    def parse_result(xml)
-      Result.new(xml)
-    end
-    
-    # This method creates the combination of the url, query and options into one big URI
+    # creates the combination of the url, query and options into one big URI
     def query_path(query,options)
       url = options.delete(:url)  # sets url to the value of options[:url] and then removes it from the hash
       output = url + '?q=' + CGI::escape(query)
@@ -201,6 +194,16 @@ module Gasohol
         end
       end
       output
+    end
+    
+    
+    # With these being their own methods we can override and modify if needed
+    def parse_featured(xml)
+      Featured.new(xml)
+    end
+    
+    def parse_result(xml)
+      Result.new(xml)
     end
   
   end
