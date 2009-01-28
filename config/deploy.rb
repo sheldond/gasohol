@@ -10,8 +10,8 @@ set :scm_passphrase, "" #This is your custom users password
 set :branch, "master"
 set :deploy_to, "/mnt/app"
 
-set :user, 'root'
-ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")] 
+#set :user, 'root'
+#ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")] 
 
 
 # If you aren't deploying to /u/apps/#{application} on the target
@@ -29,13 +29,8 @@ ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")]
   #role :web, "ec2-174-129-175-160.compute-1.amazonaws.com"
   #role :db,  "ec2-174-129-175-160.compute-1.amazonaws.com", :primary => true
 
-# For labs.active.com
-role :app, "75.101.162.64"
-role :web, "75.101.162.64"
-role :memcache, "75.101.162.64"
-role :db,  "75.101.162.64", :primary => true
 
-=begin
+
 # NOTE: for some reason Capistrano requires you to have both the public and
 # the private key in the same folder, the public key should have the 
 # extension ".pub".
@@ -44,10 +39,10 @@ ssh_options[:keys] = ["#{ENV['HOME']}/.ssh/searchpoc-keypair"]
 # Your EC2 instances. Use the ec2-xxx....amazonaws.com hostname, not
 # any other name (in case you have your own DNS alias) or it won't
 # be able to resolve to the internal IP address.
-# role :web,      "75.101.162.64"
-# role :app,      "75.101.162.64"
-# role :memcache, "75.101.162.64"
-# role :db,       "75.101.162.64", :primary => true
+role :web,      "75.101.162.64"
+role :app,      "75.101.162.64"
+role :memcache, "75.101.162.64"
+role :db,       "75.101.162.64", :primary => true
 # optinally, you can specify Amazon's EBS volume ID if the database is persisted 
 # via Amazon's EBS.  See the main README for more information.
 
@@ -135,7 +130,7 @@ set :ec2onrails_config, {
 #    sudo "rm -rf /etc/cron.d/backup_app_db_to_s3"
 #end
 
-=end
+
 
 # custom maintenance page
 namespace :deploy do
@@ -156,14 +151,15 @@ namespace :deploy do
   end
 end
 
-namespace :ec2 do
-  desc "Change permissions on /mnt/app directory to be owned by app"
-  task :set_permissions do
-    run "chown -R app:app /mnt/app"
-  end
-end
-
 # Enable this for new AMP EC2 cluster
+#namespace :ec2 do
+#  desc "Change permissions on /mnt/app directory to be owned by app"
+#  task :set_permissions do
+#    run "chown -R app:app /mnt/app"
+#  end
+#end
+
+
 #namespace :deploy do
 #  desc "Restart Application"
 #  task :restart do
