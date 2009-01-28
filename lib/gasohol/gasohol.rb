@@ -28,7 +28,7 @@
 #   ?q=pizza+inmeta:category=food+inmeta:pieSize:12..18&collection=default_collection&client=my_client&num=10
 #
 # (Note that spaces in the query are turned into + signs.) This full query string is then appended to the URL
-# you provided in the config options when you initialized gasohol (see Search::new) and the request is made to
+# you provided in the config options when you initialized Gasohol (see Search::new) and the request is made to
 # the GSA. The results come back and are parsed and converted into a nicer format than XML.
 
 require 'open-uri'
@@ -42,6 +42,41 @@ module Gasohol
   require 'gasohol/result_set'
   require 'gasohol/result'
   require 'gasohol/featured'
+  
+  # To get gasohol ready, instantiate a new copy with <tt>Gasohol.new(config)</tt> where +config+ is a hash of options so that we know how/where
+  # to access your GSA instance. This information is saved and used for every request after initializing your gasohol instance.
+  # For Google's reference of what these options do, check out the Search Protocol Reference: http://code.google.com/apis/searchappliance/documentation/50/xml_reference.html
+  #
+  # == Required config options
+  # [+url+] the URL to the search results page of your GSA. ie: http://127.0.0.1/search
+  # [+collection+] the GSA can contain several collections, specify which one to use for this search
+  # [+client+] the GSA can contain several clients, specify which one to use for this search
+  #
+  # == Optional config options
+  # [+filter+] how to filter the results, defaults to 'p'
+  # [+output+] the output format of the results, defaults to 'xml_no_dtd' (leave this setting alone for gasohol to work correctly)
+  # [+getfields+] which meta tag values to return in the results, defaults to '*' (all meta tags)
+  # [+num+] the default number of results to return, defaults to 25
+  # [+partialfields+] another way to filter results by meta tag values
+  #
+  # Example config hash:
+  #
+  #   config = {  :url => 'http://127.0.0.1',
+  #               :collection => 'default_collection',
+  #               :client => 'my_client',
+  #               :num => 25 }
+  #
+  # == Example usage
+  #
+  # So if you're using gasohol with Rails, for example, you could place the following in your search controller before any actions are defined:
+  #   GOOGLE = Gasohol.new(config)
+  #
+  # For a simple search now you go:
+  #   @answer = GOOGLE.search('pizza')
+  #
+  # <tt>@answer</tt> will now contain some info about the query, what params the GSA returned, etc (see Gasohol::ResultSet)
+  # <tt>@answer.results</tt> is an array of the results (see Gasohol::Result)
+  # <tt>@answer.featured</tt> returns an array of any featured results (appear as 'sponsored links' at the top of a regular Google.com search) (see Gasohol::Featured)
   
   class Search
     
@@ -64,40 +99,6 @@ module Gasohol
     ALLOWED_PARAMS = DEFAULT_OPTIONS.keys
     
     DEFAULT_FEATURED_RESULT = { :url => '', :title => '', :featured => true }
-
-    # To get gasohol ready, instantiate a new copy with Gasohol.new(config) where 'config' is a hash of options so that we know how/where
-    # to access your GSA instance. This information is saved and used for every request after initializing your gasohol instance.
-    # For Google's reference of what these options do, check out the Search Protocol Reference: http://code.google.com/apis/searchappliance/documentation/50/xml_reference.html
-    #
-    # == Required config options
-    # * url =>        the URL to the search results page of your GSA. ie: http://127.0.0.1/search
-    # * collection => the GSA can contain several collections, specify which one to use for this search
-    # * client =>     the GSA can contain several clients, specify which one to use for this search
-    #
-    # == Optional config options
-    # * filter =>         how to filter the results, defaults to 'p'
-    # * output =>         the output format of the results, defaults to 'xml_no_dtd' (leave this setting alone for gasohol to work correctly)
-    # * getfields =>      which meta tag values to return in the results, defaults to '*' (all meta tags)
-    # * num =>            the default number of results to return, defaults to 25
-    # * partialfields =>  another way to filter results by meta tag values
-    #
-    # Example config hash:
-    #   config => { :url => 'http://127.0.0.1',
-    #               :collection => 'default_collection',
-    #               :client => 'my_client',
-    #               :num => 25 }
-    #
-    # == Example usage
-    #
-    # So if you're using gasohol with Rails, for example, you could place the following in your search controller before any actions are defined:
-    #   GOOGLE = Gasohol.new(config)
-    #
-    # For a simple search now you go:
-    #   @answer = GOOGLE.search('pizza')
-    #
-    # +@answer+ will now contain some info about the query, what params the GSA returned, etc (see Gasohol::ResultSet)
-    # +@answer.results+ is an array of the results (see Gasohol::Result)
-    # +@answer.featured+ returns an array of any featured results (appear as 'sponsored links' at the top of a regular Google.com search) (see Gasohol::Featured)
   
     def initialize(config=nil)
       # start with default values
@@ -153,12 +154,8 @@ module Gasohol
     # however you like
   
     def search(query,options={})
-      #RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: options=#{options.inspect}\n")
-      #RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: query='#{query}'\n")
       all_options = @config.merge(options)    # merge options that were passed directly to this method
-      #RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: all_options=#{all_options.inspect}\n")
       full_query_path = query_path(query,all_options)        # creates the full URL to the GSA
-      #RAILS_DEFAULT_LOGGER.debug("\nGASOHOL: full_query_path=#{full_query_path}\n\n")
     
       begin
         xml = Hpricot(open(full_query_path))              # call the GSA with our search
@@ -184,7 +181,7 @@ module Gasohol
 
     private
     
-    # creates the combination of the url, query and options into one big URI
+    # Creates the combination of the URL, query and options into one big URI
     def query_path(query,options)
       url = options.delete(:url)  # sets url to the value of options[:url] and then removes it from the hash
       output = url + '?q=' + CGI::escape(query)
@@ -197,11 +194,12 @@ module Gasohol
     end
     
     
-    # With these being their own methods we can override and modify if needed
+    # Parses featured results (override this and use your own Featured class if you'd like)
     def parse_featured(xml)
       Featured.new(xml)
     end
     
+    # Parses regular results (override this and use your own Featured class if you'd like)
     def parse_result(xml)
       Result.new(xml)
     end

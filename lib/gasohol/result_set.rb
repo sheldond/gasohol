@@ -27,6 +27,11 @@ module Gasohol
   #   @total_results =>   the total number of results that the GSA has for the given search (not the number of results in this set, but ALL results, like Google.com says 1-10 of 1,435,000 results)
   #   @featured =>        an array containing featured results (sponsored link results)
   #   @results =>         an array containing regular results
+  #
+  # +ResultSet+ is compatible with the <tt>will_paginate</tt> plugin http://wiki.github.com/mislav/will_paginate
+  # Just give this entire result set to it and you'll get page numbers and easy navigation
+  #   rs = search('pizza')
+  #   will_paginate(rs)
   
   class ResultSet
                         
@@ -50,11 +55,8 @@ module Gasohol
       # intialize to empty arrays, Gasohol::Search will add these
       @featured = []
       @results = []
-
-      # you can automatically paginate your results with will_paginate, just give this entire result set to it (pseudo-code):
-      #   rs = search('pizza')
-      #   will_paginate(rs)
       
+      # for will_paginate
       @total_pages = (@total_results.to_f / num_per_page).ceil
       @current_page = (@from_num.to_f / num_per_page).ceil
       @previous_page = (@current_page - 1 == 0) ? nil : @current_page - 1

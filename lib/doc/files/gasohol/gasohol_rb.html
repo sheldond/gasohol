@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: gasohol.rb</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>gasohol.rb</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>gasohol/gasohol.rb
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Wed Jan 28 12:04:51 -0800 2009</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h1>Introduction</h1>
+<p>
+<a href="../../classes/Gasohol.html">Gasohol</a> lets you query a Google
+Search Appliance and get results back in an easily traversable format.
+</p>
+<h2>Terms</h2>
+<p>
+Let&#8216;s get some nomenclature out of the way. It&#8216;s a little
+confusing when we talk about &#8216;query&#8217; in a couple of different
+ways.
+</p>
+<p>
+There are two parts to a Google GSA request:
+</p>
+<ol>
+<li>query (search terms)
+
+</li>
+<li>options (stuff like &#8216;collection,&#8217; client,&#8217; and
+&#8216;num&#8217;)
+
+</li>
+</ol>
+<p>
+And then there is the actual string that you see in your browser, the
+&quot;query string,&quot; which contains all of the &amp; and = stuff.
+</p>
+<p>
+Think of the query as the keywords to search for. However the query to the
+GSA can actually contain several parts besides just keywords. If you are
+using metadata then the query can contain several &#8216;inmeta:&#8217;
+flags, for example. All of these combined with the keywords become one big
+long string, each part separated by a space:
+</p>
+<pre>
+  pizza inmeta:category=food inmeta:pieSize:12..18
+</pre>
+<p>
+All of that is only the query (comes after ?q=). There are several
+additional options which the GSA requires, like &#8216;collection&#8217;
+and &#8216;client.&#8217; These are the options. The query and all of the
+options are combined into the final query string and sent to the GSA.
+</p>
+<p>
+A sample query string might look like:
+</p>
+<pre>
+  ?q=pizza+inmeta:category=food+inmeta:pieSize:12..18&amp;collection=default_collection&amp;client=my_client&amp;num=10
+</pre>
+<p>
+(Note that spaces in the query are turned into + signs.) This full query
+string is then appended to the URL you provided in the config options when
+you initialized <a href="../../classes/Gasohol.html">Gasohol</a> (see
+Search::new) and the request is made to the GSA. The results come back and
+are parsed and converted into a nicer format than XML.
+</p>
+
+    </div>
+
+    <div id="requires-list">
+      <h3 class="section-bar">Required files</h3>
+
+      <div class="name-list">
+      open-uri&nbsp;&nbsp;
+      hpricot&nbsp;&nbsp;
+      chronic&nbsp;&nbsp;
+      <a href="../core_extensions_rb.html">core_extensions</a>&nbsp;&nbsp;
+      <a href="exceptions_rb.html">gasohol/exceptions</a>&nbsp;&nbsp;
+      <a href="result_set_rb.html">gasohol/result_set</a>&nbsp;&nbsp;
+      <a href="result_rb.html">gasohol/result</a>&nbsp;&nbsp;
+      <a href="featured_rb.html">gasohol/featured</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

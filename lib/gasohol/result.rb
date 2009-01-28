@@ -38,23 +38,12 @@ module Gasohol
         else
           @meta.merge!({ key => value })               # key doesn't exist, merge hash
         end
-=begin
-        if tag.key.to_s.match(/date/i)      # if this meta tag contains 'date' in the name somewhere, parse it
-          @meta.merge!({ tag.key => Time.parse(tag.value) })
-        else
-          if tag.key == :media_type         # if this is a media_type then append to an array, otherwise just set the key/value
-            @meta[:media_types] << tag
-          else
-            @meta.merge!(tag)
-          end
-        end
-=end
       end
       @featured = false
     end
     
     
-    # what type of result is this?
+    # Returns a symbol with the type of result this is
     def type
       return :activity if @meta[:category] && @meta[:category] == 'Activities'
       return :article if @meta[:category] && @meta[:category] == 'Articles'
@@ -67,35 +56,40 @@ module Gasohol
     end
 
 
-    # individual type checks
+    # Is this an activity?
     def activity?
       type == :activity
     end
     
+    # Is this an article?
     def article?
       type == :article
     end
     
+    # Is this a community listing?
     def community?
       type == :community
     end
     
+    # Is this a facility?
     def facility?
       type == :facility
     end
     
+    # Is this a club or org?
     def org?
       type == :org
     end
     
+    # Is this a training plan?
     def training?
       type == :training
     end
     
+    # Is this some other type I don't recognize?
     def unknown?
       type == :unknown
     end
-    
   
   end
 end

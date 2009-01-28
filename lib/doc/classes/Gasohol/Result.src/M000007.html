@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>type (Gasohol::Result)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File gasohol/result.rb, line 58</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">type</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">:activity</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@meta</span>[<span class="ruby-identifier">:category</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@meta</span>[<span class="ruby-identifier">:category</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'Activities'</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">:article</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@meta</span>[<span class="ruby-identifier">:category</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@meta</span>[<span class="ruby-identifier">:category</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'Articles'</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">:community</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@url</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp re">/community\.active\.com/</span>)
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">:facility</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@meta</span>[<span class="ruby-identifier">:category</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@meta</span>[<span class="ruby-identifier">:category</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'Facilities'</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">:org</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@meta</span>[<span class="ruby-identifier">:category</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@meta</span>[<span class="ruby-identifier">:category</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'Organizations'</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">:training</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@meta</span>[<span class="ruby-identifier">:media_types</span>][<span class="ruby-value">0</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@meta</span>[<span class="ruby-identifier">:media_types</span>][<span class="ruby-value">0</span>].<span class="ruby-identifier">value</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp re">/Training Plan/</span>)
+      <span class="ruby-comment cmt"># if nothing else, just return 'unknown'</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-value str">'unknown'</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
