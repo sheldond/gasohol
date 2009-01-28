@@ -14,13 +14,6 @@ module SearchHelper
   end
   
   
-  # Return params that affect the search only (remove stuff like controller and action)
-  def good_params
-    params.find_all do |key,value|
-      key != 'controller' and key != 'action' and key != 'format'
-    end
-  end
-  
   # Given the params in the URL, build a breadcrumb with all the parts
   def build_breadcrumbs(params)
     output = []

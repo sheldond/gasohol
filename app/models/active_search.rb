@@ -9,6 +9,7 @@
 
 require 'location'
 require 'gasohol/gasohol'
+require 'active_result'
 
 class ActiveSearch < Gasohol::Search
 		
@@ -157,13 +158,19 @@ class ActiveSearch < Gasohol::Search
 		output_options.merge!({:count_only => true}) if parts[:count_only] && (parts[:count_only] == true || parts[:count_only] == 'true')
 		output_options.merge!({:partialfields => parts[:partialfields]}) if parts[:partialfields]
 
-		RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: googlize_params_into_query: options='#{output_options.inspect}'\n")
+		RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: options='#{output_options.inspect}'\n")
 
 		super(query,output_options)
 	end
 	
 	
 	private
+	
+	# override default Gasohol::Result::parse_result method so we can pass our own Result object with some extended methods
+	def parse_result(xml)
+	  ActiveResult.new(xml)
+  end
+  
 	
 	# do a little math to figure out the max/min latitude/longitude around the current location and create a range for the GSA to search in
 	def figure_latitude_longitude(lat,long,radius)
@@ -243,5 +250,5 @@ class ActiveSearch < Gasohol::Search
 	  # matched sport = sports.find { |sport| text.match(/ #{sport} /) }
 
 	end
-	
+  
 end

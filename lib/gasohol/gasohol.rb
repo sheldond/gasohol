@@ -194,12 +194,12 @@ module Gasohol
     end
     
     
-    # Parses featured results (override this and use your own Featured class if you'd like)
+    # Parses featured results (override this and use your own extended Featured class if you'd like)
     def parse_featured(xml)
       Featured.new(xml)
     end
     
-    # Parses regular results (override this and use your own Featured class if you'd like)
+    # Parses regular results (override this and use your own extended Result class if you'd like)
     def parse_result(xml)
       Result.new(xml)
     end
