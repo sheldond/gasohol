@@ -3,29 +3,33 @@ xml.rss(:version=>"2.0", 'xmlns:atom' =>"http://www.w3.org/2005/Atom") {
   xml.channel{
     xml.tag!("atom:link", :rel=>'self', :type=>'application/rss+xml', :href=>"http://#{request.host}#{request.request_uri}")
     xml.title("Active.com Beta Search Results")
-    xml.link("http://labs.active.com/search?q=#{@query}&#{@options.to_query}")
-    xml.description("Active.com Beta search results for keyword(s) '#{@query}' in #{@options[:location]}")
+    xml.link("#{request.host}#{request.request_uri}")
+    xml.description("Active.com Beta search results for keyword(s) '#{params[:q]}'")
     xml.language('en-us')
-    for result in @google[:results]
+    for result in @google.results
       # build description
-      desc = "<ul><li><strong>What:</strong> #{result[:meta][:channel].split('\\').first}"
-      if result[:meta][:media_types] && result[:meta][:media_types].first
-        desc += " #{result[:meta][:media_types].first.value.split('\\').first}"
+      desc = "<ul><li><strong>What:</strong> #{result.meta[:channel].split('/').first}"
+      if result.meta[:media_type]
+        if result.meta[:media_type].is_a? Array
+          desc += " #{result.meta[:media_type].first.split('/').first}"
+        else
+          desc += " #{result.meta[:media_type].split('/').first}"
+        end
       end
       desc += "</li>"
-      if activity?(result)
-        desc += "<li><strong>Where:</strong> #{result[:meta][:city]}, #{result[:meta][:state]}</li>"
-        desc += "<li><strong>When:</strong> #{result[:meta][:start_date].to_s(:full_with_day)}</li>"
+      if result.activity?
+        desc += "<li><strong>Where:</strong> #{result.meta[:city]}, #{result.meta[:state]}</li>"
+        desc += "<li><strong>When:</strong> #{result.meta[:start_date].to_s(:full_with_day)}</li>"
       end
       desc += "</ul>"
       
       xml.item do
-        xml.title(format_title(un(result[:title])))
+        xml.title(format_title(un(result.title)))
         xml.description(desc)
         # xml.author("active.com")               
-        xml.pubDate(result[:meta][:start_date].strftime("%a, %d %b %Y %H:%M:%S %z"))
-        xml.link(result[:url])
-        xml.guid(result[:url])
+        xml.pubDate(result.meta[:start_date].strftime("%a, %d %b %Y %H:%M:%S %z"))
+        xml.link(result.url)
+        xml.guid(result.url)
       end
     end
   }

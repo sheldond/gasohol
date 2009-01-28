@@ -30,7 +30,7 @@ module Gasohol
   
   class ResultSet
                         
-    attr_reader :google_query, :full_query_path, :total_results, :total_featured_results, :params, :results, :featured, :from_num, :to_num, :time
+    attr_reader :google_query, :full_query_path, :total_results, :total_featured_results, :params, :results, :featured, :from_num, :to_num, :time, :location
     attr_reader :total_pages, :current_page, :previous_page, :next_page   # for will_paginate
     attr_accessor :results, :featured
     
