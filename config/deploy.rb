@@ -23,10 +23,17 @@ ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")]
 # your SCM below:
 # set :scm, :subversion
 
-role :app, "ec2-174-129-175-160.compute-1.amazonaws.com", "ec2-174-129-147-77.compute-1.amazonaws.com"
-role :web, "ec2-174-129-175-160.compute-1.amazonaws.com"
-role :db,  "ec2-174-129-175-160.compute-1.amazonaws.com", :primary => true
 
+# For new AMP EC2 Cluster
+  #role :app, "ec2-174-129-175-160.compute-1.amazonaws.com", "ec2-174-129-147-77.compute-1.amazonaws.com"
+  #role :web, "ec2-174-129-175-160.compute-1.amazonaws.com"
+  #role :db,  "ec2-174-129-175-160.compute-1.amazonaws.com", :primary => true
+
+# For labs.active.com
+role :app, "75.101.162.64"
+role :web, "75.101.162.64"
+role :memcache, "75.101.162.64"
+role :db,  "75.101.162.64", :primary => true
 
 =begin
 # NOTE: for some reason Capistrano requires you to have both the public and
@@ -37,11 +44,10 @@ ssh_options[:keys] = ["#{ENV['HOME']}/.ssh/searchpoc-keypair"]
 # Your EC2 instances. Use the ec2-xxx....amazonaws.com hostname, not
 # any other name (in case you have your own DNS alias) or it won't
 # be able to resolve to the internal IP address.
-role :web,      "75.101.162.64"
-role :app,      "75.101.162.64"
-role :memcache, "75.101.162.64"
-role :db,       "75.101.162.64", :primary => true
-# role :db,       "ec2-56-xx-xx-xx.z-1.compute-1.amazonaws.com", :primary => true, :ebs_vol_id => 'vol-12345abc'
+# role :web,      "75.101.162.64"
+# role :app,      "75.101.162.64"
+# role :memcache, "75.101.162.64"
+# role :db,       "75.101.162.64", :primary => true
 # optinally, you can specify Amazon's EBS volume ID if the database is persisted 
 # via Amazon's EBS.  See the main README for more information.
 
@@ -157,12 +163,13 @@ namespace :ec2 do
   end
 end
 
-namespace :deploy do
-  desc "Restart Application"
-  task :restart do
-    run "touch #{current_path}/tmp/restart.txt"
-  end
-end
+# Enable this for new AMP EC2 cluster
+#namespace :deploy do
+#  desc "Restart Application"
+#  task :restart do
+#    run "touch #{current_path}/tmp/restart.txt"
+#  end
+#end
 
 before 'deploy', 'deploy:web:disable'
 before 'deploy:migrations', 'deploy:web:disable'
