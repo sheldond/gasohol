@@ -110,18 +110,18 @@ class SearchController < ApplicationController
       threads = []
     
       # discussions
-      threads << Thread.new do
+      #threads << Thread.new do
         parts = { :q => params[:title], :mode => 'community' }
         begin
           value = do_google(parts, { :count_only => true, :skip_deep_keyword_search => true })
         rescue
           value = 0
         end
-        { :name => 'discussions', :noun => 'discussion', :link => url_for(:controller => 'search', :action => 'index', :q => parts[:q], :mode => parts[:mode]), :value => value }
-      end
+        output[:results] << { :name => 'discussions', :noun => 'discussion', :link => url_for(:controller => 'search', :action => 'index', :q => parts[:q], :mode => parts[:mode]), :value => value }
+      #end
     
       # training plans
-      threads << Thread.new do 
+      #threads << Thread.new do 
         parts = { :q => '', :mode => 'training', :partialfields => '' }
         if params[:media_types].split('|').length > 0
           params[:media_types].split('|').each_with_index do |type,i|
@@ -136,55 +136,55 @@ class SearchController < ApplicationController
         else  # there were no mediaTypes so don't even try to pull training plans
           value = 0
         end
-        { :name => 'training', :noun => 'training plan', :link => url_for(:controller => 'search', :action => 'index', :q => parts[:q], :mode => parts[:mode], :partialfields => parts[:partialfields]), :value => value }
-      end
+        output[:results] << { :name => 'training', :noun => 'training plan', :link => url_for(:controller => 'search', :action => 'index', :q => parts[:q], :mode => parts[:mode], :partialfields => parts[:partialfields]), :value => value }
+      #end
     
       # articles
-      threads << Thread.new do
+      #threads << Thread.new do
         parts = { :q => params[:title], :mode => 'articles' }
         begin
           value = do_google(parts, { :count_only => true, :skip_deep_keyword_search => true })
         rescue
           value = 0
         end
-        { :name => 'articles', :noun => 'article', :link => url_for(:controller => 'search', :action => 'index', :q => parts[:q], :mode => parts[:mode]), :value => value }
-      end
+        output[:results] << { :name => 'articles', :noun => 'article', :link => url_for(:controller => 'search', :action => 'index', :q => parts[:q], :mode => parts[:mode]), :value => value }
+      #end
     
       # photos
-      threads << Thread.new do
+      #threads << Thread.new do
         begin
           value = ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse("http://api.flickr.com/services/rest?text=#{CGI::escape(params[:title])}&api_key=4998fab76787cf39383c563b32ce4b8f&method=flickr.photos.search&sort=relevance&format=json&nojsoncallback=1")))['photos']['total'].to_i
         rescue
           value = 0 
         end
       
-        { :name => 'photos', :noun => 'photo', :link => "http://flickr.com/search/?w=all&m=text&q=#{CGI::escape(params[:title])}", :value => value }
-     end
+        output[:results] << { :name => 'photos', :noun => 'photo', :link => "http://flickr.com/search/?w=all&m=text&q=#{CGI::escape(params[:title])}", :value => value }
+     #end
     
       # videos
-      threads << Thread.new do
+      #threads << Thread.new do
         begin
           value = ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse("http://gdata.youtube.com/feeds/api/videos?vq=#{CGI::escape(params[:title])}&max-results=1&alt=json")))['feed']['openSearch$totalResults']['$t'].to_i
         rescue
           value = 0
         end
-        { :name => 'videos', :noun => 'video', :link => "http://www.youtube.com/results?search_query=#{CGI::escape(params[:title])}", :value => value }
-      end
+        output[:results] << { :name => 'videos', :noun => 'video', :link => "http://www.youtube.com/results?search_query=#{CGI::escape(params[:title])}", :value => value }
+      #end
     
       # tweets
-      threads << Thread.new do
+      #threads << Thread.new do
         begin
           value = ActiveSupport::JSON.decode(Net::HTTP.get(URI.parse("http://search.twitter.com/search.json?q=#{CGI::escape(params[:title])}")))['results'].length
         rescue
           value = 0
         end
-        { :name => 'tweets', :noun => 'tweet', :link => "http://search.twitter.com/search?q=#{CGI::escape(params[:title])}", :value => value }
-      end
+        output[:results] << { :name => 'tweets', :noun => 'tweet', :link => "http://search.twitter.com/search?q=#{CGI::escape(params[:title])}", :value => value }
+      #end
     
-      threads.each do |t| 
-        t.join
-        output[:results] << t.value
-      end
+      #threads.each do |t| 
+        #t.join
+        #output[:results] << t.value
+      #end
       
       output
     end
