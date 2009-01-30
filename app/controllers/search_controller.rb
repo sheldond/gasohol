@@ -25,7 +25,8 @@ class SearchController < ApplicationController
   def home
     params[:q] ||= ''
     # what search mode are we in? default to activity search
-    @mode = params[:mode] || 'activities'; @mode.downcase!
+    @mode = params[:mode] || 'activities'
+    @mode.downcase!
     
     # TODO: move popular searches into Ajax call so we can cache this page
     # TODO: move population of the 'Searching in' area to Ajax so we can cache
