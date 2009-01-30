@@ -25,8 +25,7 @@ class SearchController < ApplicationController
   def home
     params[:q] ||= ''
     # what search mode are we in? default to activity search
-    @mode = params[:mode] || 'activities'
-    @mode.downcase!
+    @mode = params[:mode] || 'activities'; @mode.downcase!
     
     # TODO: move popular searches into Ajax call so we can cache this page
     # TODO: move population of the 'Searching in' area to Ajax so we can cache
@@ -40,8 +39,8 @@ class SearchController < ApplicationController
   # variables (@options) and we'll format the results into a simpler format that we use in our views.
   def index
     params[:q] ||= ''
-    @mode = params[:mode] || 'activities'   # what search mode are we in? default to activity search
-    @original_keywords = params[:q]         # save the original keyword and location because they could changed based on logic in ActiveSearch
+    @mode = params[:mode] || 'activities'; @mode.downcase!  # what search mode are we in? default to activity search
+    @original_keywords = params[:q]                         # save the original keyword and location because they could changed based on logic in ActiveSearch
     @original_location = params[:location]
 
     query_record = Query.new_with_original_params(params.dup)   # record original params as the query came in
