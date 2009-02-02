@@ -4,10 +4,10 @@
   <tr>
     <td id="refine">
       <div style="overflow: hidden; width: 210px; visibility: hidden; height: 0pt;"></div>
-      <%= render :partial => "search/forms/articles", :layout => 'search/forms/layout', :locals => { :mode => @mode } %>
+      <%= render :partial => "search/forms/#{@mode}", :layout => 'search/forms/layout', :locals => { :mode => @mode } %>
       
-      <%= render :partial => 'popular_local_searches', :locals => { :location_text => @location.form_value } unless @popular_local_searches.empty? %>
-      <%= render :partial => 'related_searches' unless @query == '' || @related_searches.empty? %>
+      <%= render :partial => 'popular_local_searches', :locals => { :location_text => @location.form_value, :popular_local_searches => @popular_local_searches } unless @popular_local_searches.empty? %>
+      <%= render :partial => 'related_searches', :locals => { :related_searches => @related_searches } unless @query == '' || @related_searches.empty? %>
     </td>
     <td id="main">
       <div style="overflow: hidden; width: 400px; visibility: hidden; height: 0pt;"></div>

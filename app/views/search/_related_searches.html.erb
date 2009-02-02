@@ -1,7 +1,7 @@
 <div id="related">
   <h3>Related searches:</h3>
   <ul>
-    <% @related_searches.each do |search| %>
+    <% related_searches.each do |search| %>
       <% unless search.keywords.blank? %>
         <li><%= link_to(search.keywords.gsub(/(#{params[:q]})/i,'<strong>\1</strong>'), { :action => 'index', :location => search.location, :q => search.keywords, :sport => search.sport, :type => search.type, :custom => search.custom, :mode => search.mode }) %></li>
       <% end %>

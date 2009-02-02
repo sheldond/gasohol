@@ -1,2 +1,25 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
+running:
+  keywords: running
+  sport: Running
+  
+marathon:
+  keywords: marathon
+  sport: Running
+  type: Event
+  custom: Marathon
+  
+half_marathon:
+  keywords: half marathon
+  sport: Running
+  type: Event
+  custom: Half Marathon
+  
+ironman:
+  keywords: ironman
+  sport: Triathlon
+  
+fun_run:
+  keywords: fun run
+  sport: Running
+  type: Event
+  custom: Fun Run

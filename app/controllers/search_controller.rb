@@ -54,22 +54,22 @@ class SearchController < ApplicationController
       google_sort_string = ''
     end
     
-    threads = []
+    #threads = []
     
     # if user is sorting by date, do another search by relevance for the top 5 result
     if @sort == 'date'
-      threads << Thread.new(params) do |p|
-        @mini_relevant_results = do_google(p, {:num => MINI_RELEVANT_SEARCH_COUNT, :style => 'short', :sort => ''})
-      end
+      #threads << Thread.new(params) do |p|
+        @mini_relevant_results = do_google(params.dup, {:num => MINI_RELEVANT_SEARCH_COUNT, :style => 'short', :sort => ''})
+      #end
     end
     
     # do the real search we came here for
-    threads << Thread.new(params) do |p|
-      @google = do_google(p, {:sort => google_sort_string})   # we have to manually pass in the sort each time (instead of letting ActiveSearch figure it out) because sort could be based on cookie (which ActiveSearch can't read)
-    end
+    #threads << Thread.new(params) do |p|
+      @google = do_google(params.dup, {:sort => google_sort_string})   # we have to manually pass in the sort each time (instead of letting ActiveSearch figure it out) because sort could be based on cookie (which ActiveSearch can't read)
+    #end
     
     # wait for all of our searches to complete
-    threads.each { |t| t.join }
+    #threads.each { |t| t.join }
     
     # now update query record with the calculated values for keywords, location, etc.
     query_record.update_with_options(params, {:total_results => @google.total_results, :user => current_user})  # TODO: +params+ are dirty and could have been changed by ActiveSearch...modify the result package so that it contains modified keywords/location that we update the database record with so we know what the search was transformed into

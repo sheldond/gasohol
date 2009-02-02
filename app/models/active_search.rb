@@ -8,6 +8,7 @@
 #   directives that should trigger some special behavior (like :skip_deep_keyword_search)
 
 require 'location'
+require 'override'
 require 'gasohol/gasohol'
 require 'active_result'
 
@@ -15,22 +16,22 @@ class ActiveSearch < Gasohol::Search
 		
 	def search(parts,options={})
 	  
-	  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: options='#{options.inspect}'\n")
+	  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: passed parts='#{parts.inspect}'\n")
+	  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: passed options='#{options.inspect}'\n")
 		
-=begin
-
 		# Sometimes we want to override the user's filter settings if they did a simple keyword search
 		# but we think we can get better results by injecting some extra pizzaz into the query to the GSA
-		if simple_search?(@options)
-			if @override = Override.find_by_keywords(@query)
-				@options.merge!(@override.to_options)
+		if simple_search?(parts)
+			if override = Override.search(parts[:q])
+			  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: using override='#{override.to_options.inspect}'\n")
+				parts.merge!(override.to_options)
 			end
 		end
-		
-		# TODO: add a test for sport in keywords box as well
-		test_keywords_for_sport(params[:q])
+				
 
-=end
+		# TODO: add a test for sport in keywords box as well
+		#test_keywords_for_sport(params[:q])
+
 
     # assume that any options passed in at this point will be output at the end
     output_options = options.dup
@@ -148,17 +149,18 @@ class ActiveSearch < Gasohol::Search
 		end
 		
 		# Figure out any GSA options that might have been included in the +parts+ hash (instead of explicitly set in the +options+ hash)
-		# output_options.merge!({:start => parts[:start]}) if parts[:start]
-		output_options.merge!({:num => parts[:num].to_i}) if parts[:num] && !options[:num]            # if num was set explicitly in the options hash, don't override that here
+		
+		output_options.merge!({:num => parts[:num].to_i}) if parts[:num] && !options[:num]            # if num was set don't override that here
 		if parts[:page]  # convert +page+ to +start+ (which GSA understands)
 		  start_num = parts[:page].to_i * (output_options[:num].to_i || @config[:num]) - (output_options[:num].to_i || @config[:num])
 		  output_options.merge!({:start => start_num}) 
 	  end
-		output_options.merge!({:sort => 'date:A:S:d1'}) if parts[:sort] == 'date'
+		output_options.merge!({:sort => 'date:A:S:d1'}) if !options[:sort] && parts[:sort] && parts[:sort] == 'date'      # only merge in the date if it didn't come in as part of the options
 		output_options.merge!({:count_only => true}) if parts[:count_only] && (parts[:count_only] == true || parts[:count_only] == 'true')
 		output_options.merge!({:partialfields => parts[:partialfields]}) if parts[:partialfields]
 
-		RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: options='#{output_options.inspect}'\n")
+    RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: computed query='#{query}'\n")
+		RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: computed options='#{output_options.inspect}'\n")
 
 		super(query,output_options)
 	end
@@ -185,9 +187,9 @@ class ActiveSearch < Gasohol::Search
 	end
 	
 	
-	# Determines whether this is search that uses only keywords
-	def simple_search?(options)
-		(options[:category] && options[:category].downcase == 'activities') && (options[:sport].nil? || options[:sport].downcase == 'any') && (options[:type].nil? || options[:type].downcase == 'any') && (options[:custom].nil? || options[:custom].downcase == 'any')
+	# Determines whether this is a search that uses only keywords
+	def simple_search?(values)
+		(values[:mode] && values[:mode].downcase == 'activities') && (values[:sport].nil? || values[:sport].downcase == 'any') && (values[:type].nil? || values[:type].downcase == 'any') && (values[:custom].nil? || values[:custom].downcase == 'any')
 	end
 	
 	

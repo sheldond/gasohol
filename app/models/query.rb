@@ -1,6 +1,8 @@
 require 'chronic'
 
 class Query < ActiveRecord::Base
+  
+  FIND_POPULAR_STARTING_ON = 7.days.ago.strftime('%Y-%m-%d 00:00:00')
 
   self.inheritance_column = 'none'
   belongs_to :user
@@ -58,7 +60,7 @@ class Query < ActiveRecord::Base
     # select keywords, sum(`count`) as count from queries where location = 'San Diego, California' group by keywords order by count desc;
     find_by_sql(["select *, count(*) as total \
                   from queries \
-                  where keywords != '' \
+                  where keywords != '' and created_at > '#{FIND_POPULAR_STARTING_ON}' \
                   group by keywords, sport, type, custom \
                   order by total desc \
                   limit ?", num])
@@ -69,7 +71,7 @@ class Query < ActiveRecord::Base
   def self.find_popular_by_mode(mode,num=5)
     find_by_sql(["select *, count(*) as total \
                   from queries \
-                  where mode = ? and keywords != '' and keywords not like '%inmeta%' and keywords not like '%inurl%' \
+                  where mode = ? and keywords != '' and keywords not like '%inmeta%' and keywords not like '%inurl%' and created_at > '#{FIND_POPULAR_STARTING_ON}'  \
                   group by keywords \
                   order by total desc \
                   limit ?", mode, num])
@@ -80,7 +82,7 @@ class Query < ActiveRecord::Base
   def self.find_popular_by_location(location,num=5)
     find_by_sql(["select *, count(*) as total \
                   from queries \
-                  where location = ? and keywords != '' and keywords not like '%inmeta%' and keywords not like '%inurl%' \
+                  where location = ? and keywords != '' and keywords not like '%inmeta%' and keywords not like '%inurl%' and created_at > '#{FIND_POPULAR_STARTING_ON}'  \
                   group by keywords \
                   order by total desc \
                   limit ?", location.form_value, num])
@@ -91,7 +93,7 @@ class Query < ActiveRecord::Base
   def self.find_popular_by_location_and_mode(location,mode,num=5)
     find_by_sql(["select *, count(*) as total \
                   from queries \
-                  where mode = ? and location = ? and keywords != '' and keywords not like '%inmeta%' and keywords not like '%inurl%' \
+                  where mode = ? and location = ? and keywords != '' and keywords not like '%inmeta%' and keywords not like '%inurl%' and created_at > '#{FIND_POPULAR_STARTING_ON}'  \
                   group by keywords \
                   order by total desc \
                   limit ?", mode, location.form_value, num])
@@ -102,7 +104,7 @@ class Query < ActiveRecord::Base
   def self.find_related_by_mode(text,mode,num=5)
     find_by_sql(["select *, sum(count) as total \
                   from queries \
-                  where mode = ? and keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? \
+                  where mode = ? and keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? and created_at > '#{FIND_POPULAR_STARTING_ON}'  \
                   group by keywords \
                   order by total desc \
                   limit ?", mode, "%#{text}%", text, num])
@@ -111,7 +113,7 @@ class Query < ActiveRecord::Base
   def self.find_related_by_location(text,location,num=5)
     find_by_sql(["select *, sum(count) as total \
                   from queries \
-                  where location = ? and keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? \
+                  where location = ? and keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? and created_at > '#{FIND_POPULAR_STARTING_ON}'  \
                   group by keywords \
                   order by total desc \
                   limit ?", location.form_value, "%#{text}%", text, num])
@@ -120,7 +122,7 @@ class Query < ActiveRecord::Base
   def self.find_related_by_location_and_mode(text,location,mode,num=5)
     find_by_sql(["select *, sum(count) as total \
                   from queries \
-                  where mode = ? and location = ? and keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? \
+                  where mode = ? and location = ? and keywords like ? and keywords not like '%inmeta%' and keywords not like '%inurl%' and keywords != ? and created_at > '#{FIND_POPULAR_STARTING_ON}'   \
                   group by keywords \
                   order by total desc \
                   limit ?", mode, location.form_value, "%#{text}%", text, num])
