@@ -1,0 +1,9 @@
+<div class="result <%= result.meta[:category] ? urlize(result.meta[:category]).singularize : '' %> <%= result.level > 1 ? 'sub' : '' %>">
+  <div class="title">
+    <% if result.meta && result.meta[:channel] %>
+      <a class="sport_icon" href="#" onclick="$('sport').value = '<%= result.meta[:channel].titlecase %>'; $('search_form').submit(); return false;"><%= image_tag("/images/sport_icon_#{result.meta[:channel].downcase}.png", :alt=>"") %></a>
+    <% end %>
+    <h3><%= link_to(format_title(result.title), result.url) %></h3>
+    <%= output_rating(rand(6)) %>
+  </div>
+</div>

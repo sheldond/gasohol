@@ -336,12 +336,26 @@ h3 {
 	      margin: .5em 0;
       }
 	
+	
+		#results #relevant_results .more {
+			display: block;
+			text-align: center;
+			margin: .5em 0 0;
+			text-decoration: none;
+			font-weight: bold;
+			font-size: 108%;
+		}
+			#results #relevant_results .more:hover {
+				color:#d06f1a;
+			}
+				
 	#context {
 		width: 280px;
 		padding: 80px 0 0;
 		background-color: #f6f6f6;
 	}
 	
+	/* these are now displayed above the regular search results 
 		#context #relevant_results {
 			display: block;
 			margin: 0 0 1em;
@@ -397,17 +411,7 @@ h3 {
 				margin: 1em auto;
 			}
 			
-		#context #relevant_results .more {
-			display: block;
-			text-align: left;
-			margin: .5em 0 0;
-			text-decoration: none;
-			color: #333333;
-			font-weight: bold;
-		}
-			#context #relevant_results .more:hover {
-				color:#d06f1a;
-			}
+		*/
 	
 		#context_container {
 			margin: 0;

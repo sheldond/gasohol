@@ -27,6 +27,18 @@
               </div>
             <% end %>
             
+            <!-- top 5 relevant results when user has sorted by date -->
+            <% if @mini_relevant_results && @mini_relevant_results.results.length > 0 %>
+              <h3>Most relevant results for '<%= params[:q] %>':</h3>
+              <div id="relevant_results">
+                <% @mini_relevant_results.results.each do |result| %>
+                  <%= render :partial => "search/results/#{result.type}", :layout => 'search/results/layout_short', :locals => { :result => result } %>
+                <% end %>
+                <%= link_to('More relevant results &raquo;', params.merge!({:sort => 'relevance'}), :class => 'more') %>
+              </div>
+              <h3>All '<%= params[:q] %>' results sorted by date</h3>
+            <% end %>
+            
             <!-- normal results -->
             <%= render :partial => 'results', :locals => { :results => @google.results, :do_date_separators => @do_date_separators } %>
             <%# render :partial => 'add_activity_message' if @mode == 'activities' %>
@@ -43,17 +55,6 @@
         </div>
       </div>
     </td>
-    
-    <!-- top 5 relevant results when user has sorted by date -->
-    <% if @mini_relevant_results && @mini_relevant_results.results.length > 0 %>
-      <td id="context">
-        <div id="relevant_results">
-          <h4>Most relevant results for '<%= params[:q] %>':</h4>
-          <%= render :partial => 'results', :locals => { :results => @mini_relevant_results.results, :title_only => true, :numbered => false } %>
-          <%= link_to('More results &raquo;', params.merge!({:sort => 'relevance'}), :class => 'more') %>
-        </div>
-      </td>
-    <% end %>
     
   </tr>
 </table>

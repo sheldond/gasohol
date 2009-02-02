@@ -1,6 +1,4 @@
 <% do_date_separators = false if !defined? do_date_separators %>
-<% title_only = false if !defined? title_only %>
-<% numbered = true if !defined? numbered %>
 
 <% results.each do |result| %>
   <% unless result.title.blank? %>
@@ -14,7 +12,7 @@
       <% end %>
     <% end %>
   
-    <%= render :partial => "search/results/#{result.type.to_s}", :layout => "search/results/layout", :locals => { :result => result, :title_only => title_only, :numbered => numbered } %>
+    <%= render :partial => "search/results/#{result.type.to_s}", :layout => "search/results/layout_full", :locals => { :result => result } %>
     
   <% end %>
 <% end %>
