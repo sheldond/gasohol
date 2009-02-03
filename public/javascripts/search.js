@@ -1,3 +1,11 @@
+/* 
+    This file is for building the sport/type dropdowns in the search filter area
+    When this class is instantiated you pass it an array of sport/type options and
+    they are automaticalled added and observed so as the user changes sport then
+    the type is automatically updated. See /javascripts/application.js for the list
+    of assets we pass into this
+*/
+
 var Search = new Class.create();
 Search.prototype = {
 

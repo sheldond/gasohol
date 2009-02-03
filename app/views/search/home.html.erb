@@ -1,35 +1,19 @@
 <%= render :partial => 'search_modes', :locals => { :mode => @mode } %>
 
 <form id="search_form" method="get" action="<%= url_for(:controller => 'search') %>">
-  <!-- <%= render :partial => 'location', :locals => { :location => @location } %> -->
-  <!--
-  <input type="text" name="q" value="" onkeypress="return handleEnter(this.form, event);" />
-	<input type="image" name="commit" src="/images/button_search_big.png" class="submit" />
-	<div id="more_link"><a href="#" onclick="$('activity_search').toggle(); return false;">More Options</a></div>
-  -->
   
   <%= render :partial => "search/forms/#{@mode}", :layout => 'search/forms/layout', :locals => { :mode => @mode } %>
   
   <script type="text/javascript">
     // modify the formatting of the seraches a big so they look good on the homepage
     $('debug_options') ? $('debug_options').hide() : null;
-    $('search_location') ? $$('#search_form .submit').first().setStyle({top:'1.7em'}) : null;   // move the search button down if there's a location bar
+    $('search_location') ? $$('#search_form .submit').first().setStyle({top:'1.3em'}) : null;   // move the search button down if there's a location bar
     $('start_date') ? $('start_date').value = 'today' : null;
     if($('optional_search_fields')) {
       $('optional_search_fields').hide();
       $('keywords_container').insert({after:'<a id="more_link" href="#" onclick="$(\'optional_search_fields\').toggle(); return false;">More options</a>'});
     }
   </script>
-  
-  <!--
-  <script type="text/javascript">
-    // UGLY HACK COMING UP
-    // remove the keywords and submit button from the activities search
-    $('keywords_container').remove();
-    $('commit').remove();
-    $('start_date').value = 'today';
-  </script>
-  -->
   
 </form>
 

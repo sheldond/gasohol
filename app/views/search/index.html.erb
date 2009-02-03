@@ -41,6 +41,10 @@
             
             <!-- normal results -->
             <%= render :partial => 'results', :locals => { :results => @google.results, :do_date_separators => @do_date_separators } %>
+            <script type="text/javascript">
+              var related = new Related();  // each result will fire an Ajax call back to the server to find related data, this guy handles the response from the server
+            </script>
+            
             <%# render :partial => 'add_activity_message' if @mode == 'activities' %>
 
             <% if @google.total_results > GASOHOL_CONFIG[:google][:num] %>

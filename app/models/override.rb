@@ -6,6 +6,9 @@
 class Override < ActiveRecord::Base
   
   self.inheritance_column = 'none'
+  
+  validates_presence_of :keywords
+  validates_uniqueness_of :keywords
 
   # Adding our own method for searching for a matching override since the logic is more complex than a standard find.
   # We have some interesting logic here. Basically we take all overrides in the DB and then compare each one to the

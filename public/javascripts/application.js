@@ -29,6 +29,7 @@ Object.extend(CalendarDateSelect.prototype, {
 });
 
 
+// append a sort parameter onto the URL when user clicks to change their sort
 function sort(sort_by) {
   var query_string = '?'
   query_string += 'sort=' + sort_by;
@@ -54,10 +55,8 @@ function selectOption(obj, value) {
 	}
 }	
 
-// fire up an instance of the related items handler
-var related = new Related();
 
-// asset sports and types
+// asset sports and types (used by /javascripts/search.js)
 var assets = [
  	{	text:'Any',
  		types: [

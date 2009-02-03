@@ -8,7 +8,7 @@ class SearchController < ApplicationController
   DO_RELATED_SEARCH = false            # do all the related (ajax) searches for each and every result
   # DO_CONTEXT_SEARCH = false           # contextual search on the right
   CONTEXT_RESULT_COUNT = 5            # number of items to show for contextual related
-  MINI_RELEVANT_SEARCH_COUNT = 5      # number of results to show in the mini display of relevant results when the page is sorted by date
+  MINI_RELEVANT_SEARCH_COUNT = 3      # number of results to show in the mini display of relevant results when the page is sorted by date
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'          # default sort method
   SEARCH_MODES = [{:mode => 'activities', :name => 'Activities & Events' },
@@ -54,6 +54,7 @@ class SearchController < ApplicationController
       google_sort_string = ''
     end
     
+    # When these searches were threaded we seemed to be getting some inconsistent results...Rails not really threadsafe yet?
     #threads = []
     
     # if user is sorting by date, do another search by relevance for the top 5 result
