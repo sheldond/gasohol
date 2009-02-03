@@ -86,6 +86,11 @@ class SearchController < ApplicationController
     render :layout => 'application'
   end
   
+  
+  def debug
+    
+  end
+  
   # (/search/google)
   # API for getting Google results. Tack on .xml, .json, .yaml for various formats.
   # By default will output HTML formatted for our search results. Some modifiers:
