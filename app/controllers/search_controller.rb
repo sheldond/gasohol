@@ -77,7 +77,7 @@ class SearchController < ApplicationController
     
     # get various related queries on the page
     @location = Location.new!(@original_location)
-    @popular_local_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_popular_by_location_and_mode(@location,@mode,10) : Query.find_popular_by_mode(@mode,10)
+    @popular_local_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_popular_by_location_and_mode(@location,@mode,5) : Query.find_popular_by_mode(@mode,5)
     @related_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_related_by_location_and_mode(@original_keywords,@location,@mode,5) : Query.find_related_by_mode(@original_keywords,@mode,5) # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
     
