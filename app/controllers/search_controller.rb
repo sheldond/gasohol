@@ -12,7 +12,7 @@ class SearchController < ApplicationController
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'          # default sort method
   SEARCH_MODES = [{:mode => 'activities', :name => 'Activities & Events' },
-                  {:mode => 'results', :name => 'Race Results'},
+                  # {:mode => 'results', :name => 'Race Results'},
                   {:mode => 'training', :name => 'Training Plans'},
                   {:mode => 'articles', :name => 'Articles'},
                   {:mode => 'community', :name => 'Community'},
@@ -73,13 +73,15 @@ class SearchController < ApplicationController
     #threads.each { |t| t.join }
     
     # now update query record with the calculated values for keywords, location, etc.
-    query_record.update_with_options(params, {:total_results => @google.total_results, :user => current_user})  # TODO: +params+ are dirty and could have been changed by ActiveSearch...modify the result package so that it contains modified keywords/location that we update the database record with so we know what the search was transformed into
+    # TODO: +params+ are dirty and could have been changed by ActiveSearch...modify the result package so that it contains modified keywords/location that we update the database record with so we know what the search was transformed into
+    query_record.update_with_options(params, {:total_results => @google.total_results, :user => current_user})
     
     # get various related queries on the page
     @location = Location.new!(@original_location)
     @popular_local_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_popular_by_location_and_mode(@location,@mode,5) : Query.find_popular_by_mode(@mode,5)
     @related_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_related_by_location_and_mode(@original_keywords,@location,@mode,5) : Query.find_related_by_mode(@original_keywords,@mode,5) # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
+    @ajax = ''  # all of our ajax calls get saved up in this variable and output at the end of the page (so that all images can load before any of the Ajax calls go out)
     
     render :layout => 'application'
   end
