@@ -36,8 +36,8 @@
       </ul>
       
       <ul id="switch_view">
-        <li class="<%= 'selected' if @view == 'classic' %>"><%= link_to('Classic View', params.merge({:view => 'classic'}), :title => 'Classic Active.com search results')%></li>
-        <li class="last <%= 'selected' if @view == 'enhanced' %>"><%= link_to('Enhanced View', params.merge({:view => 'enhanced'}), :title => 'Enhanced results with related items like articles, discussions and training plans')%></li>
+        <li class="<%= 'selected' if @view == 'classic' %>"><%= link_to('Classic View', params.merge({:view => 'classic',:sort => @sort}), :title => 'Classic Active.com search results')%></li>
+        <li class="last <%= 'selected' if @view == 'enhanced' %>"><%= link_to('Enhanced View', params.merge({:view => 'enhanced',:sort => @sort}), :title => 'Enhanced results with related items like articles, discussions and training plans')%></li>
       </ul>
     </div>
     <%# image_tag('beta_notice.png', { :alt => "Remember, it's a beta!", :id => 'beta_notice'}) %>

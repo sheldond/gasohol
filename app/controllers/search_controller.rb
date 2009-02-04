@@ -39,7 +39,7 @@ class SearchController < ApplicationController
   # (/search or /search/index)
   # This is where all the good stuff happens. Send the Google class the query (@query) and all the URL
   # variables (@options) and we'll format the results into a simpler format that we use in our views.
-  def index
+  def index    
     params[:q] ||= ''
     @mode = params[:mode] || 'activities'; @mode.downcase!  # what search mode are we in? default to activity search
     @view = figure_view
@@ -274,18 +274,6 @@ class SearchController < ApplicationController
     return cache(md5) { SEARCH.search(parts,options) }
   end
 
-
-=begin
-  # Takes an optional URL and pulls parameters out of it instead of the default params hash
-  # Gets the query terms out of the query string and puts it in '@query'. Takes the remaining query string variables
-  # and puts them into a hash called '@options'
-  def get_options_from_url(url)
-    options = {}
-    CGI.parse(URI.parse(url).query).each { |key,value| options.merge!( {key.to_sym => value.first}) }
-    logger.debug("\n\nSearchController: get_options_from_url: output=#{options.inspect}\n\n")
-    return options
-  end
-=end
   
   # Used on the homepage so that the first time you come to the site we know where you are
   def get_or_set_default_location
@@ -307,58 +295,42 @@ class SearchController < ApplicationController
   
   # Figure out what we should sort on based on various parameters
   def figure_sort
-    output = nil
-    
     if params[:mode] == 'activities'
       # if there's a 'sort' parameter in the URL it's because the user set it manually so save to cookie
       if params[:sort]
         cookies[:sort] = params[:sort]
-        output = params[:sort]
+        return params[:sort]
       end
     
       # because of the way cookies behave in Rails, we can't set and read in the same request, so if params[:sort]
       # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out to return
       if !params[:sort] && cookies[:sort]
-        output = cookies[:sort]
+        return cookies[:sort]
       end
     
       # should we automatically sort by date? (if the user doesn't have a cookie set, but they have chosen to filter by date, then yes)
       if !cookies[:sort] && !params[:sort] && params[:start_date] && !params[:start_date].empty?
-        output = 'date'
+        return 'date'
       end
     end
     
     # if nothing set the sort yet, default to relevance
-    output ||= DEFAULT_SORT
-    
-    # at this point whatever we should sort by has been set as params[:sort] so just return it
-    logger.debug("\n\nSearchController.figure_sort: Sorting by #{output}")
-    return output
+    return DEFAULT_SORT
   end
 
 
-  # Figure out what we should sort on based on various parameters
+  # Figure out what view to show, follows the same logic as figure_sort above
   def figure_view
-    output = nil
-    
-    # if there's a 'view' parameter in the URL it's because the user set it manually so save to cookie
     if params[:view]
       cookies[:view] = params[:view]
-      output = params[:view]
+      return params[:view]
     end
   
-    # because of the way cookies behave in Rails, we can't set and read in the same request, so if params[:sort]
-    # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out to return
     if !params[:view] && cookies[:view]
-      output = cookies[:view]
+      return cookies[:view]
     end
     
-    # if nothing set the sort yet, default to relevance
-    output ||= DEFAULT_VIEW
-    
-    # at this point whatever we should sort by has been set as params[:sort] so just return it
-    logger.debug("\n\nSearchController.figure_view: #{output}")
-    return output
+    return DEFAULT_VIEW
   end
   
   
