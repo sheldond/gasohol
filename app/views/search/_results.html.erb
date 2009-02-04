@@ -12,7 +12,7 @@
       <% end %>
     <% end %>
   
-    <%= render :partial => "search/results/#{result.type.to_s}", :layout => "search/results/layout_full", :locals => { :result => result } %>
+    <%= render :partial => "search/results/#{result.type.to_s}", :layout => "search/results/layout_#{view}", :locals => { :result => result, :view => view } %>
     
   <% end %>
 <% end %>

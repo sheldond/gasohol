@@ -9,7 +9,7 @@
   
   <% if params[:title] %>
     <label>Name</label>
-    <span class="value"><%= format_title(params[:title]) %></span>
+    <span class="value"><%= format_title_and_strip_html(params[:title]) %></span>
   <% end %>
   
   <% if params[:id] %>

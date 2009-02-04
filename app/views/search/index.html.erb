@@ -13,13 +13,15 @@
       <div style="overflow: hidden; width: 400px; visibility: hidden; height: 0pt;"></div>
       <div id="results_container">
         <%= render :partial => 'breadcrumbs', :locals => { :google => @google } %>
-      
         <div id="results">
                   
           <% unless @google.results.empty? %>
           
-            <%= render :partial => 'sort', :locals => { :sort => @sort } if @mode == 'activities' %>
-            
+            <div id="sort_container">
+              <%= render :partial => 'result_count', :locals => { :first => @google.results.first.num || 0, :last => @google.results.last.num || 0, :total => @google.total_results } %>
+              <%= render :partial => 'sort', :locals => { :sort => @sort } if @mode == 'activities' %>
+            </div>
+          
             <% unless @google.featured.empty? %>
               <div id="featured">
                 <h3>Featured Events</h3>
@@ -29,8 +31,8 @@
             
             <!-- top 5 relevant results when user has sorted by date -->
             <% if @mini_relevant_results && @mini_relevant_results.results.length > 0 %>
-              <h3>Most relevant results for '<%= params[:q] %>':</h3>
               <div id="relevant_results">
+                <h3>Most relevant results for '<%= params[:q] %>':</h3>
                 <% @mini_relevant_results.results.each do |result| %>
                   <%= render :partial => "search/results/#{result.type}", :layout => 'search/results/layout_short', :locals => { :result => result } %>
                 <% end %>
@@ -40,7 +42,7 @@
             <% end %>
             
             <!-- normal results -->
-            <%= render :partial => 'results', :locals => { :results => @google.results, :do_date_separators => @do_date_separators } %>
+            <%= render :partial => 'results', :locals => { :results => @google.results, :view => @view, :do_date_separators => @do_date_separators } %>
             <script type="text/javascript">
               var related = new Related();  // each result will fire an Ajax call back to the server to find related data, this guy handles the response from the server
             </script>
@@ -49,6 +51,7 @@
 
             <% if @google.total_results > GASOHOL_CONFIG[:google][:num] %>
               <div id="paging">
+                <%= render :partial => 'result_count', :locals => { :first => @google.results.first.num || 0, :last => @google.results.last.num || 0, :total => @google.total_results } %>
                 <%= will_paginate(@google) %>
               </div>
             <% end %>

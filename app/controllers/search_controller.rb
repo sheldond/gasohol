@@ -5,12 +5,13 @@ class SearchController < ApplicationController
   before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
   layout false  # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = true            # do all the related (ajax) searches for each and every result
+  DO_RELATED_SEARCH = false            # do all the related (ajax) searches for each and every result
   # DO_CONTEXT_SEARCH = false           # contextual search on the right
   CONTEXT_RESULT_COUNT = 5            # number of items to show for contextual related
   MINI_RELEVANT_SEARCH_COUNT = 3      # number of results to show in the mini display of relevant results when the page is sorted by date
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'          # default sort method
+  DEFAULT_VIEW = 'enhanced'           # default view of results
   SEARCH_MODES = [{:mode => 'activities', :name => 'Activities & Events' },
                   # {:mode => 'results', :name => 'Race Results'},
                   {:mode => 'training', :name => 'Training Plans'},
@@ -26,6 +27,7 @@ class SearchController < ApplicationController
     params[:q] ||= ''
     # what search mode are we in? default to activity search
     @mode = params[:mode] || 'activities'; @mode.downcase!
+    @view = figure_view
     
     # TODO: move popular searches into Ajax call so we can cache this page
     # TODO: move population of the 'Searching in' area to Ajax so we can cache
@@ -40,6 +42,8 @@ class SearchController < ApplicationController
   def index
     params[:q] ||= ''
     @mode = params[:mode] || 'activities'; @mode.downcase!  # what search mode are we in? default to activity search
+    @view = figure_view
+    
     @original_keywords = params[:q]                         # save the original keyword and location because they could changed based on logic in ActiveSearch
     @original_location = params[:location]
 
@@ -236,7 +240,6 @@ class SearchController < ApplicationController
         render :text => "Please enter a valid city, state or zip", :status => 500
         return
       rescue
-        # TODO: why don't the above rescues work anymore?
         render :text => "Please enter a valid city, state or zip", :status => 500
         return
       end
@@ -272,7 +275,7 @@ class SearchController < ApplicationController
   end
 
 
-
+=begin
   # Takes an optional URL and pulls parameters out of it instead of the default params hash
   # Gets the query terms out of the query string and puts it in '@query'. Takes the remaining query string variables
   # and puts them into a hash called '@options'
@@ -282,7 +285,7 @@ class SearchController < ApplicationController
     logger.debug("\n\nSearchController: get_options_from_url: output=#{options.inspect}\n\n")
     return options
   end
-
+=end
   
   # Used on the homepage so that the first time you come to the site we know where you are
   def get_or_set_default_location
@@ -333,6 +336,31 @@ class SearchController < ApplicationController
     return output
   end
 
+
+  # Figure out what we should sort on based on various parameters
+  def figure_view
+    output = nil
+    
+    # if there's a 'view' parameter in the URL it's because the user set it manually so save to cookie
+    if params[:view]
+      cookies[:view] = params[:view]
+      output = params[:view]
+    end
+  
+    # because of the way cookies behave in Rails, we can't set and read in the same request, so if params[:sort]
+    # doesn't exist then we didn't set a cookie this session, but if one does exist pull it back out to return
+    if !params[:view] && cookies[:view]
+      output = cookies[:view]
+    end
+    
+    # if nothing set the sort yet, default to relevance
+    output ||= DEFAULT_VIEW
+    
+    # at this point whatever we should sort by has been set as params[:sort] so just return it
+    logger.debug("\n\nSearchController.figure_view: #{output}")
+    return output
+  end
+  
   
   # Checks if a skin is either in the query_string or a cookie
   def check_skin

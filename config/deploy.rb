@@ -14,7 +14,7 @@ set :user, 'root'
 ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")]
  
 role :app, "ec2-174-129-175-160.compute-1.amazonaws.com", "ec2-174-129-147-77.compute-1.amazonaws.com"
-role :web, "ec2-174-129-175-160.compute-1.amazonaws.com"
+role :web, "ec2-174-129-175-160.compute-1.amazonaws.com", "ec2-174-129-147-77.compute-1.amazonaws.com"
 role :db, "ec2-174-129-175-160.compute-1.amazonaws.com", :primary => true
  
 # custom maintenance page

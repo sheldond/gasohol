@@ -1,5 +1,33 @@
 @import url('shared.css');
 
+#switch_view {
+	position: absolute;
+	top: 75px;
+	right: 20px;
+}
+	#switch_view li {
+		display: inline;
+		border-right: 1px solid #EFF8FF;
+		padding: 4px .8em 12px;
+	}
+		#switch_view li.selected {
+			font-weight: bold;
+			background: transparent url('../images/view_arrow.png') center bottom no-repeat;
+		}
+			#switch_view li.selected a {
+				color: #ffffff;
+			}
+		#switch_view li.last {
+			border: none;
+		}
+	#switch_view a {
+		color: #b5d5f0;
+		text-decoration: none;	
+	}
+		#switch_view a:hover {
+			color: #ffffff;
+		}
+
 .ads {
 	text-align: center;
 }
@@ -278,7 +306,7 @@ h3 {
 		}
 
 	#main {
-		padding: 0 0 1em;
+		padding: 0 2em 1em 0;
 	}
 	
 		#search_modes {
@@ -302,7 +330,6 @@ h3 {
 	}
 
 	#results {
-		float: left;
 		width: 100%;
 	}
 	
@@ -344,6 +371,8 @@ h3 {
 			text-decoration: none;
 			font-weight: bold;
 			font-size: 108%;
+			clear: left;
+			
 		}
 			#results #relevant_results .more:hover {
 				color:#d06f1a;
@@ -489,7 +518,8 @@ h3 {
 	
 		#result_count {
 			color: #666666;
-			float: right;
+			float: left;
+			margin: 1em 0 0;
 			font-size: 85%
 		}
 	
@@ -498,6 +528,7 @@ h3 {
 		padding: 0 1em;
 		background-color: #F0FFDF;
 		overflow: auto;
+		clear: left;
 	}
 	
 		#featured h3 {
@@ -519,10 +550,15 @@ h3 {
 			background-image: none;
 		}
 		
+	#sort_container {
+		overflow: hidden;
+	}
+		
 	#sort {
 		font-size: 93%;
 		margin: 1em 0 1em;
-		text-align: right;
+		float: right;
+		overflow: hidden;
 	}
 	
 		#sort a {
@@ -550,9 +586,21 @@ h3 {
 		background-color: #d7e8f7;
 		}
 		
-	.result {
+	.result.enhanced {
 		margin: 0;
 		padding: .7em 0;
+		overflow: hidden;
+	}
+	.result.classic {
+		margin: 0;
+		padding: .2em 0;
+		overflow:hidden;
+		border-bottom :1px solid #eeeeee;
+		
+	}
+	
+	#relevant_results {
+		clear: left;
 		overflow: hidden;
 	}
 	
@@ -577,8 +625,14 @@ h3 {
 		
 		.result .title {
 			float: left;
-			margin: 0 0 .2em;
+			clear: left;
+			margin: 0 0 .8em;
 		}
+			.result.classic .title {
+				width: 300px;
+				margin: 0 1em .4em 0;
+			}
+			
 			.result .title a {
 				text-decoration: none;
 				border-bottom: 1px solid #5091CD;
@@ -619,6 +673,9 @@ h3 {
 				font-weight: normal;
 				color: #333333;
 			}
+				.result.classic h3 {
+					margin: 0;
+				}
 		
 			.result .save {
 				display: none;
@@ -661,10 +718,33 @@ h3 {
 			font-size: 93%;
 		}
 		
+			.result.classic ul.meta {
+				float: left;
+				clear: none;
+			}
+		
 			.result ul.meta li {
 				display: inline;
 				margin: 0 1em 0 0;
 			}
+				.result.classic ul.meta li {
+					display: block;
+					float: left;
+				}
+					.result.classic ul.meta li.sport {
+						width: 70px;
+					}
+					.result.classic ul.meta li.location {
+						width: 130px;
+					}
+					.result.classic ul.meta li.date {
+						width: 200px;
+					}
+				
+				.result.classic ul.meta li strong {
+					display: none;
+				}
+			
 			
 		.result .related_links img {
 			vertical-align: middle;
@@ -675,8 +755,7 @@ h3 {
 		}
 		
 		.result .related_links, .result .action_links {
-			display: block;
-			clear: both;
+			float: left;
 			font-size: 85%;
 			color: #aaaaaa;
 		}
@@ -685,6 +764,10 @@ h3 {
 				margin: .5em 0;
 				display: inline;
 			}
+				.result img.result_indicator {
+					display: block;
+					margin: 5px 0 0;
+				}
 			
 			.result .action_links {
 				margin: .5em 0;
@@ -727,14 +810,22 @@ h3 {
 				margin: 0 .5em 0 0;
 				white-space: nowrap;
 			}
+			
+		.result.classic .related_links, .result.classic .action_links, .result.classic .result_indicator {
+			display: none;
+		}
 		
 #paging {
 	border-top: 2px solid #cccccc;
-	padding: 1em 0;
+	margin: 1em 0;
 }
 		
 #paging {
 	text-align: right;
+	}
+	
+	#paging .pagination {
+		margin: 1em 0 0;
 	}
 		
 /* 404 and 500 */

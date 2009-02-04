@@ -1,0 +1,9 @@
+<div <%= "id=\"result_#{result.num}\"" %> class="classic result <%= result.meta[:category] ? urlize(result.meta[:category]).singularize : '' %> <%= result.level > 1 ? 'sub' : '' %>">
+  
+  <div class="title">
+    <h3><%= link_to(format_title(result.title), result.url) %></h3>
+  </div>
+  
+  <%= yield %>
+  
+</div>

@@ -36,10 +36,15 @@ module ApplicationHelper
   # This method splits on the |, unescapes any escaped HTML, then removes the HTML tags, leaving
   # us with "Carlsbad 5000"
   def format_title(text)
-    un(text.split("|").first.strip).gsub(/<.*?>/,'')
+    un(text.split("|").first.strip)
   end
+  
+  def format_title_and_strip_html(text)
+    format_title(text).gsub(/<.*?>/,'')
+  end
+  
 
   def format_title_for_related(text)
-    format_title(text).gsub(/&.*?;/,'').gsub(/-.*$/,'').gsub(/[^\w ]/,'').strip
+    format_title_and_strip_html(text).gsub(/&.*?;/,'').gsub(/-.*$/,'').gsub(/[^\w ]/,'').strip
   end
 end

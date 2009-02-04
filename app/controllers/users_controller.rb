@@ -9,7 +9,8 @@ class UsersController < ApplicationController
       @invite = Invite.find(params[:invite])
       @users = User.find_all_by_invite_id(@invite)
     else
-      @users = User.find(:all)
+      # @users = User.find(:all)
+      @users = User.paginate(:page => params[:page], :order => 'created_at desc', :per_page => params[:count] || 50)
     end
   end
 
@@ -19,7 +20,7 @@ class UsersController < ApplicationController
 
   def new
     if logged_in? and !is_admin?
-      redirect_to root_path # if they already have a user, and aren't an admin, they shouldn't be able to create a new user
+      redirect_to root_path   # if they already have a user, and aren't an admin, they shouldn't be able to create a new user
     else
       @user = User.new
       @user.name, @user.email, @user.login, @user.password, @user.last_login_ip = ''

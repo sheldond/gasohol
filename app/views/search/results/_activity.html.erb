@@ -1,31 +1,33 @@
+<% view = SearchController::DEFAULT_VIEW unless defined?(view) %>
+
 <ul class="meta">
   <% if result.meta[:channel] %>
-    <li><strong>What:</strong>
+    <li class="sport"><strong>What:</strong>
       <%= result.meta[:channel].split('\\').first %>
       <% if result.meta[:media_types] && result.meta[:media_types].first %>
         <%= result.meta[:media_types].first.value.split('\\').first %>
       <% end %>
     </li>
   <% end %>
-  <li><strong>Where:</strong> <%= result.meta[:city] %>, <%= result.meta[:state] %></li>
-  <li><strong>When:</strong> <%= result.meta[:start_date].to_s(:full_with_day) %></li>
+  <li class="location"><strong>Where:</strong> <%= result.meta[:city] %>, <%= result.meta[:state] %></li>
+  <li class="date"><strong>When:</strong> <%= result.meta[:start_date].to_s(:full_with_day) %></li>
 </ul>
 
-<div id="result_<%= result.num %>_actions" class="action_links">
-  <% if result.meta[:online_registration_available] %>
-    <%= link_to('Register Now', result.url, :class => 'register_link') %>
-  <% end %>
+<% if view == 'enhanced' %>
+  <div id="result_<%= result.num %>_actions" class="action_links">
+    <% if result.meta[:online_registration_available] %>
+      <%= link_to('Register Now', result.url, :class => 'register_link') %>
+    <% end %>
 
-  <%= link_to('Flag', new_flag_path(:id => result.meta[:asset_id], :title => format_title(result.title)), :class => 'flag') %>
+    <%= link_to('Flag', new_flag_path(:id => result.meta[:asset_id], :title => format_title_and_strip_html(result.title)), :class => 'flag') %>
 
-  <ul>
-    <li id="result_<%= result.num %>_links_registrants"></li>
-    <li id="result_<%= result.num %>_links_watching"></li>
-  </ul>
-</div>
+    <ul>
+      <li id="result_<%= result.num %>_links_registrants"></li>
+      <li id="result_<%= result.num %>_links_watching"></li>
+    </ul>
+  </div>
 
-<div class="related_links_container">
-  <%= image_tag('indicator.gif', { :alt => 'Loading...', :id => "result_#{result.num}_indicator" }) %>
+  <%= image_tag('indicator.gif', { :alt => 'Loading...', :class => 'result_indicator', :id => "result_#{result.num}_indicator" }) %>
   <div id="result_<%= result.num %>_links" class="related_links" style="display:none;">
     <% if SearchController::DO_RELATED_SEARCH %>
       <strong>Related:</strong>
@@ -39,8 +41,8 @@
       </ul>
       
       <script type="text/javascript">
-        $('result_<%= result.num %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
-        $('result_<%= result.num %>_links_watching').update(Math.round(Math.random()*40)+' watching');
+        // $('result_<%= result.num %>_links_registrants').update(Math.round(Math.random()*80)+' registrants');
+        // $('result_<%= result.num %>_links_watching').update(Math.round(Math.random()*40)+' watching');
         
         new Ajax.Request( "<%= url_for(:controller => 'search', :action => 'related') %>",
                           { method:'get',
@@ -51,4 +53,4 @@
       </script>
     <% end %>
   </div>
-</div>
+<% end %>

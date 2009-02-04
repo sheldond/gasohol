@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   def log_in_user(user)
     session[:user] = user.id
     user.last_login_at = Time.now
-    user.last_login_ip = request.remote_addr
+    user.last_login_ip = request.respond_to?('http_x_forwarded_for') ? request.http_x_forwarded_for : request.remote_addr
     user.save
   end
   
