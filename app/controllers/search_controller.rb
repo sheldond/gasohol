@@ -20,6 +20,7 @@ class SearchController < ApplicationController
                   {:mode => 'facilities', :name => 'Facilities'}]
   LOCATION_AWARE_SEARCH_MODES = ['activities','orgs','facilities']    # search modes that display the location box
     
+    
   # (/ or /search/home) 
   # homepage that just shows a search box and popular searches
   def home
@@ -27,6 +28,7 @@ class SearchController < ApplicationController
     # what search mode are we in? default to activity search
     @mode = params[:mode] || DEFAULT_MODE; @mode.downcase!
     @view = figure_view
+    cookies[:seen_view_notice] = 'true' unless cookies[:seen_view_notice]   # set a cookie so we don't keep showing the "how do you want to view your results?" box at the top right of the homepage
     
     # TODO: move popular searches into Ajax call so we can cache this page
     # TODO: move population of the 'Searching in' area to Ajax so we can cache
@@ -34,6 +36,7 @@ class SearchController < ApplicationController
     @popular_local_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_popular_by_location_and_mode(@location,@mode,10) : Query.find_popular_by_mode(@mode,10)
     render :layout => 'application'
   end
+  
   
   # (/search or /search/index)
   # This is where all the good stuff happens. Send the Google class the query (@query) and all the URL
@@ -68,7 +71,7 @@ class SearchController < ApplicationController
     @popular_local_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_popular_by_location_and_mode(@location,@mode,5) : Query.find_popular_by_mode(@mode,5)
     @related_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_related_by_location_and_mode(@original_keywords,@location,@mode,5) : Query.find_related_by_mode(@original_keywords,@mode,5) # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results
-    @ajax = ''  # all of our ajax calls get saved up in this variable and output at the end of the page (so that all images can load before any of the Ajax calls go out)
+    # @ajax = ''  # all of our ajax calls get saved up in this variable and output at the end of the page (so that all images can load before any of the Ajax calls go out)
     
     render :layout => 'application'
   end
@@ -77,6 +80,7 @@ class SearchController < ApplicationController
   def debug
     
   end
+  
   
   # (/search/google)
   # API for getting Google results. Tack on .xml, .json, .yaml for various formats.

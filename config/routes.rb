@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :polls
+
   map.resources :flags
 
   map.resources :cities
