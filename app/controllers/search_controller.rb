@@ -5,7 +5,7 @@ class SearchController < ApplicationController
   before_filter :check_skin, :only => [:index, :home]             # was there a skin defined?
   layout false                                                    # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = false           # do all the related (ajax) searches for each and every result
+  DO_RELATED_SEARCH = true           # do all the related (ajax) searches for each and every result
   MINI_RELEVANT_SEARCH_COUNT = 3      # number of results to show in the mini display of relevant results when the page is sorted by date
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'          # default sort method
