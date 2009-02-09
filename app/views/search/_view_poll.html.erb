@@ -1,0 +1,18 @@
+<% if params[:action] == 'home' %>
+  <%= image_tag('view_notice.png', :id => "view_notice") unless cookies[:seen_view_notice] %>
+<% elsif params[:action] == 'index' %>
+  <% unless cookies[:seen_poll] %>
+    <div id="view_poll_link">
+      <%= image_tag('view_poll.png', :onclick => "$('view_poll').toggle(); $('view_poll_link').toggle(); return false;") %>
+    </div>
+
+    <div id="view_poll" style="display:none;">
+      <p>Tried both views? Do you like one more than another? Let us know which:</p>
+      <% remote_form_for(Poll.new, :success => '$("view_poll").update("<p>Thanks!</p>"); setTimeout(function() { $("view_poll").fade(); }, 2000);') do |f| %>
+        <%= f.radio_button :answer, 'classic' %><%= f.label 'answer_classic', 'Classic' %>
+        <%= f.radio_button :answer, 'enhanced' %><%= f.label 'answer_enhanced', 'Enhanced' %>
+        <%= f.submit 'Save' %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
