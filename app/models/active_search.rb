@@ -10,11 +10,18 @@
 require 'location'
 require 'override'
 require 'gasohol/gasohol'
+require 'active_result_set'
 require 'active_result'
 
 class ActiveSearch < Gasohol::Search
+  
+  # these become instance variables so that we can pass them to ActiveResultSet in parse_result_set() below
+  attr_reader :original_params, :modified_params
 		
 	def search(parts,options={})
+	  
+	  # the code below will modify the +parts+ hash that is passed in, so we save a copy here to make it available to the ResultSet later
+	  @original_params = parts.dup
 	  
 	  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: passed parts='#{parts.inspect}'\n")
 	  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: passed options='#{options.inspect}'\n")
@@ -161,6 +168,9 @@ class ActiveSearch < Gasohol::Search
 
     RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: computed query='#{query}'\n")
 		RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: search: computed options='#{output_options.inspect}'\n")
+    
+    # how did the params change based on logic above? save them so we can access in the ActiveResultSet
+    @modified_params = parts
 
 		super(query,output_options)
 	end
@@ -168,9 +178,15 @@ class ActiveSearch < Gasohol::Search
 	
 	private
 	
+	# override default Gasohol::Result::parse_result_set so we can save the original and modified params that were sent in
+	def parse_result_set(query,path,xml,num)
+    return ActiveResultSet.new(query,path,xml,num,@original_params,@modified_params)
+  end
+  
+	
 	# override default Gasohol::Result::parse_result method so we can pass our own Result object with some extended methods
 	def parse_result(xml)
-	  ActiveResult.new(xml)
+	  return ActiveResult.new(xml)
   end
   
 	
@@ -189,11 +205,11 @@ class ActiveSearch < Gasohol::Search
 	
 	# Determines whether this is a search that uses only keywords
 	def simple_search?(values)
-		(values[:mode] && values[:mode].downcase == 'activities') && (values[:sport].nil? || values[:sport].downcase == 'any') && (values[:type].nil? || values[:type].downcase == 'any') && (values[:custom].nil? || values[:custom].downcase == 'any')
+		return (values[:mode] && values[:mode].downcase == 'activities') && (values[:sport].nil? || values[:sport].downcase == 'any') && (values[:type].nil? || values[:type].downcase == 'any') && (values[:custom].nil? || values[:custom].downcase == 'any')
 	end
 	
 	
-	# Search keywords for special trigger phrases like a location or a sport
+	# Search keywords for special trigger phrases like "california", "92121" or "everywhere"
 	def deep_keyword_search(text)
 	  
 	  RAILS_DEFAULT_LOGGER.debug("\nActiveSearch: test_keywords_for_location: text='#{text}'\n")

@@ -31,7 +31,7 @@ class Query < ActiveRecord::Base
     self.keywords = params[:q]
     
     opts = params.dup
-    [:location,:sport,:start_date,:end_date,:type,:custom,:mode].each do |part|
+    [:location,:sport,:start_date,:end_date,:type,:custom,:mode,:radius,:view].each do |part|
       # prepare the value of each to be something the database likes
       opts[part] = nil if opts[part] == ''
       if part == :start_date || part == :end_date

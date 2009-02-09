@@ -3,8 +3,8 @@ GASOHOL_DEBUGGING = false
 
 # load up the config file and convert all keys from strings to symbols
 temp_config = File.open(RAILS_ROOT+'/config/gasohol.yml') { |file| YAML::load(file) }
-temp_config.symbolize_keys!
-temp_config.each { |key,value| value.symbolize_keys! }
+temp_config = temp_config[RAILS_ENV].symbolize_keys!    # get the proper environment and symbolize those keys
+temp_config.each { |key,value| value.symbolize_keys! }  # and symbolize the keys of each child hash
 GASOHOL_CONFIG = temp_config
 
 # get the cache server ready

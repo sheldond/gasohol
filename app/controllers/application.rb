@@ -80,13 +80,13 @@ class ApplicationController < ActionController::Base
       unless output = CACHE.get(key)
         output = yield
         CACHE.set(key, output, GASOHOL_CONFIG[:cache][:timeout])
-        logger.info("Cache MISS and STORE: #{key}")
+        logger.debug("Cache MISS and STORE: #{key}")
       else
-        logger.info("Cache HIT: #{key}")
+        logger.debug("Cache HIT: #{key}")
       end
     rescue MemCache::MemCacheError
       output = yield
-      logger.info("Cache ERROR: Cache not available or not responding")
+      logger.debug("Cache ERROR: Cache not available or not responding")
     end
     return output
   end
@@ -94,6 +94,10 @@ class ApplicationController < ActionController::Base
   # just says whether the given key is cached or not
   def is_cached?(text)
     return CACHE.get(text) ? true : false
+  end
+  
+  def md5(text)
+    return Digest::MD5.hexdigest(text)
   end
   
   

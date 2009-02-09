@@ -586,18 +586,19 @@ h3 {
 		background-color: #d7e8f7;
 		}
 		
-	.result.enhanced {
+	.result {
 		margin: 0;
 		padding: .7em 0;
 		overflow: hidden;
 	}
-	.result.classic {
+	.result.classic.activity {
 		margin: 0;
 		padding: .2em 0;
 		overflow:hidden;
 		border-bottom :1px solid #eeeeee;
-		
 	}
+
+			
 	
 	#relevant_results {
 		clear: left;
@@ -626,9 +627,9 @@ h3 {
 		.result .title {
 			float: left;
 			clear: left;
-			margin: 0 0 .8em;
+			margin: 0 0 .4em;
 		}
-			.result.classic .title {
+			.result.classic.activity .title {
 				width: 300px;
 				margin: 0 1em .4em 0;
 			}
@@ -741,7 +742,7 @@ h3 {
 						width: 200px;
 					}
 				
-				.result.classic ul.meta li strong {
+				.result.classic.activity ul.meta li strong {
 					display: none;
 				}
 			

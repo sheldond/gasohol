@@ -4,8 +4,8 @@ class ProxyController < ApplicationController
   
   def index 
     logger.info("\n\nProxy request to: #{params[:proxy_uri]}\n\n")
-    md5 = Digest::MD5.hexdigest(params[:proxy_uri])
-    render :text => cache(md5) { Net::HTTP.get(URI.parse(params[:proxy_uri])) }
+    key = md5(params[:proxy_uri])
+    render :text => cache(key) { Net::HTTP.get(URI.parse(params[:proxy_uri])) }
   end
   
 end

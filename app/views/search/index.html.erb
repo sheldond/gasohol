@@ -28,7 +28,7 @@
                 <%= render :partial => 'search/results/featured', :collection => @google.featured %>
               </div>
             <% end %>
-            
+
             <!-- top 5 relevant results when user has sorted by date -->
             <% if @mini_relevant_results && @mini_relevant_results.results.length > 0 %>
               <div id="relevant_results">
@@ -36,7 +36,7 @@
                 <% @mini_relevant_results.results.each do |result| %>
                   <%= render :partial => "search/results/#{result.type}", :layout => 'search/results/layout_short', :locals => { :result => result } %>
                 <% end %>
-                <%= link_to('More relevant results &raquo;', params.merge!({:sort => 'relevance'}), :class => 'more') %>
+                <%= link_to('More relevant results &raquo;', params.dup.merge!({:sort => 'relevance'}), :class => 'more') %>
               </div>
               <h3>All '<%= params[:q] %>' results sorted by date</h3>
             <% end %>

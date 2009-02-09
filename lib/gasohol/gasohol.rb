@@ -33,7 +33,6 @@
 
 require 'open-uri'
 require 'hpricot'
-require 'chronic'
 require 'core_extensions'
 
 module Gasohol
@@ -157,23 +156,23 @@ module Gasohol
       all_options = @config.merge(options)    # merge options that were passed directly to this method
       full_query_path = query_path(query,all_options)        # creates the full URL to the GSA
     
-      begin
+      #begin
         xml = Hpricot(open(full_query_path))              # call the GSA with our search
   
         if all_options[:count_only] == true
           return xml.search(:m).inner_html.to_i || 0      # if all we really care about is the count of records from google, return just that number and get the heck outta here
         end
         
-        rs = ResultSet.new(query,full_query_path,xml,all_options[:num].to_i)      # otherwise create a real resultset
+        rs = parse_result_set(query,full_query_path,xml,all_options[:num].to_i)      # otherwise create a real resultset
         if rs.total_results > 0             # if there was at least one result, parse the xml
           # rs.total_featured_results = xml.search(:gm).size
           rs.featured = xml.search(:gm).collect { |xml_featured| parse_featured(xml_featured) }           # get featured results (called 'sponsored links' on the results page, displayed at the top)
           rs.results = xml.search(:r).collect { |xml_result| parse_result(xml_result) }                   # get regular results
         end
       
-      rescue => e    # error with results (the GSA barfed?)
-        RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
-      end
+      #rescue => e    # error with results (the GSA barfed?)
+      #  RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
+      #end
     
       return rs
     end
@@ -191,6 +190,12 @@ module Gasohol
         end
       end
       output
+    end
+    
+     
+    # Parses info for the result set (override this and use your own extended ResultSet class if you'd like)
+    def parse_result_set(query,path,xml,num)
+      ResultSet.new(query,path,xml,num)
     end
     
     

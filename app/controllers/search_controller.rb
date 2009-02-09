@@ -1,17 +1,16 @@
 class SearchController < ApplicationController
   # caches_page :google
   
-  before_filter :login_required, :except => [:location,:google] # this page is locked down, only accessible if logged in
-  before_filter :check_skin, :only => [:index, :home]  # was there a skin defined?
-  layout false  # most of the actions here are API calls, so by default we don't want a layout
+  before_filter :login_required, :except => [:location,:google]   # this page is locked down, only accessible if logged in
+  before_filter :check_skin, :only => [:index, :home]             # was there a skin defined?
+  layout false                                                    # most of the actions here are API calls, so by default we don't want a layout
   
-  DO_RELATED_SEARCH = false            # do all the related (ajax) searches for each and every result
-  # DO_CONTEXT_SEARCH = false           # contextual search on the right
-  CONTEXT_RESULT_COUNT = 5            # number of items to show for contextual related
+  DO_RELATED_SEARCH = false           # do all the related (ajax) searches for each and every result
   MINI_RELEVANT_SEARCH_COUNT = 3      # number of results to show in the mini display of relevant results when the page is sorted by date
   DEFAULT_LOCATION = 'everywhere'     # default location if geo-coding doesn't work
   DEFAULT_SORT = 'relevance'          # default sort method
   DEFAULT_VIEW = 'enhanced'           # default view of results
+  DEFAULT_MODE = 'activities'         # default mode (category to search in)
   SEARCH_MODES = [{:mode => 'activities', :name => 'Activities & Events' },
                   # {:mode => 'results', :name => 'Race Results'},
                   {:mode => 'training', :name => 'Training Plans'},
@@ -26,7 +25,7 @@ class SearchController < ApplicationController
   def home
     params[:q] ||= ''
     # what search mode are we in? default to activity search
-    @mode = params[:mode] || 'activities'; @mode.downcase!
+    @mode = params[:mode] || DEFAULT_MODE; @mode.downcase!
     @view = figure_view
     
     # TODO: move popular searches into Ajax call so we can cache this page
@@ -41,10 +40,10 @@ class SearchController < ApplicationController
   # variables (@options) and we'll format the results into a simpler format that we use in our views.
   def index    
     params[:q] ||= ''
-    @mode = params[:mode] || 'activities'; @mode.downcase!  # what search mode are we in? default to activity search
+    @mode = params[:mode] || DEFAULT_MODE; @mode.downcase!  # what search mode are we in? default to activity search
     @view = figure_view
     
-    @original_keywords = params[:q]                         # save the original keyword and location because they could changed based on logic in ActiveSearch
+    @original_keywords = params[:q]                         # save the original keyword and location because they could changed based on logic in ActiveSearch (TODO: make this not happen!)
     @original_location = params[:location]
 
     query_record = Query.new_with_original_params(params.dup)   # record original params as the query came in
@@ -78,7 +77,7 @@ class SearchController < ApplicationController
     
     # now update query record with the calculated values for keywords, location, etc.
     # TODO: +params+ are dirty and could have been changed by ActiveSearch...modify the result package so that it contains modified keywords/location that we update the database record with so we know what the search was transformed into
-    query_record.update_with_options(params, {:total_results => @google.total_results, :user => current_user})
+    query_record.update_with_options(@google.modified_params, {:total_results => @google.total_results, :user => current_user, :view => @view, :sort => @sort})
     
     # get various related queries on the page
     @location = Location.new!(@original_location)
@@ -115,8 +114,8 @@ class SearchController < ApplicationController
   # +title+ the title of the event
   # +media_types+ a pipe delimited list of media_types to search against
   def related
-    md5 = Digest::MD5.hexdigest('search/related/'+params.inspect)
-    js = cache(md5) do
+    key = md5('search/related/'+params.inspect)
+    js = cache(key) do
       
       output = {:id => params[:id], :results => []}
       threads = []
@@ -270,8 +269,8 @@ class SearchController < ApplicationController
   
   # Actually does the work of searching the GSA, results are automatically cached
   def do_google(parts,options={})
-    md5 = Digest::MD5.hexdigest("#{parts.inspect}_#{options.inspect}")
-    return cache(md5) { SEARCH.search(parts,options) }
+    key = md5("#{parts.inspect}_#{options.inspect}")
+    return cache(key) { SEARCH.search(parts,options) }
   end
 
   

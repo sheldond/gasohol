@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090121203338) do
+ActiveRecord::Schema.define(:version => 20090209205842) do
 
   create_table "cities", :force => true do |t|
     t.string  "name"
@@ -68,6 +68,9 @@ ActiveRecord::Schema.define(:version => 20090121203338) do
     t.integer  "start"
     t.string   "original_start_date"
     t.string   "original_end_date"
+    t.integer  "radius"
+    t.string   "view"
+    t.string   "sort"
   end
 
   add_index "queries", ["keywords"], :name => "index_queries_on_keywords"
