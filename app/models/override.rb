@@ -40,6 +40,7 @@ class Override < ActiveRecord::Base
     end
     
     if matching_overrides.empty?                # there were no matches, exit with nil
+      logger.debug("\nOverrides: search: no override found in '#{text}'")
       return nil
     end
     
@@ -58,6 +59,7 @@ class Override < ActiveRecord::Base
       end
     end
     
+    logger.debug("\nOverrides: search: Override found in '#{text}': #{matching_overrides.first}")
     return matching_overrides.first  # after all of that, there is an array with at least 1 member, return the first
 
   end

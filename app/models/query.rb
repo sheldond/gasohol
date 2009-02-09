@@ -7,6 +7,39 @@ class Query < ActiveRecord::Base
   self.inheritance_column = 'none'
   belongs_to :user
   
+  
+  def self.new_search(original,modified,values={})
+    query = self.new( :original_keywords => original[:q], 
+                      :original_location => original[:location] || '',
+                      :start => original[:start] || 1,
+                      :original_start_date => original[:start_date] || '',
+                      :original_end_date => original[:end_date] || '')
+                      
+    query.keywords = modified[:q]
+
+    [:location,:sport,:start_date,:end_date,:type,:custom,:mode,:radius,:view].each do |part|
+      # prepare the value of each to be something the database likes
+      modified[part] = nil if modified[part] == ''
+      if part == :start_date || part == :end_date
+        modified[part] = Chronic.parse(modified[part]).strftime('%Y-%m-%d 00:00:00') unless modified[part].nil?
+      else
+        modified[part] = modified[part].to_s unless modified[part].nil?
+      end
+      # set all the parts to the requisite parts of the query
+      query.send("#{part.to_s}=",modified[part])
+    end
+
+    # extra values that were passed in as a hash
+    unless values.empty?
+      values.each do |key,value|
+        query.send("#{key.to_s}=",value)
+      end
+    end
+
+    query.save
+  end
+  
+  
   def self.new_with_original_params(params, values={})
     query = self.new( :original_keywords => params[:q], 
                       :original_location => params[:location] || '',

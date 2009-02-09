@@ -42,12 +42,7 @@ class SearchController < ApplicationController
     params[:q] ||= ''
     @mode = params[:mode] || DEFAULT_MODE; @mode.downcase!  # what search mode are we in? default to activity search
     @view = figure_view
-    
-    @original_keywords = params[:q]                         # save the original keyword and location because they could changed based on logic in ActiveSearch (TODO: make this not happen!)
-    @original_location = params[:location]
 
-    query_record = Query.new_with_original_params(params.dup)   # record original params as the query came in
-    
     @sort = figure_sort
     if @sort == 'date'
       @do_date_separators = true
@@ -57,30 +52,19 @@ class SearchController < ApplicationController
       google_sort_string = ''
     end
     
-    # When these searches were threaded we seemed to be getting some inconsistent results...Rails not really threadsafe yet?
-    #threads = []
-    
     # if user is sorting by date, do another search by relevance for the top 5 result
     if @sort == 'date'
-      #threads << Thread.new(params) do |p|
-        @mini_relevant_results = do_google(params.dup, {:num => MINI_RELEVANT_SEARCH_COUNT, :style => 'short', :sort => ''})
-      #end
+      @mini_relevant_results = do_google(params.dup, {:num => MINI_RELEVANT_SEARCH_COUNT, :style => 'short', :sort => ''})
     end
     
     # do the real search we came here for
-    #threads << Thread.new(params) do |p|
-      @google = do_google(params.dup, {:sort => google_sort_string})   # we have to manually pass in the sort each time (instead of letting ActiveSearch figure it out) because sort could be based on cookie (which ActiveSearch can't read)
-    #end
+    @google = do_google(params.dup, {:sort => google_sort_string})   # we have to manually pass in the sort each time (instead of letting ActiveSearch figure it out) because sort could be based on cookie (which ActiveSearch can't read)
     
-    # wait for all of our searches to complete
-    #threads.each { |t| t.join }
-    
-    # now update query record with the calculated values for keywords, location, etc.
-    # TODO: +params+ are dirty and could have been changed by ActiveSearch...modify the result package so that it contains modified keywords/location that we update the database record with so we know what the search was transformed into
-    query_record.update_with_options(@google.modified_params, {:total_results => @google.total_results, :user => current_user, :view => @view, :sort => @sort})
+    # record this query to the database
+    Query.new_search(params,@google.modified_params,{:total_results => @google.total_results, :user => current_user, :view => @view, :sort => @sort})
     
     # get various related queries on the page
-    @location = Location.new!(@original_location)
+    @location = Location.new!(params[:location])
     @popular_local_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_popular_by_location_and_mode(@location,@mode,5) : Query.find_popular_by_mode(@mode,5)
     @related_searches = LOCATION_AWARE_SEARCH_MODES.include?(@mode) ? Query.find_related_by_location_and_mode(@original_keywords,@location,@mode,5) : Query.find_related_by_mode(@original_keywords,@mode,5) # searches that contain the same keyword in the same location
     @month_separator_check = ''  # keeps track of what month is being shown in the results

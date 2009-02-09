@@ -8,7 +8,7 @@
   
   <div id="keywords_container">
   	<label for="keywords">Keywords <span class="optional">(optional)</span></label>
-  	<input type="text" name="q" id="q" value="<%= h(@original_keywords) %>" />
+  	<input type="text" name="q" id="q" value="<%= h(params[:q]) %>" />
   </div>
   
   <div id="optional_search_fields">
