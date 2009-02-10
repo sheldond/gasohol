@@ -58,23 +58,22 @@ class Location
     self.to_h.to_json
   end
   
-  # Figures out if this is only a state-search
-  def only_state?
-    return (!@state.empty? && @city.nil? && @zip.nil?) ? true : false
-  end
   
   # Does this location represent everywhere?
   def everywhere?
-    return self.type == :everywhere ? true : false
+    self.type == :everywhere
   end
+  
   
   def only_state?
-    return self.type == :only_state ? true : false
+    self.type == :only_state
   end
   
+  
   def city_state?
-    return self.type == :city_state ? true : false
+    self.type == :city_state
   end
+  
   
   # Tells us what kind of Location this is
   def type
@@ -87,6 +86,7 @@ class Location
     end
   end
   
+  
   # Outputs the proper string for the location input field in a search form
   def form_value
     case type
@@ -98,6 +98,7 @@ class Location
       return "#{@city.titlecase}, #{@state[:name].titlecase}"
     end
   end
+  
   
   # outputs the correct modifier and place name for display
   def display_value
@@ -112,12 +113,13 @@ class Location
     end
   end
   
+  
   private
   
   # Does the work of actually parsing the text passed in and figuring out what this is supposed to be
   def parse(obj,options)
     
-    # this is already a valid location hash
+    # this is already a valid location hash (at least we hope it is, should probably add some error checking)
     if (ActiveSupport::JSON.decode(obj)).is_a?(Hash)
       loc = ActiveSupport::JSON.decode(obj)
       @zip = loc['city']
@@ -211,6 +213,7 @@ class Location
     end
 
   end
+  
   
   # Returns a Hash with the center latitude and longitude given an array of Zip ActiveRecords
   def find_center_point_of(zips)

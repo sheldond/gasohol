@@ -64,7 +64,7 @@ class SearchController < ApplicationController
     @google = do_google(params.dup, {:sort => google_sort_string})   # we have to manually pass in the sort each time (instead of letting ActiveSearch figure it out) because sort could be based on cookie (which ActiveSearch can't read)
     
     # record this query to the database
-    Query.new_search(params,@google.modified_params,{:total_results => @google.total_results, :user => current_user, :view => @view, :sort => @sort})
+    Query.record(params,@google.modified_params,{:total_results => @google.total_results, :user => current_user, :view => @view, :sort => @sort})
     
     # get various related queries on the page
     @location = Location.new!(params[:location])

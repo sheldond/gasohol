@@ -8,7 +8,7 @@ class Query < ActiveRecord::Base
   belongs_to :user
   
   
-  def self.new_search(original,modified,values={})
+  def self.record(original,modified,values={})
     query = self.new( :original_keywords => original[:q], 
                       :original_location => original[:location] || '',
                       :start => original[:start] || 1,
