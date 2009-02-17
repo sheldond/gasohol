@@ -1,7 +1,0 @@
-<% if params[:invite] %>
-  <h2>All users signed up with '<%= @invite.code %>' invite code</h2>
-<% end %>
-
-<%= render :partial => 'list', :locals => { :users => @users } %>
-
-<%= link_to 'New user', new_user_path %>

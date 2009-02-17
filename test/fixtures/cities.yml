@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-san_diego:
-  name: san diego
-  state_id: ca
-
-los_angeles:
-  name: los angeles
-  state_id: ca

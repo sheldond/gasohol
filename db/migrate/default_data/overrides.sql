@@ -1,1 +1,0 @@
-insert into overrides (keywords, sport, type) values ('running','Running','Event');

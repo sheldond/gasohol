@@ -1,4 +1,0 @@
-production:
-  aws_access_key: 0MBSMM5JAREAX4ESXQR2
-  aws_secret_access_key: xWryuJPDpFkzRPWmgz1ZkmKO9O+xRBB52lpnb1Ay
-  bucket_base_name: gasohol_db_backup
