@@ -27,7 +27,7 @@ module Gasohol
       end
       @meta = {}
       xml.search(:mt).each do |meta|
-        key = meta.attributes['n'].underscore.to_sym
+        key = meta.attributes['n'].gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').gsub(/([a-z\d])([A-Z])/,'\1_\2').tr("-", "_").downcase.to_sym   # change meta value into underscores instead of camelcase
         value = key.to_s.match(/date/i) ? Time.parse(meta.attributes['v'].to_s) : meta.attributes['v'].to_s.gsub(/\\/,'/')    # if the name contains 'date' assume it's a valid date object and convert, otherwise just use the string but convert backslashes to forward ones
         if @meta[key]
           if @meta[key].is_a? String

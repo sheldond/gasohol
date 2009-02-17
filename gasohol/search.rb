@@ -1,85 +1,7 @@
-# = Introduction
-# Gasohol lets you query a Google Search Appliance and get results back in an easily traversable format.
-# 
-# == Terms
-# Let's get some nomenclature out of the way. It's a little confusing when we talk about 'query' in
-# a couple of different ways.
-#
-# There are two parts to a Google GSA request:
-#
-# 1. query (search terms)
-# 2. options (stuff like 'collection,' client,' and 'num')
-#
-# And then there is the actual string that you see in your browser, the "query string," which contains
-# all of the & and = stuff.
-#
-# Think of the query as the keywords to search for. However the query to the GSA can actually contain 
-# several parts besides just keywords. If you are using metadata then the query can contain several 
-# 'inmeta:' flags, for example. All of these combined with the keywords become one big long string, 
-# each part separated by a space:
-#
-#   pizza inmeta:category=food inmeta:pieSize:12..18
-#
-# All of that is only the query (comes after ?q=). There are several additional options which the GSA requires, like
-# 'collection' and 'client.' These are the options. The query and all of the options are combined
-# into the final query string and sent to the GSA.
-#
-# A sample query string might look like:
-#   ?q=pizza+inmeta:category=food+inmeta:pieSize:12..18&collection=default_collection&client=my_client&num=10
-#
-# (Note that spaces in the query are turned into + signs.) This full query string is then appended to the URL
-# you provided in the config options when you initialized Gasohol (see Search::new) and the request is made to
-# the GSA. The results come back and are parsed and converted into a nicer format than XML.
-
-require 'open-uri'
-require 'hpricot'
-require 'core_extensions'
-
 module Gasohol
-  
-  require 'gasohol/exceptions'
-  require 'gasohol/result_set'
-  require 'gasohol/result'
-  require 'gasohol/featured'
-  
-  # To get gasohol ready, instantiate a new copy with <tt>Gasohol.new(config)</tt> where +config+ is a hash of options so that we know how/where
-  # to access your GSA instance. This information is saved and used for every request after initializing your gasohol instance.
-  # For Google's reference of what these options do, check out the Search Protocol Reference: http://code.google.com/apis/searchappliance/documentation/50/xml_reference.html
-  #
-  # == Required config options
-  # [+url+] the URL to the search results page of your GSA. ie: http://127.0.0.1/search
-  # [+collection+] the GSA can contain several collections, specify which one to use for this search
-  # [+client+] the GSA can contain several clients, specify which one to use for this search
-  #
-  # == Optional config options
-  # [+filter+] how to filter the results, defaults to 'p'
-  # [+output+] the output format of the results, defaults to 'xml_no_dtd' (leave this setting alone for gasohol to work correctly)
-  # [+getfields+] which meta tag values to return in the results, defaults to '*' (all meta tags)
-  # [+num+] the default number of results to return, defaults to 25
-  # [+partialfields+] another way to filter results by meta tag values
-  #
-  # Example config hash:
-  #
-  #   config = {  :url => 'http://127.0.0.1',
-  #               :collection => 'default_collection',
-  #               :client => 'my_client',
-  #               :num => 25 }
-  #
-  # == Example usage
-  #
-  # So if you're using gasohol with Rails, for example, you could place the following in your search controller before any actions are defined:
-  #   GOOGLE = Gasohol.new(config)
-  #
-  # For a simple search now you go:
-  #   @answer = GOOGLE.search('pizza')
-  #
-  # <tt>@answer</tt> will now contain some info about the query, what params the GSA returned, etc (see Gasohol::ResultSet)
-  # <tt>@answer.results</tt> is an array of the results (see Gasohol::Result)
-  # <tt>@answer.featured</tt> returns an array of any featured results (appear as 'sponsored links' at the top of a regular Google.com search) (see Gasohol::Featured)
-  
+
   class Search
     
-    include GasoholError
     attr_reader :config
   
     # default parameters that go to the GSA
@@ -96,8 +18,6 @@ module Gasohol
                         :partialfields => '' }
     # the parameters that google cares about and will respond to
     ALLOWED_PARAMS = DEFAULT_OPTIONS.keys
-    
-    DEFAULT_FEATURED_RESULT = { :url => '', :title => '', :featured => true }
   
     def initialize(config=nil)
       # start with default values
@@ -156,7 +76,9 @@ module Gasohol
       all_options = @config.merge(options)    # merge options that were passed directly to this method
       full_query_path = query_path(query,all_options)        # creates the full URL to the GSA
     
-      #begin
+    puts full_query_path
+    
+      begin
         xml = Hpricot(open(full_query_path))              # call the GSA with our search
   
         if all_options[:count_only] == true
@@ -170,9 +92,9 @@ module Gasohol
           rs.results = xml.search(:r).collect { |xml_result| parse_result(xml_result) }                   # get regular results
         end
       
-      #rescue => e    # error with results (the GSA barfed?)
-      #  RAILS_DEFAULT_LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
-      #end
+      rescue => e    # error with results (the GSA barfed?)
+        LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
+      end
     
       return rs
     end
@@ -192,12 +114,10 @@ module Gasohol
       output
     end
     
-     
     # Parses info for the result set (override this and use your own extended ResultSet class if you'd like)
     def parse_result_set(query,path,xml,num)
       ResultSet.new(query,path,xml,num)
     end
-    
     
     # Parses featured results (override this and use your own extended Featured class if you'd like)
     def parse_featured(xml)
