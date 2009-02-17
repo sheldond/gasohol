@@ -1,4 +1,6 @@
 module Gasohol
+  
+  # The class that does the actual searching.
 
   class Search
     
@@ -35,7 +37,7 @@ module Gasohol
     end
   
   
-    # This method does the actual searching. It accepts to parameters:
+    # This method does the actual searching. It accepts two parameters:
     #
     # * +query+ is the query string to google (q=)
     # * +options+ is a hash of parameters that could replace or augment DEFAULT_OPTIONS

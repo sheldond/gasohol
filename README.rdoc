@@ -70,7 +70,5 @@ For a simple search now you go:
 
 == Next Steps
 
-* Check out Gasohol::DEFAULT_OPTIONS to see what other options you can pass in the config hash if you need to further refine
-those fields. 
-* See the documentation for Gasohol::Search.search to see how you can have your own custom query term names and convert those
-into something that the GSA will understand.
+* Check out Gasohol::DEFAULT_OPTIONS to see what other options you can pass in the config hash if you need to further refine those fields. 
+* See the documentation for Gasohol::Search.search to see how you can have your own custom query term names and convert those into something that the GSA will understand.

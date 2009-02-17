@@ -1,6 +1,7 @@
 module Gasohol
   
   # Parses standard results
+  
   class Result
   
     attr_reader :result,:num,:mime,:level,:url,:url_encoded,:title,:language,:abstract,:crawl_date,:has,:meta,:featured
