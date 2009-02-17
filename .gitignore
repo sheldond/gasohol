@@ -1,6 +1,0 @@
-._*
-log/*
-tmp/*
-db/*.sqlite3
-*.tmproj
-.DS_Store
