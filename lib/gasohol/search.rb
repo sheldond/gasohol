@@ -6,18 +6,27 @@ module Gasohol
     
     attr_reader :config
   
-    # default parameters that go to the GSA
+    # Default parameters that go to the GSA
+    # The doc on search parameters is here: http://code.google.com/apis/searchappliance/documentation/68/xml_reference.html#request_parameters
+    # nil options will not be included in query and thus will become whatever default value Google gives them (see doc)
     DEFAULT_OPTIONS = { :url => '',
-                        :num => 10, 
-                        :start => 0, 
-                        :filter => 'p', 
-                        :collection => 'default_collection', 
-                        :client => 'default', 
-                        :output => 'xml_no_dtd', 
-                        :getfields => '*',
-                        :sort => '',
-                        :requiredfields => '',
-                        :partialfields => '' }
+                        :client => 'global',
+                        :output => 'xml_no_dtd',
+                        :site => 'default_collection',
+                        :ud => '1',
+                        :num => '10',
+
+                        :entqr => nil,
+                        :entsp => nil,
+                        :oe => nil,
+                        :ie => nil,
+                        :start => nil,
+                        :filter => nil,
+                        :getfields => nil,
+                        :sort => nil,
+                        :requiredfields => nil,
+                        :partialfields => nil }
+                      
     # the parameters that google cares about and will respond to
     ALLOWED_PARAMS = DEFAULT_OPTIONS.keys
   
@@ -69,7 +78,7 @@ module Gasohol
     #
     # That string is appeneded to the GSA url and now it knows how to search:
     #
-    #   http://gsa.pizzafinder.com/search?q=deep+dish+inmeta:panSize=16+inmeta:toppings~cheese&collection=etc,etc,etc
+    #   http://gsa.pizzafinder.com/search?q=deep+dish+inmeta:panSize=16+inmeta:toppings~cheese&site=etc,etc,etc
     #
     # The result that comes back is ready to be used in your app (looping through +pizzas.results+ and displaying them
     # however you like
@@ -77,12 +86,21 @@ module Gasohol
     def search(query,options={})
       all_options = @config.merge(options)    # merge options that were passed directly to this method
       full_query_path = query_path(query,all_options)        # creates the full URL to the GSA
-    
-    puts full_query_path
-    
+      
       begin
-        xml = Hpricot(open(full_query_path))              # call the GSA with our search
-  
+        agent = Mechanize.new
+
+        Rails.logger.info "\tGSA call (#{Date.today}) #{full_query_path}"
+        page = agent.get(full_query_path) # call the GSA with our search
+        
+        xml = Hpricot(page.body)
+
+      rescue => e    # error with results (the GSA barfed?)
+        LOGGER.error("\nERROR WITH GOOGLE SEARCH APPLIANCE RESPONSE: \n"+e.class.to_s+"\n"+e.message+"\n")
+      end
+
+      
+      begin
         if all_options[:count_only] == true
           return xml.search(:m).inner_html.to_i || 0      # if all we really care about is the count of records from google, return just that number and get the heck outta here
         end
@@ -93,11 +111,10 @@ module Gasohol
           rs.featured = xml.search(:gm).collect { |xml_featured| parse_featured(xml_featured) }           # get featured results (called 'sponsored links' on the results page, displayed at the top)
           rs.results = xml.search(:r).collect { |xml_result| parse_result(xml_result) }                   # get regular results
         end
-      
-      rescue => e    # error with results (the GSA barfed?)
-        LOGGER.error("\n\nERROR WITH GOOGLE RESPONSE: \n"+e.class.to_s+"\n"+e.message)
+      rescue => e
+        LOGGER.error("\nERROR PARSING GOOGLE SEARCH APPLIANCE RESPONSE: \n"+e.class.to_s+"\n"+e.message+"\n")
       end
-    
+
       return rs
     end
 
@@ -109,9 +126,7 @@ module Gasohol
       url = options.delete(:url)  # sets url to the value of options[:url] and then removes it from the hash
       output = url + '?q=' + CGI::escape(query)
       options.each do |option|
-        if ALLOWED_PARAMS.include? option.first
-          output += "&#{CGI::escape(option.first.to_s)}=#{CGI::escape(option.last.to_s)}"
-        end
+        output += "&#{CGI::escape(option.first.to_s)}=#{CGI::escape(option.last.to_s)}" unless option.last.nil?
       end
       output
     end

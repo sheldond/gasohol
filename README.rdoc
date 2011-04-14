@@ -8,7 +8,7 @@ a couple of different ways.
 There are two parts to a Google GSA request:
 
 1. query (search terms)
-2. options (stuff like 'collection,' client,' and 'num')
+2. options (stuff like 'site,' client,' and 'num')
 
 And then there is the actual string that you see in your browser, the "query string," which contains
 all of the & and = stuff.
@@ -21,11 +21,11 @@ each part separated by a space:
  pizza inmeta:category=food inmeta:pieSize:12..18
 
 All of that is only the query (comes after ?q=). There are several additional options which the GSA requires, like
-'collection' and 'client.' These are the options. The query and all of the options are combined
+'site' and 'client.' These are the options. The query and all of the options are combined
 into the final query string and sent to the GSA.
 
 A sample query string might look like:
- ?q=pizza+inmeta:category=food+inmeta:pieSize:12..18&collection=default_collection&client=my_client&num=10
+ ?q=pizza+inmeta:category=food+inmeta:pieSize:12..18&site=default_collection&client=my_client&num=10
 
 (Note that spaces in the query are turned into + signs.) This full query string is then appended to the URL
 you provided in the config options when you initialized Gasohol (see Search::new) and the request is made to
@@ -39,7 +39,7 @@ Reference: http://code.google.com/apis/searchappliance/documentation/50/xml_refe
 
 === Required config options
 [+url+] the URL to the search results page of your GSA. ie: http://127.0.0.1/search
-[+collection+] the GSA can contain several collections, specify which one to use for this search
+[+site+] the GSA can contain several collections, specify which one to use for this search
 [+client+] the GSA can contain several clients, specify which one to use for this search
 
 === Optional config options
@@ -52,7 +52,7 @@ Reference: http://code.google.com/apis/searchappliance/documentation/50/xml_refe
 Example config hash:
 
   config = {  :url => 'http://127.0.0.1',
-              :collection => 'default_collection',
+              :site => 'default_collection',
               :client => 'my_client',
               :num => 25 }
 
