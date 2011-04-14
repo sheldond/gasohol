@@ -36,10 +36,10 @@ module Gasohol
   class ResultSet
                         
     attr_reader :google_query, :full_query_path, :total_results, :total_featured_results, :params, :results, :featured, :from_num, :to_num, :time, :location
-    attr_reader :total_pages, :current_page, :previous_page, :next_page   # for will_paginate
+    attr_reader :per_page, :total_pages, :current_page, :previous_page, :next_page   # for will_paginate
     attr_accessor :results, :featured
     
-    def initialize(query,full_query_path,xml,num_per_page)
+    def initialize(query,full_query_path,xml,num_per_page = 10)
       @google_query = query
       @full_query_path = full_query_path
       @time = xml.search(:tm).inner_html.to_f || 0
@@ -57,6 +57,7 @@ module Gasohol
       @results = []
       
       # for will_paginate
+      @per_page = num_per_page
       @total_pages = (@total_results.to_f / num_per_page).ceil
       @current_page = (@from_num.to_f / num_per_page).ceil
       @previous_page = (@current_page - 1 == 0) ? nil : @current_page - 1
